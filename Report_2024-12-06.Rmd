@@ -1,0 +1,145 @@
+---
+title: 'Analyse des Correspondances'
+author: 'Jeu de données tableau_contingence_no_iso'
+output:
+  html_document: default
+---
+Ce jeu de données contient 244 lignes et 7 colonnes.
+
+- - -
+
+```{r, echo = FALSE}
+library(FactoMineR)
+load('C:/Users/MGI/Desktop/projet-analysis-homework/Workspace.RData')
+```
+### 1. Observation d'individus extrêmes
+La détection des individus extrêmes ne s'applique pas à l'AFC.
+
+### 2. Distribution de l'inertie
+L'inertie des axes factoriels indique d'une part si les variables sont structurées et suggère d'autre part le nombre judicieux de composantes principales à étudier.
+
+Les 2 premiers axes de l' analyse expriment **68.83%** de l'inertie totale du jeu de données ; cela signifie que 68.83% de la variabilité totale du nuage des lignes (ou des colonnes) est représentée dans ce plan.
+C'est un pourcentage assez important, et le premier plan représente donc convenablement la variabilité contenue dans une grande part du jeu de données actif.
+Cette valeur est nettement supérieure à la valeur référence de **41.7%**, la variabilité expliquée par ce plan est donc hautement significative
+(cette intertie de référence est le quantile 0.95-quantile de la distribution des pourcentages d'inertie obtenue en simulant 915 jeux de données aléatoires de dimensions comparables sur la base d'une distribution uniforme).
+
+Du fait de ces observations, il serait tout de même probablement préférable de considérer également dans l'analyse les dimensions supérieures ou égales à la troisième.
+
+```{r, echo = FALSE, fig.align = 'center', fig.height = 3.5, fig.width = 5.5}
+par(mar = c(2.6, 4.1, 1.1, 2.1))
+ggplot2::ggplot(cbind.data.frame(x=1:nrow(res$eig),y=res$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab("Pourcentage d'inertie") + ggplot2::ggtitle("Décomposition de l'inertie totale") + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5)) + ggplot2::scale_x_continuous(breaks=1:nrow(res$eig))
+```
+
+**Figure 2 - Décomposition de l'inertie totale**
+
+Une estimation du nombre pertinent d'axes à interpréter suggère de restreindre l'analyse à la description des 3 premiers axes.
+Ces composantes révèlent un taux d'inertie supérieur à celle du quantile 0.95-quantile de distributions aléatoires (88.42% contre 59.12%).
+Cette observation suggère que seuls ces axes sont porteurs d'une véritable information.
+En conséquence, la description de l'analyse sera restreinte à ces seuls axes.
+
+- - -
+
+### 3. Description du plan 1:2
+
+```{r, echo = FALSE, fig.align = 'center', fig.height = 3.5, fig.width = 5.5}
+r.drawn <-
+c("JP", "KR", "CN")
+c.drawn <-
+c("heliport", "small_airport", "medium_airport")
+par(mar = c(4.1, 4.1, 1.1, 2.1))
+plot.CA(res, selectRow = r.drawn, selectCol = c.drawn, axes = 1:2, choix = 'CA', invisible = c('var', 'quali'), title = '', cex = cex)
+```
+
+**Figure 3.1 - Graphe superposé (AFC)**
+*Les lignes libellées sont celles ayant la plus grande contribution à la construction du plan.*
+*Les colonnes libellées sont celles les mieux représentées sur le plan.*
+
+* * *
+
+La **dimension 1** oppose des facteurs tels que *JP* et *KR* (à droite du graphe, caractérisés par une coordonnée fortement positive sur l'axe)
+à des facteurs caractérisés par une coordonnée fortement positive sur l'axe (à gauche du graphe).
+
+Le groupe auquel les facteurs *JP* et *KR* appartiennent (caractérisés par une coordonnée positive sur l'axe) partage :
+
+- une forte fréquence des modalités *heliport*, *seaplane_base* et *balloonport* (du plus commun au plus rare).
+
+Le groupe 2 (caractérisés par une coordonnées négative sur l'axe) partage :
+
+- high frequency for the variable *small_airport*.
+
+Le groupe 3 (caractérisés par une coordonnées négative sur l'axe) partage :
+
+- des modalité dont la fréquence ne diffèrent pas significativement de la moyenne.
+
+Notons que les facteurs *CD*, *CY*, *FO*, *GL*, *GT*, *HK*, *HU*, *IE*, *JP* et *KR* sont extrêmement corrélés à cette dimension (corrélations respectives de 0.94, 0.94, 0.96, 0.91, 0.93, 0.95, 0.91, 0.93, 0.98, 0.91, 0.93, 0.92, 0.94, 0.92, 0.95, 0.9, 0.96). Ces facteurs pourraient donc résumer à eux seuls la dimension 1.
+
+* * *
+
+La **dimension 2** oppose des facteurs tels que *CN* (en haut du graphe, caractérisés par une coordonnées fortement positive sur l'axe)
+à des facteurs comme *JP* et *KR* (en bas du graphe, caractérisés par une coordonnées fortement négative sur l'axe).
+
+Le groupe auquel le facteur *CN* appartient (caractérisés par une coordonnée positive sur l'axe) partage :
+
+- low frequency for the variable *small_airport*.
+
+Le groupe 2 (caractérisés par une coordonnée positive sur l'axe) partage :
+
+- des modalité dont la fréquence ne diffèrent pas significativement de la moyenne.
+
+Le groupe auquel les facteurs *JP* et *KR* appartiennent (caractérisés par une coordonnées négative sur l'axe) partage :
+
+- une forte fréquence des modalités *heliport*, *seaplane_base* et *balloonport* (du plus commun au plus rare).
+
+Le groupe 4 (caractérisés par une coordonnées négative sur l'axe) partage :
+
+- high frequency for the variable *small_airport*.
+
+
+- - -
+
+### 4. Description de la dimension 3
+
+```{r, echo = FALSE, fig.align = 'center', fig.height = 3.5, fig.width = 5.5}
+r.drawn <-
+c("CA", "US", "LK")
+c.drawn <-
+c("closed", "seaplane_base", "balloonport")
+par(mar = c(4.1, 4.1, 1.1, 2.1))
+plot.CA(res, selectRow = r.drawn, selectCol = c.drawn, axes = 3:4, choix = 'CA', invisible = c('var', 'quali'), title = '', cex = cex)
+```
+
+**Figure 4.1 - Graphe superposé (AFC)**
+*Les lignes libellées sont celles ayant la plus grande contribution à la construction du plan.*
+*Les colonnes libellées sont celles les mieux représentées sur le plan.*
+
+* * *
+
+La **dimension 3** oppose des facteurs tels que *CA* et *LK* (à droite du graphe, caractérisés par une coordonnée fortement positive sur l'axe)
+à des facteurs caractérisés par une coordonnée fortement positive sur l'axe (à gauche du graphe).
+
+Le groupe 1 (caractérisés par une coordonnée positive sur l'axe) partage :
+
+- des modalité dont la fréquence ne diffèrent pas significativement de la moyenne.
+
+Le groupe auquel le facteur *CA* appartient (caractérisés par une coordonnée positive sur l'axe) partage :
+
+- des modalité dont la fréquence ne diffèrent pas significativement de la moyenne.
+
+Le groupe auquel le facteur *LK* appartient (caractérisés par une coordonnée positive sur l'axe) partage :
+
+- des modalité dont la fréquence ne diffèrent pas significativement de la moyenne.
+
+Le groupe 4 (caractérisés par une coordonnées négative sur l'axe) partage :
+
+- des modalité dont la fréquence ne diffèrent pas significativement de la moyenne.
+
+
+- - -
+
+
+- - -
+
+## Annexes
+
+
+

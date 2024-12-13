@@ -1,0 +1,449 @@
+---
+documentclass: "compterendu"
+lang: true
+babel-lang: "french"
+geometry:
+  - left=2cm
+  - right=2cm
+  - top=2.5cm
+  - bottom=2.5cm
+title: "Projet d'analyse des données : AFC sur les données"
+author: 
+  - Premier AUTEUR
+email: 
+  - ismael.madou-gagi-grema@etudiant.univ-reims.fr
+  - nikita.pomozov@etudiant.univ-reims.fr
+  
+date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: "Ce projet concerne des données des aeroports du monde. \\newline Il est possible de faire des retours à la ligne. Et d'insérer des commandes \\LaTeX à condition de doubler les anti-slashs. On peut aussi y glisser du code R avec la syntaxe de R Markdown ; ainsi, R nous apprend que $3\\times4$ valent `r 3*4`."
+keywords:
+  - Schtroumpf
+  - Marsupilami
+  - Pokemon
+git: "https://github.com/pregnault/urcadown"
+database: "https://data.gouv.fr"
+anac: "2024-2025"
+diplome: "Master 1 Statistique pour l'evaluation et la prévision."
+module: "SEO0702"
+enseig: "Philippe Regnault"
+evaluation: "Compte-rendu d'analyse"
+coefficient: "50 \\%"
+output: 
+  bookdown::pdf_book:
+    citation_package: biblatex
+    template: template.tex
+    fig_caption: yes
+    keep_tex: yes
+    toc: yes
+biblatex: true
+bibliography: biblio-cr-urca.bib
+biblio-style : alphabetic
+link-citations: yes
+---
+
+
+#**Introduction**
+
+Les aéroports jouent un rôle central dans le transport aérien mondial, facilitant les échanges internationaux, le tourisme, les affaires et le commerce. En tant qu'infrastructures stratégiques, leur gestion et leur développement sont essentiels pour les économies locales et mondiales. Cette étude se concentre sur une base de données des aéroports du monde, qui réunit des informations détaillées sur la localisation, le type et les caractéristiques des aéroports répartis à travers différents pays.
+À travers cette analyse, nous explorerons des variables clés telles que le type d'aéroport (international, national, hélicoptère, etc.), les codes ISO des pays et leur répartition géographique d'une part avec la methode d'AFC et de l'autre part, nous allons etudier les variables comme les variables comme le revenu national(qu'on a récuperée sur une autre base de donnée puis on l'a fusionné avec la presente base de donnée),les passagers, les longueurs des pistes ainsi que les largeurs des pistes avec la methode de l'ACP. La problèmatique est de comprendre le choix des pays dans la construction des infrastructures aéroportuaires. Cela nous permettra de comprendre si les pays les plus riches investissent davantage dans les aéroports et si cela se traduit par une augmentation du nombre des passagers.
+
+
+# ** Prémière partie: Analyse descriptive**
+
+La première partie de notre projet concerne l'analyse descriptive. cette analyse descriptive va nous permettre de résumer de façon simple et concise l'ensemble des
+données. 
+De ce fait, nous allons charger les données avec la commande suivante:
+
+```{r, echo = FALSE}
+# Chargement des données
+data <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/World_Airports.csv", sep = ";")
+
+```
+
+
+## **Section 1: Analyse Univariée**
+
+
+
+### **Section 1-2: Statistiques descriptives**
+
+L'analyse univariée se concentre sur l'étude d'une seule variable à la fois, qu'elle soit quantitative ou qualitative. L'objectif de cette analyse est de décrire les caractéristiques de la variable et de comprendre sa distribution. Elle permet de donner une première idée de la structure des données avant d'aller plus loin dans l'analyse bivariée ou multivariée.
+
+
+```{r tableex, message = FALSE}
+
+library(knitr)
+
+# Appliquer summary() à votre dataset
+summary_stats <- summary(data)
+
+# Convertir le résultat de summary en un tableau formaté avec kable pour LaTeX
+kable(summary_stats, format = "latex", caption = "Tableau des statistiques descriptives", booktabs = TRUE)
+
+
+```
+
+
+Ces statistiques nous donnent une idée sur les variables qui ont des valeurs 
+ manquantes.
+
+
+```{r, echo=FALSE}
+# Calcul du nombre de valeurs manquantes par colonne
+missing_values <- colSums(is.na(data))
+
+# Convertir le tableau des valeurs manquantes en format LaTeX avec style
+library(kableExtra)
+kable(missing_values, format = "latex", 
+      caption = "Nombre de valeurs manquantes par colonne") %>%
+  kable_styling(latex_options = c("striped", "hold_position")) %>%
+  row_spec(0, bold = TRUE)  # Mettre en gras l'en-tête
+
+
+
+```
+ X                 Y          OBJECTID                id 
+                1                 1                 0                 0 
+    airport_ident              type              name      latitude_deg 
+                0                 0                 0                 0 
+    longitude_deg      elevation_ft         continent       iso_country 
+                0             14263             36226               259 
+       iso_region      municipality scheduled_service          gps_code 
+                0                 0                 0                 0 
+        iata_code        local_code         home_link    wikipedia_link 
+                0                 0                 0                 0 
+         keywords       description     frequency_mhz  runway_length_ft 
+                0                 0             64383             37241 
+  runway_width_ft    runway_surface    runway_lighted     runway_closed 
+            39483                 0             37062             37062 
+Les resultats montrent que presque toutes les variables n'ont pas de valeurs manquantes à l'exception de X,Y,frequency, runway_length_ft, runway_width_ft, runway_lighted, runway_closed.
+C
+ 
+```{r} 
+table(data$type)
+
+```
+balloonport         closed       heliport  large_airport medium_airport 
+            45          10164          19080            464           4747 
+ seaplane_base  small_airport 
+          1133          39419 
+
+
+
+### **les graphes**
+
+
+```{r, echo=FALSE}
+# Fréquences pour une variable catégorielle
+frequence_type <- table(data$type)
+frequence_iso_country <- table(data$iso_country)
+
+```
+
+A la suite, nous allons presenter les graphiques des variables que nous avons retenus pour effectuer l'AFC en l'occurence du type et du pays.
+
+
+```{r, echo = FALSE, eval = FALSE}
+# Diagramme en barres pour 'le type d'aéroport'
+barplot(frequence_type, 
+        main = "Le type d'aéroport", 
+        col = "skyblue", 
+        xlab = "Type", 
+        ylab = "Fréquence du type")
+```
+Ce graphique nous renseigne sur la frequence des differents types d'aeroports.
+les Small_airport sont plus nombreux et represente la plus grande partie de notre base de données.Ensuite, viennent les heliports avec une proportion moins importante. 
+
+
+```{r, echo = FALSE, eval = TRUE}
+# Diagramme en barres pour 'iso_country' (pays)
+barplot(frequence_iso_country, 
+        main = "Répartition par pays", 
+        col = "lightgreen", 
+        xlab = "Pays", 
+        ylab = "Fréquence des pays")
+
+```
+A ce niveau, on constate que les aerports americains apparaissent trop souvent avec plus de 25OOO aeroports. Par contre, les autres pays ont une frequence comprise entre 0 et 5000.
+
+
+## **Section 2: l'Analyse Bivariée**
+
+
+L'analyse bivariée est une methode statistique utilisée pour examiner relation entre deux variables. Dans ce cas, nous pourrons etudier la relation entre le "type" et "iso_country".
+
+
+### **Section 2-1 : le test Khi-carreé(Person)**
+
+
+```{r setupcolours, eval = TRUE, echo = FALSE}
+urcalightbrown <- "#D1AD55"
+urcamediumbrown <- "#AE7433"
+urcaheavybrown <- "#480000"
+urcalightblue <- "#88C7FA"
+urcamediumblue <- "#1A9DDD"
+urcaheavyblue <- "#365A8E"
+senolive <- "#76bc21"
+sendarkgreen <- "#007934"
+senlightgreen <- "#00ae42"
+darkpink <- "#DB6761"
+clay <- "#D95F02"
+sand <- "#FED976"
+shadedpurple <- "#CD7FC5"
+```
+
+
+
+```{r setup, echo=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(corrplot)
+library(urcadown)
+
+donnee_temporaire <- data %>% select(type, iso_country)
+
+# Création du tableau de contingence
+tableau_contingence <- donnee_temporaire %>%
+  count(type, iso_country) %>%
+  spread(key = type, value = n, fill = 0)
+
+# Calcul de la matrice de corrélation entre les colonnes (types d'aéroports)
+# Nous excluons la colonne iso_country
+matrice_corr <- cor(tableau_contingence[, -1], method = "pearson")
+
+# Créer un tableau de couleurs avec des noms et des codes hexadécimaux
+tibble(`Nom couleur` = c("urcalightbrown", "urcamediumbrown", "urcaheavybrown",
+                         "urcalightblue", "urcamediumblue", "urcaheavyblue",
+                         "senolive", "sendarkgreen", "senlightgreen",
+                         "darkpink", "clay", "sand", "shadedpurple"),
+       `Code hexa` = c(urcalightbrown, urcamediumbrown, urcaheavybrown,
+                       urcalightblue, urcamediumblue, urcaheavyblue,
+                       senolive, sendarkgreen, senlightgreen,
+                       darkpink, clay, sand, shadedpurple),
+       `Code RGB` = lapply(`Code hexa`, hexa2rgb)
+       ) -> tib_colours
+
+# Définir une palette de couleurs pour le graphique de la corrélation
+color_palette <- c(urcalightbrown, urcamediumbrown, urcaheavybrown,
+                   urcalightblue, urcamediumblue, urcaheavyblue,
+                   senolive, sendarkgreen, senlightgreen,
+                   darkpink, clay, sand, shadedpurple)
+
+# Utiliser corrplot pour générer la matrice de corrélation avec une palette de couleurs personnalisée
+corrplot(matrice_corr, method = "color", type = "full", 
+         col = colorRampPalette(color_palette)(200),  # Utilisation de la palette personnalisée
+         title = "Matrice de Corrélation entre les Types d'Aéroports",
+         addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
+```
+
+
+
+```{r, echo=FALSE}
+# Tableau de contingence (tableau croisé)
+tableau_croise <- table(data$type, data$iso_country)
+
+# Test du chi-carré
+chi2_test <- chisq.test(tableau_croise)
+chi2_test
+
+```
+Etant donné que la p-value est inferieure à 0.05, nous rejetons l'hypothése nulle. Cela signifie qu'il existe une relation significative entre les deux variables qualitatives que nous allons tester.
+
+
+### **Section 2-2: le Test de Fisher**
+
+
+```{r, echo=FALSE}
+# Test exact de Fisher avec approximation via Monte Carlo
+fisher_test_approx <- fisher.test(tableau_croise, simulate.p.value = TRUE, B = 10000)
+fisher_test_approx
+
+```
+Cela signifie que le test de Fisher teste une association bilatérale, c'est-à-dire qu'il teste si les deux variables sont significativement liées dans n'importe quelle direction, sans spécifier a priori une direction particulière pour l'association.
+
+
+### **Section 2-3: Test de Cramér's**
+
+
+```{r, echo = FALSE}
+# Charger le package vcd
+library(vcd)
+# Calcul de Cramér's V
+assoc_result <- assocstats(table(data$type, data$iso_country))
+assoc_result
+```
+Nous constatons encore une p-value faible, ce qui signifie qu'il existe une forte correlation entre les deux variables qualitatives. De plus, les variables "contigency coeff" et "Cramer's V" indiquent une association moderée.  
+
+
+## ** Deuxième partie: Application de L'AFC**
+
+L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives. Cela nous permet de visualiser et d'interpréter les relations entre les lignes et les colonnes d'un tableau de contingence.Dans notre cas,nous allons analyser le tableau de contingence avec les differents pays representés en ligne et les types d'aeroports en colonne.
+
+
+### **Section 2-1: Representation des profils lignes**
+
+
+```{r, echo=FALSE}
+
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# Créer le tableau de contingence
+donnee_temporaire <- data %>% select(type, iso_country)
+
+# Création du tableau de contingence
+tableau_contingence <- donnee_temporaire %>%
+  count(type, iso_country) %>%
+  spread(key = type, value = n, fill = 0)
+
+# Créer tableau_contingence_no_iso en supprimant la colonne iso_country
+tableau_contingence_no_iso <- tableau_contingence %>% select(-iso_country)
+
+# Vérification du tableau de contingence sans iso_country
+head(tableau_contingence_no_iso)
+
+# Calcul des profils ligne (PL) : normalisation par ligne
+PL <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 1)
+
+# Vérification que la somme des profils ligne est égale à 1
+apply(PL, 1, sum)
+
+# Tracer les profils de ligne sous forme de barplot
+barplot(height = t(PL), beside = FALSE, legend.text = colnames(PL))
+
+```
+
+
+
+### **Section  2-2: Representation des profils colonnes**
+
+
+```{r, echo=FALSE}
+#calcul des profils colonnes
+PC <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 2)
+
+#representation des profils colonnes 
+barplot(height = PC, beside = FALSE, legend.text = rownames(PC))
+```
+
+
+
+### **Section 2-3: Test d'independance**
+
+
+```{r,echo=FALSE}
+# Test du Khi-deux pour l'indépendance
+chisq.test(tableau_contingence_no_iso) -> res_chisq
+res_chisq$statistic  # Affichage du statistic du test Khi-deux
+
+# Définition de 'children' comme étant les valeurs attendues du test Khi-deux
+children <- res_chisq$expected
+
+# Calcul de l'inertie du nuage des profils
+inertie <- res_chisq$statistic / sum(children) + 1
+inertie
+
+```
+Avec une statistique χ² de 30863.32, et une p-value proche de 0, vous pouvez conclure qu'il y a une forte association entre les deux variables catégorielles étudiées. Cette présence d'association nous permet d'expliquer une des variables en fonction de l'autre par consequent il ameliore la comprehension.
+
+
+### **Section 2-4: Les valeurs propres** 
+
+#### ** Resultats des valeurs propres**
+
+
+```{r, echo=FALSE}
+#recherche des valeurs propres
+library("FactoMineR")
+res_afc <- CA(X = tableau_contingence_no_iso, ncp = 7,
+   graph = FALSE)
+res_afc
+res_afc$eig
+```
+Ces resultats nous donnent des informations sur les valeurs propres ainsi que la variance expliquée qui n'est rien d'autres que l'explication de la variabilité des données observées.
+
+
+#### **L'histogramme des valeurs propres**
+
+
+```{r, echo=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(corrplot)
+library(urcadown)
+library(FactoMineR)
+
+# Création du tableau de contingence
+tableau_contingence <- donnee_temporaire %>%
+  count(type, iso_country) %>%
+  spread(key = type, value = n, fill = 0)
+
+# Exclure la colonne iso_country pour ne garder que les types d'aéroports
+tableau_contingence_no_iso <- tableau_contingence[, -which(names(tableau_contingence) == "iso_country")]
+
+# Appliquer l'Analyse de Correspondances (CA) sur le tableau de contingence (exclure iso_country)
+res_afc <- CA(X = tableau_contingence_no_iso, ncp = 7, graph = FALSE)
+
+# Extraire et afficher les valeurs propres
+valeurs_propres <- res_afc$eig
+
+# Affichage des valeurs propres
+print(valeurs_propres)
+
+# Tracer l'histogramme des valeurs propres
+barplot(valeurs_propres[, 1], 
+        main = "Histogramme des Valeurs Propres de l'Analyse de Correspondances", 
+        col = "skyblue", 
+        ylab = "Valeurs Propres", 
+        xlab = "Composantes", 
+        border = "white")
+```
+
+Regle du coude : on retient  3 valeurs propres qui representent 88,41% de l'inertie. Cela veut dire que les trois valeurs expliquent à elles seules la plus grande partie de l'information. 
+
+### **Section 4-5: la projection des nuages des profils lignes et colonnes**
+
+La projection des nuages des profils est une technique couramment utilisée dans l'analyse des correspondances (AFC) et d'autres méthodes multivariées pour visualiser les relations entre des objets ou des profils dans un espace réduit à deux dimensions. Cela permet de mieux comprendre les structures et associations dans les données.
+
+#### **La dimension 1 et 2**
+
+A ce niveau, nous nous focaliserons sur les deux premiers axes pour analyser les données. les deux dimensions expliquent 69% de l'information(variance exliqueé).
+
+```{r, echo=FALSE}
+# projection des nuages des profils lignes sur le plan principal
+plot.CA(x = res_afc, choix = "CA", axes = c(1,2), cex = 0.5)
+```
+les types d'aeroports qui sont bien representés sont les héliports(heliport) et les petits aéroports(small_airport) sur le premier axe.En plus, l'heliport contribue en grande partie à la construction du premier axe sans oublier la contribution du small airoport. Ce premier axe oppose les heliports aux small_airports. sur cet axe, les pays comme le Japon et la corée du Sud sont bien representés et contribuent en grande partie à la construction du premier axe. Les pays comme le Japon et la Corée du Sud peuvent avoir un nombre plus élevé d'héliports en raison de facteurs combinés tels que leur géographie, leur développement économique et industriel, leurs besoins en termes de transport, leur usage militaire, et la gestion des risques naturels.
+  Sur le second axe,on a une opposition entre les petits aeroports, les heliports d'une part et les moyens aéroports, les grands aéroports d'autre part. ces deux derniers contribuent à la construction du deuxieme axe meme si les grands aeroports n'ont pas un poids important dans la construction du deuxième axe. sur cet axe, la chine est bien representée et contribue à la construction du second axe.La Chine possède un grand nombre des moyens aéroports mais aussi des grands aéroports(moins importants que les moyens) pour répondre à ses besoins internes et internationaux en matière de transport, stimulés par sa taille, sa population, son développement économique, ses ambitions commerciales et ses politiques de décentralisation. Ces facteurs se combinent pour expliquer pourquoi la Chine est dotée de nombreux aéroports, tant pour les passagers que pour le fret aérien.
+
+
+####**La dimension 1 et 3**
+
+on s'attardera sur les dimensions 1 et 3 pour effectuer notre analyse. Nous pouvons alors comprendre l'évolution de nos données avec une vision panoramique et differente à la precedente.En effet, d'autres variables qui n'ont pas eu d'effets sur les autres dimensions peuvent s'averer importantes. 
+
+```{r,echo=FALSE}
+# projection des nuages des profils lignes sur le plan principal
+plot.CA(x = res_afc, choix = "CA", axes = c(1,3), cex = 0.5)
+```
+Le troisième axe oppose les autres types d'aeroports aux hydravions(seaplane_base), les aéroports fermés(closed). Ces aéroports sont bien representés et contribuent enormement à la construction du troisième axe. Le Canada contribue en grande partie à la construction de cet axe. Par consequent, nous pouvons conclure que le Canada a un nombre important des hydravions et des fermés.Le nombre important d'aéroports fermés et l'utilisation des hydravions au Canada peuvent être attribués à la géographie vaste et diversifiée du pays, à son climat rigoureux, à la dispersion de sa population dans des zones isolées, et à des considérations économiques et pratiques. Les hydravions offrent une solution flexible et pratique pour desservir des régions qui seraient autrement difficiles d'accès par des infrastructures aéroportuaires traditionnelles. Les aéroports fermés, quant à eux, reflètent la baisse de la demande pour des installations dans des zones peu peuplées et éloignées.
+
+####**La dimension 2 et 3**
+
+En fin, nous nous attellerons à l'analyse de ces données qualitatives en s'attardant sur la dimension 2 et 3.
+
+```{r, echo=FALSE}
+# projection des nuages des profils lignes sur le plan principal
+plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
+```
+
+Nous remarquons à ce niveau que l'analyse se focalise sur la Chine qui explique le deuxième axe d'une part et le Canada qui exlique le troisième axe. Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires. La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents. Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées. La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique. 
+
+# **Conclusion**
+
+
+
+
