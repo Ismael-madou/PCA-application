@@ -54,7 +54,7 @@ combined_table_final <- combined_table_final %>%
 
 # adding passengers info for top airports 
 
-passengers <- read.csv('/Users/nickpomozov/Downloads/Safari Downloads/Top airports filtered - Top airports filtered-2.csv', sep = ",") 
+passengers <- read.csv('/Users/nickpomozov/Downloads/Programming/Project with Isamel/Top airports filtered - Top airports filtered-2.csv', sep = ",") 
 passengers <- passengers %>%
   rename(name = Airport) %>% 
   mutate(name = recode(name, "Heathrow Airport"="London Heathrow Airport"))
@@ -90,6 +90,41 @@ library("DataExplorer")
 library("FactoMineR")
 library("Factoshiny")
 
+#Univariate Analysis
+#L'analyse univariée de la variable National Income révèle une distribution fortement asymétrique, 
+#avec la majorité des observations concentrées dans les tranches de revenu les plus basses. 
+#Une proportion significative du jeu de données se situe entre 20 000 et 60 000, 
+#comme le montrent les barres les plus hautes. 
+#En revanche, très peu d'observations dépassent la tranche des 80 000, 
+#ce qui met en évidence une disparité. 
+#Cela suggère que la majorité des entités du jeu de données appartiennent à des pays ou régions ayant des revenus nationaux modestes, 
+#tandis qu'une minorité représente des économies à revenu élevé. 
+#Une analyse plus approfondie pourrait explorer l'impact de cette distribution sur d'autres variables, 
+# comme les infrastructures ou le volume de passagers.
+
+summary(data_for_pca$National.income)
+summary(data_for_pca$runway_length_ft)
+summary(data_for_pca$runway_width_ft)
+summary(data_for_pca$passengers)
+
+hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
+boxplot(data_for_pca$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
+
+library(dplyr)
+data_with_passengers %>%
+  group_by(type) %>%
+  summarise(
+    mean_income = mean(National.income, na.rm = TRUE),
+    median_income = median(National.income, na.rm = TRUE),
+    sd_income = sd(National.income, na.rm = TRUE),
+    count = n()
+  )
+library(ggplot2)
+ggplot(data_with_passengers, aes(x=type, y=National.income)) +
+  geom_boxplot() +
+  labs(title="National Income by Airport Type", x="Airport Type", y="National Income") +
+  scale_y_continuous(labels=scales::comma)
+
 V <- cov(pca_data_scaled) #matrice des covariances
 R <- cor(pca_data_scaled) #matrice des correlation
 
@@ -106,3 +141,5 @@ res_pca$eig
 barplot(res_pca$eig[,1])
 
 PCAshiny(X = res_pca)
+
+
