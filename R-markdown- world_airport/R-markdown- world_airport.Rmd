@@ -442,8 +442,58 @@ plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
 
 Nous remarquons à ce niveau que l'analyse se focalise sur la Chine qui explique le deuxième axe d'une part et le Canada qui exlique le troisième axe. Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires. La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents. Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées. La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique. 
 
-# **Conclusion**
+# ** Deuxième Partie: Methode de l'ACP**
+```{r, echo=FALSE}
+# j'ai besoin de ISO codes pour joindre le tableau d'aeroports avec le income
+library(dplyr)    
+
+income_table <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/National income.csv", sep = ";") 
+iso_table <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/Countries ISO.csv", sep = ",")        
+```
+
+```{r, echo=FALSE}
+install.packages("Factoshiny")
+install.packages("FactoInvestigate")
+install.packages("DataExplorer") #pour des analyses uni et bi-variees rapides
+install.packages("corrplot")
+install.packages("FactoMineR")
+library("DataExplorer")
+library("FactoMineR")
+library("Factoshiny")
+V <- cov(pca_data_scaled) #matrice des covariances
+R <- cor(pca_data_scaled) #matrice des correlation
+corrplot::corrplot(R, type = "upper", method = "square")
+
+```
+
+
+```{r,echo=FALSE}
+install.packages("FactoMineR")
+library(FactoMineR)
+res_pca <- PCA(X = pca_data_scaled,
+               scale.unit = TRUE, # On précise qu'on souhaite réaliser une ACP sur données réduites
+               graph = FALSE)
+# On peut représenter le résultat de l'acp par la suite
+plot.PCA(res_pca, axes = c(1,2), choix = "ind")
+
+```
 
 
 
+
+```{r, echo=FALSE}
+install.packages("FactoMineR")
+library(FactoMineR)
+res_pca <- PCA(X = pca_data_scaled,
+               scale.unit = TRUE, # On précise qu'on souhaite réaliser une ACP sur données réduites
+               graph = FALSE)
+plot.PCA(res_pca, axes = c(1,2), choix = "var")
+```
+
+
+
+```{r,echo=FALSE}
+res_pca$eig
+barplot(res_pca$eig[,1])
+```
 

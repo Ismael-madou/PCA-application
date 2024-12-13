@@ -2,8 +2,8 @@
 # j'ai besoin de ISO codes pour joindre le tableau d'aeroports avec le income
 library(dplyr)    
 
-income_table <- read.csv("/Users/nickpomozov/Документы/MA/National income.csv", sep = ";") 
-iso_table <- read.csv("/Users/nickpomozov/Документы/MA/Countries ISO.csv", sep = ",")        
+income_table <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/National income.csv", sep = ";") 
+iso_table <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/Countries ISO.csv", sep = ",")        
 
 iso_table <- iso_table %>%
   rename(Country = Name)
@@ -35,7 +35,7 @@ combined_table$Code[combined_table$Country == "Namibia"] <- "NA"
 combined_table <- combined_table %>%
   rename(iso_country = Code)
 
-airports <- read.csv("/Users/nickpomozov/Документы/MA/World_Airports_Edited.csv", sep = ";")
+airports <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/World_Airports_Edited.csv", sep = ";")
 
 combined_table_final <- airports %>%
   left_join(combined_table, by = "iso_country")  
@@ -54,12 +54,11 @@ combined_table_final <- combined_table_final %>%
 
 # adding passengers info for top airports 
 
-passengers <- read.csv('/Users/nickpomozov/Downloads/Safari Downloads/Top airports filtered - Top airports filtered-2.csv', sep = ",") 
+passengers <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/Top airports filtered - Top airports filtered-2.csv", sep = ",") 
 passengers <- passengers %>%
   rename(name = Airport) %>% 
   mutate(name = recode(name, "Heathrow Airport"="London Heathrow Airport"))
 
-Encoding(passengers$name)
 
 final_data <- combined_table_final %>%
   left_join(passengers, by = "name")  
