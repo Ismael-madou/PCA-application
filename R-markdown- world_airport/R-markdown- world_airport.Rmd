@@ -455,10 +455,6 @@ Pour l'analyse ACP, nous avons décidé de combiner plusieurs ensembles de donn�
 Après avoir combiné et reformaté tous les ensembles de données, nous avons décidé d'effectuer une analyse ACP à partir de ces variables :
 « National.income », “runway_length_ft”, “runway_width_ft”, et “passengers”. En utilisant ces variables, nous voulions explorer la relation entre le revenu national et les infrastructures aéroportuaires. En outre, nous avons essayé de comprendre si les pays les plus riches investissent davantage dans les aéroports et si cela se traduit par un plus grand nombre de passagers.
 
-
-
-
-
 ```{r,echo=FALSE}
 hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
 ```
@@ -516,11 +512,9 @@ res_pca <- PCA(X = pca_data_scaled,
 plot.PCA(res_pca, axes = c(1,2), choix = "ind")
 
 ```
-
+Le graphique des individus illustre la répartition des observations en fonction de ces composantes principales. Les points situés dans le quadrant supérieur droit, comme 27 (Emirats Arabes Unis) et 38 (Singapour), représentent probablement des nations riches avec des infrastructures avancées et un trafic passagers élevé, reflétant la corrélation positive entre ces variables. En revanche, des observations comme 6 et 18, situées dans le quadrant supérieur gauche, correspondent aux États Unis ayant un revenu modéré mais des infrastructures aéroportuaires atypiques qui s’écartent de la tendance générale. De manière similaire, des points comme 43 (La Chine) et 32 (Brésil) dans le quadrant inférieur droit représentent les pays avec des infrastructures importantes mais des volumes de passagers faibles, peut-être en raison d’une capacité sous-utilisée.
 
 ### **Section 2-2: Graphique des variables**
-
-
 
 ```{r, echo=FALSE}
 install.packages("FactoMineR")
@@ -530,8 +524,9 @@ res_pca <- PCA(X = pca_data_scaled,
                graph = FALSE)
 plot.PCA(res_pca, axes = c(1,2), choix = "var")
 ```
+Le graphique des variables illustre visuellement ces relations. L’alignement de “National.income” avec passengers sur Dim 1 met en évidence une forte corrélation positive entre la richesse d’un pays et la demande de transport aérien. En revanche, les vecteurs représentant la longueur et la largeur des pistes sont étroitement groupés et orientés principalement sur Dim 2, ce qui suggère que les caractéristiques physiques des infrastructures sont interdépendantes mais influencées par des facteurs ne dépendant pas uniquement du revenu national. Cette séparation entre le trafic passagers lié au revenu et les caractéristiques physiques des infrastructures implique que, bien que les pays riches investissent généralement dans des aéroports plus grands et mieux équipés, l’expansion des infrastructures n’est pas toujours proportionnelle aux niveaux de revenu.
 
-
+Ces résultats confirment que le revenu national influence le développement des aéroports et la demande de transport aérien, mais ils mettent également en évidence une variabilité entre les pays. Par exemple, certains pays à revenu limité maintiennent des volumes de passagers relativement élevés, potentiellement en raison de leur rôle de hubs régionaux ou de leur dépendance au tourisme. D’autres disposent d’infrastructures avancées mais affichent un faible trafic passagers, suggérant des inefficacités ou une demande insuffisante.
 
 ### ** Section 2-3: Histogramme des valeurs propres **
 
@@ -544,6 +539,7 @@ L'histogramme des valeurs propres montre la contribution des quatre composantes 
 
 # ** Conclusion **
 
+Les résultats de l’ACP soulignent une relation nuancée entre la richesse, les infrastructures et le transport aérien. Bien que les pays les plus riches investissent généralement dans des infrastructures aéroportuaires et connaissent des volumes de trafic plus élevés, les écarts par rapport à ce schéma, comme la présence d’observations atypiques, suggèrent l’influence d’autres facteurs. La localisation géographique, les politiques publiques, la connectivité aérienne ou la dépendance au tourisme pourraient tous contribuer à ces variations. Une étude approfondie de ces anomalies permettrait de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les mouvements de passagers.
 
 # **Annexe**
 
