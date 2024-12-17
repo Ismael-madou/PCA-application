@@ -48,7 +48,7 @@ Les aéroports jouent un rôle central dans le transport aérien mondial, facili
 À travers cette analyse, nous explorerons des variables clés telles que le type d'aéroport (international, national, hélicoptère, etc.), les codes ISO des pays et leur répartition géographique d'une part avec la methode d'AFC et de l'autre part, nous allons etudier les variables comme les variables comme le revenu national(qu'on a récuperée sur une autre base de donnée puis on l'a fusionné avec la presente base de donnée),les passagers, les longueurs des pistes ainsi que les largeurs des pistes avec la methode de l'ACP. La problèmatique est de comprendre le choix des pays dans la construction des infrastructures aéroportuaires. Cela nous permettra de comprendre si les pays les plus riches investissent davantage dans les aéroports et si cela se traduit par une augmentation du nombre des passagers.
 
 
-# ** Prémière partie: Analyse descriptive**
+# ** Prémière partie: Application de l'AFC**
 
 La première partie de notre projet concerne l'analyse descriptive. cette analyse descriptive va nous permettre de résumer de façon simple et concise l'ensemble des
 données. 
@@ -60,12 +60,11 @@ data <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/World_Airports.c
 
 ```
 
+## **Section 1: Analyse descriptive**
 
-## **Section 1: Analyse Univariée**
+### **Section 1-1: Analyse Univariée**
 
-
-
-### **Section 1-2: Statistiques descriptives**
+#### **Section  1-1-1: Statistiques descriptives**
 
 L'analyse univariée se concentre sur l'étude d'une seule variable à la fois, qu'elle soit quantitative ou qualitative. L'objectif de cette analyse est de décrire les caractéristiques de la variable et de comprendre sa distribution. Elle permet de donner une première idée de la structure des données avant d'aller plus loin dans l'analyse bivariée ou multivariée.
 
@@ -130,7 +129,7 @@ balloonport         closed       heliport  large_airport medium_airport
 
 
 
-### **les graphes**
+### ** Section 1-1-2: les graphes**
 
 
 ```{r, echo=FALSE}
@@ -167,13 +166,13 @@ barplot(frequence_iso_country,
 A ce niveau, on constate que les aerports americains apparaissent trop souvent avec plus de 25OOO aeroports. Par contre, les autres pays ont une frequence comprise entre 0 et 5000.
 
 
-## **Section 2: l'Analyse Bivariée**
+## **Section 1-2: l'Analyse Bivariée**
 
 
 L'analyse bivariée est une methode statistique utilisée pour examiner relation entre deux variables. Dans ce cas, nous pourrons etudier la relation entre le "type" et "iso_country".
 
 
-### **Section 2-1 : le test Khi-carreé(Person)**
+### **Section 1-2-1 : le test Khi-carreé(Person)**
 
 
 ```{r setupcolours, eval = TRUE, echo = FALSE}
@@ -199,6 +198,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(corrplot)
+install.packages("urcadown")
 library(urcadown)
 
 donnee_temporaire <- data %>% select(type, iso_country)
@@ -251,7 +251,7 @@ chi2_test
 Etant donné que la p-value est inferieure à 0.05, nous rejetons l'hypothése nulle. Cela signifie qu'il existe une relation significative entre les deux variables qualitatives que nous allons tester.
 
 
-### **Section 2-2: le Test de Fisher**
+### **Section 1-2-2: le Test de Fisher**
 
 
 ```{r, echo=FALSE}
@@ -263,7 +263,7 @@ fisher_test_approx
 Cela signifie que le test de Fisher teste une association bilatérale, c'est-à-dire qu'il teste si les deux variables sont significativement liées dans n'importe quelle direction, sans spécifier a priori une direction particulière pour l'association.
 
 
-### **Section 2-3: Test de Cramér's**
+### **Section 1-2-3: Test de Cramér's**
 
 
 ```{r, echo = FALSE}
@@ -276,7 +276,7 @@ assoc_result
 Nous constatons encore une p-value faible, ce qui signifie qu'il existe une forte correlation entre les deux variables qualitatives. De plus, les variables "contigency coeff" et "Cramer's V" indiquent une association moderée.  
 
 
-## ** Deuxième partie: Application de L'AFC**
+## ** Section 2: Application de L'AFC**
 
 L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives. Cela nous permet de visualiser et d'interpréter les relations entre les lignes et les colonnes d'un tableau de contingence.Dans notre cas,nous allons analyser le tableau de contingence avec les differents pays representés en ligne et les types d'aeroports en colonne.
 
@@ -350,9 +350,9 @@ inertie
 Avec une statistique χ² de 30863.32, et une p-value proche de 0, vous pouvez conclure qu'il y a une forte association entre les deux variables catégorielles étudiées. Cette présence d'association nous permet d'expliquer une des variables en fonction de l'autre par consequent il ameliore la comprehension.
 
 
-### **Section 2-4: Les valeurs propres** 
+### ** Section 2-4: Les valeurs propres** 
 
-#### ** Resultats des valeurs propres**
+#### ** Section 2-4-1: Resultats des valeurs propres**
 
 
 ```{r, echo=FALSE}
@@ -366,7 +366,7 @@ res_afc$eig
 Ces resultats nous donnent des informations sur les valeurs propres ainsi que la variance expliquée qui n'est rien d'autres que l'explication de la variabilité des données observées.
 
 
-#### **L'histogramme des valeurs propres**
+#### ** Section 2-4-2: L'histogramme des valeurs propres**
 
 
 ```{r, echo=FALSE}
@@ -374,6 +374,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(corrplot)
+install.packages("urcadown")
 library(urcadown)
 library(FactoMineR)
 
@@ -405,11 +406,11 @@ barplot(valeurs_propres[, 1],
 
 Regle du coude : on retient  3 valeurs propres qui representent 88,41% de l'inertie. Cela veut dire que les trois valeurs expliquent à elles seules la plus grande partie de l'information. 
 
-### **Section 4-5: la projection des nuages des profils lignes et colonnes**
+### ** Section 2-5: la projection des nuages des profils lignes et colonnes **
 
 La projection des nuages des profils est une technique couramment utilisée dans l'analyse des correspondances (AFC) et d'autres méthodes multivariées pour visualiser les relations entre des objets ou des profils dans un espace réduit à deux dimensions. Cela permet de mieux comprendre les structures et associations dans les données.
 
-#### **La dimension 1 et 2**
+#### ** Section 2-5-1: La dimension 1 et 2**
 
 A ce niveau, nous nous focaliserons sur les deux premiers axes pour analyser les données. les deux dimensions expliquent 69% de l'information(variance exliqueé).
 
@@ -421,7 +422,7 @@ les types d'aeroports qui sont bien representés sont les héliports(heliport) e
   Sur le second axe,on a une opposition entre les petits aeroports, les heliports d'une part et les moyens aéroports, les grands aéroports d'autre part. ces deux derniers contribuent à la construction du deuxieme axe meme si les grands aeroports n'ont pas un poids important dans la construction du deuxième axe. sur cet axe, la chine est bien representée et contribue à la construction du second axe.La Chine possède un grand nombre des moyens aéroports mais aussi des grands aéroports(moins importants que les moyens) pour répondre à ses besoins internes et internationaux en matière de transport, stimulés par sa taille, sa population, son développement économique, ses ambitions commerciales et ses politiques de décentralisation. Ces facteurs se combinent pour expliquer pourquoi la Chine est dotée de nombreux aéroports, tant pour les passagers que pour le fret aérien.
 
 
-####**La dimension 1 et 3**
+#### ** Section 2-5-2: La dimension 1 et 3 **
 
 on s'attardera sur les dimensions 1 et 3 pour effectuer notre analyse. Nous pouvons alors comprendre l'évolution de nos données avec une vision panoramique et differente à la precedente.En effet, d'autres variables qui n'ont pas eu d'effets sur les autres dimensions peuvent s'averer importantes. 
 
@@ -431,7 +432,7 @@ plot.CA(x = res_afc, choix = "CA", axes = c(1,3), cex = 0.5)
 ```
 Le troisième axe oppose les autres types d'aeroports aux hydravions(seaplane_base), les aéroports fermés(closed). Ces aéroports sont bien representés et contribuent enormement à la construction du troisième axe. Le Canada contribue en grande partie à la construction de cet axe. Par consequent, nous pouvons conclure que le Canada a un nombre important des hydravions et des fermés.Le nombre important d'aéroports fermés et l'utilisation des hydravions au Canada peuvent être attribués à la géographie vaste et diversifiée du pays, à son climat rigoureux, à la dispersion de sa population dans des zones isolées, et à des considérations économiques et pratiques. Les hydravions offrent une solution flexible et pratique pour desservir des régions qui seraient autrement difficiles d'accès par des infrastructures aéroportuaires traditionnelles. Les aéroports fermés, quant à eux, reflètent la baisse de la demande pour des installations dans des zones peu peuplées et éloignées.
 
-####**La dimension 2 et 3**
+#### ** Section 2-5-3: La dimension 2 et 3**
 
 En fin, nous nous attellerons à l'analyse de ces données qualitatives en s'attardant sur la dimension 2 et 3.
 
@@ -442,11 +443,11 @@ plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
 
 Nous remarquons à ce niveau que l'analyse se focalise sur la Chine qui explique le deuxième axe d'une part et le Canada qui exlique le troisième axe. Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires. La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents. Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées. La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique. 
 
-# **Deuxième Partie: Methode de l'ACP**
+# ** Deuxième Partie: Methode de l'ACP **
 
-## **Section 1: Analyse Descriptive**
+## ** Section 1: Analyse Descriptive **
 
-### **Section 1-1: Analyse Univariée
+### ** Section 1-1: Analyse Univariée **
 
 
 ```{r,echo=FALSE}
@@ -473,7 +474,7 @@ ggplot(data_with_passengers, aes(x=type, y=National.income)) +
 ```
 
 
-### **Section 1-2: Analyse bivariée**
+### ** Section 1-2: Analyse bivariée **
 
 ```{r, echo=FALSE}
 install.packages("Factoshiny")
@@ -491,11 +492,11 @@ corrplot::corrplot(R, type = "upper", method = "square")
 ```
 
 
-## **Section 2: Application de l'ACP**
+## ** Section 2: Application de l'ACP **
 
 L'Analyse en Composantes Principales (ACP) est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information. Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
 
-### **Section 2-1: Graphique des individus**
+### ** Section 2-1: Graphique des individus **
 
 
 ```{r,echo=FALSE}
@@ -510,7 +511,7 @@ plot.PCA(res_pca, axes = c(1,2), choix = "ind")
 ```
 
 
-### **Section 2-2: Graphique des variables**
+### ** Section 2-2: Graphique des variables **
 
 
 ```{r, echo=FALSE}
@@ -524,7 +525,8 @@ plot.PCA(res_pca, axes = c(1,2), choix = "var")
 
 
 
-### **Section 2-3: Histogramme des valeurs propres**
+### ** Section 2-3: Histogramme des valeurs propres **
+
 ```{r,echo=FALSE}
 res_pca$eig
 barplot(res_pca$eig[,1])
@@ -537,5 +539,6 @@ barplot(res_pca$eig[,1])
 
 # **Annexe**
 
-# **Source**
 
+# **Source**
+https://www.kaggle.com/datasets/danishjmeo/world-airports-data
