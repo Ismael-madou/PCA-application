@@ -111,6 +111,7 @@ summary(data_for_pca$passengers)
 
 hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
 boxplot(data_for_pca$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
+boxplot(airports$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
 
 library(dplyr)
 data_with_passengers %>%
