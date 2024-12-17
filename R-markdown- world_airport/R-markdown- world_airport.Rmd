@@ -447,21 +447,29 @@ Nous remarquons à ce niveau que l'analyse se focalise sur la Chine qui explique
 
 ## ** Section 1: Analyse Descriptive **
 
+
 ### ** Section 1-1: Analyse Univariée **
+
+Pour l'analyse ACP, nous avons décidé de combiner plusieurs ensembles de données. Le premier est l'ensemble de données « Airports », qui contient des informations sur tous les aéroports du monde. Le second contient des informations sur les codes pays ISO afin d'utiliser cette variable comme clé pour joindre les data sets. Le troisième ensemble de données contient des informations sur le revenu national par habitant de tous les pays. Le quatrième ensemble de données contient des informations sur le trafic annuel de passagers. Cependant, il est important de mentionner que nous n'avons pas pu obtenir de données sur tous les aéroports car nous aurions dû payer. Nous avons donc ajouté des informations sur le trafic provenant de Wikipedia, qui contient des informations sur les 50 principaux aéroports du monde. 
+
+Après avoir combiné et reformaté tous les ensembles de données, nous avons décidé d'effectuer une analyse ACP à partir de ces variables :
+« National.income », “runway_length_ft”, “runway_width_ft”, et “passengers”. En utilisant ces variables, nous voulions explorer la relation entre le revenu national et les infrastructures aéroportuaires. En outre, nous avons essayé de comprendre si les pays les plus riches investissent davantage dans les aéroports et si cela se traduit par un plus grand nombre de passagers.
+
+
+
 
 
 ```{r,echo=FALSE}
 hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
 ```
-
+L'analyse univariée de la variable National Income révèle une distribution fortement asymétrique, avec la majorité des observations concentrées dans les tranches de revenu les plus basses. La raison en est le grand nombre d'aéroports asiatiques présents dans la liste (Chine, Inde, Philippines). Dans ces pays, le revenu national par habitant est faible, ce qui contribue à l'asymétrie du graphique. Une proportion significative du jeu de données se situe entre 20 000 et 60 000, comme le montrent les barres les plus hautes. En revanche, très peu d'observations dépassent la tranche des 80 000, ce qui met en évidence une disparité. Cela suggère que la majorité des entités du jeu de données appartiennent à des pays ou régions ayant des revenus nationaux modestes, tandis qu'une minorité représente des économies à revenu élevé.
 
 
 ```{r}
 boxplot(data_for_pca$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
+boxplot(airports$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
 ```
-
-
-
+La comparaison des longueurs de pistes met en évidence une nette disparité entre les grands aéroports et les petites pistes d’aviation. Les 50 principaux aéroports disposent de pistes nettement plus longues et plus homogènes, avec une médiane autour de 11 000 pieds, reflétant leur capacité à accueillir de grands avions comme les avions gros-porteurs (Boxplot No.1). En revanche, l’ensemble des 75 052 aéroports montre que la plupart des pistes sont beaucoup plus courtes, avec une médiane inférieure à 5 000 pieds, représentant des petits aérodromes régionaux, privés ou ruraux (Boxplot No.2). Cependant, le dataset "Airports" inclut également des valeurs extrêmes, avec des pistes dépassant les 30 000 pieds, correspondant aux grands aéroports internationaux. Dans l’ensemble, la distribution est fortement asymétrique, soulignant la différence entre les petites pistes et quelques grands hubs internationaux.
 
 ```{r}
 library(ggplot2)
@@ -498,7 +506,6 @@ L'Analyse en Composantes Principales (ACP) est une méthode statistique utilisé
 
 ### ** Section 2-1: Graphique des individus **
 
-
 ```{r,echo=FALSE}
 install.packages("FactoMineR")
 library(FactoMineR)
@@ -511,7 +518,8 @@ plot.PCA(res_pca, axes = c(1,2), choix = "ind")
 ```
 
 
-### ** Section 2-2: Graphique des variables **
+### **Section 2-2: Graphique des variables**
+
 
 
 ```{r, echo=FALSE}
@@ -531,7 +539,7 @@ plot.PCA(res_pca, axes = c(1,2), choix = "var")
 res_pca$eig
 barplot(res_pca$eig[,1])
 ```
-
+L'histogramme des valeurs propres montre la contribution des quatre composantes principales (comp 1, comp 2, comp 3 et comp 4) à l’explication de la variance dans le jeu de données. La composante 1 capture la majeure partie de la variance, révélant les principales structures des données (comme le revenu national, le volume de passagers ou les dimensions des pistes). La composante 2 contribue également de manière significative, bien qu’à un degré moindre, en expliquant des variations complémentaires. En revanche, les composantes 3 et 4 ont des contributions nettement plus faibles, indiquant qu’elles expliquent des variations mineures. Cela suggère que les deux premières composantes suffisent pour représenter la majorité des informations du jeu de données tout en simplifiant l’analyse et la visualisation.
 
 
 # ** Conclusion **
@@ -541,4 +549,5 @@ barplot(res_pca$eig[,1])
 
 
 # **Source**
+
 https://www.kaggle.com/datasets/danishjmeo/world-airports-data
