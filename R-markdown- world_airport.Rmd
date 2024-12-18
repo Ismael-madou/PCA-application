@@ -60,6 +60,7 @@ Le choix des pays dans le developpemt des infrastructures aeroportuaires depend 
 
 
 # **Section 2: L'impact des revenus nationaux sur les infrastructures aeroportuaires**
+
   L'Analyse en Composantes Principales (ACP) est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information. Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
 Pour cette étude, nous avons combiné plusieurs ensembles de données :
 
@@ -99,10 +100,9 @@ L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exp
 La première partie de notre methode AFC concerne l'analyse descriptive. cette analyse descriptive va nous permettre de résumer de façon simple et concise l'ensemble des
 données. 
 
-```{r, echo = FALSE}
+```{r,echo=FALSE}
 # Chargement des données
 data <- read.csv("data/World_Airports.csv", sep = ";")
-
 ```
 
 
@@ -226,7 +226,6 @@ corrplot(matrice_corr, method = "color", type = "full",
          col = colorRampPalette(c("white", "blue"))(200),
          title = "Matrice de Corrélation entre les Types d'Aéroports",
          addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
-  graphique
 ```
 On constate une forte correlation entre les grands, les petits et les moyens aeroports. Cependant, les grands aeroports ne sont pas trop correlés avec les seaplane_airports, les ballonports, les heliports et les aeroports fermés qui sont trés corrélés entre eux. cette analyse de la matrice de correlation nous indique qu'il est possible de creer de groupe en fonction de la correlation entre les types d'aeroports. 
 
@@ -454,7 +453,7 @@ barplot(res_pca$eig[,1])
 ```
 
   L'histogramme des valeurs propres montre la contribution des quatre composantes principales (comp 1, comp 2, comp 3 et comp 4) à l’explication de la variance dans le jeu de données. La composante 1 capture la majeure partie de la variance, révélant les principales structures des données (comme le revenu national, le volume de passagers ou les dimensions des pistes). La composante 2 contribue également de manière significative, bien qu’à un degré moindre, en expliquant des variations complémentaires. En revanche, les composantes 3 et 4 ont des contributions nettement plus faibles, indiquant qu’elles expliquent des variations mineures. Cela suggère que les deux premières composantes suffisent pour représenter la majorité des informations du jeu de données tout en simplifiant l’analyse et la visualisation.
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
+
 
 
 # **Source**
