@@ -55,28 +55,8 @@ Les aéroports jouent un rôle central dans le transport aérien mondial, facili
 Le choix des pays dans le developpemt des infrastructures aeroportuaires depend de plusieurs facteurs qui peuvent etre liés à l'economie, la politique, la geopolitique mais aussi pour des raisons purement sociaux. 
   Les pays développés ou à revenu élevé investissent généralement massivement dans leurs infrastructures aéroportuaires en raison de leur forte demande de transport aérien et de leur rôle central dans le commerce mondial. Par exemple, des pays comme la Chine, d'après les resultats de nos analyses, possède un grand nombre des moyens aéroports mais aussi des grands aéroports(moins importants que les moyens) pour répondre à ses besoins internes et internationaux en matière de transport, stimulés par sa taille, sa population, son développement économique, ses ambitions commerciales et ses politiques de décentralisation. Ces facteurs se combinent pour expliquer pourquoi la Chine est dotée de nombreux aéroports, tant pour les passagers que pour le fret aérien.
   Les choix des pays comme le Canada sont liés aux raisons géographiques. Ces infrastructures sont essentielles pour relier les régions éloignées et faciliter les déplacements internes.Le nombre important d'aéroports fermés et l'utilisation des hydravions au Canada peuvent être attribués à la géographie vaste et diversifiée du pays, à son climat rigoureux, à la dispersion de sa population dans des zones isolées, et à des considérations économiques et pratiques. Les hydravions offrent une solution flexible et pratique pour desservir des régions qui seraient autrement difficiles d'accès par des infrastructures aéroportuaires traditionnelles. Les aéroports fermés, quant à eux, reflètent la baisse de la demande pour des installations dans des zones peu peuplées et éloignées. C'est l'exemple de la Russie ou l'Australie qui dans notre n'avaient pas pesé soit à cause de la non prise en compte d'un grand nombre de leurs aeroports soit à leurs faibles proportions comparées à celle du Canada.
-  Nous avons egalement des pays qui ont developpé un grand nombre d'heliports et des petits aeroports en l'occurence le Japon et la Coree du Sud.ces infrastructures sont également principalement développées pour des raisons civiles et économiques, mais il y a aussi des considérations militaires indirectes.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  Nous avons egalement des pays qui ont developpé un grand nombre d'heliports et des petits aeroports en l'occurence le Japon et la Coree du Sud.ces infrastructures sont également principalement développées pour des raisons civiles et économiques, mais il y a aussi des considérations militaires indirectes.Le Japon et la Corée du Sud ont des zones urbaines très densément peuplées, notamment à Tokyo, Osaka, et Séoul, et l'espace pour construire des aéroports traditionnels est très limité. De plus, leurs terrains sont souvent montagneux, ce qui complique davantage l’expansion des grandes infrastructures. Les héliports et les petits aéroports permettent de relier rapidement des zones urbaines ou des régions difficiles d’accès sans nécessiter de vastes espaces.En raison de la vulnérabilité du Japon aux catastrophes naturelles (comme les tsunamis et les séismes), les héliports sont une infrastructure stratégique pour les secours en cas de catastrophes, facilitant l'acheminement rapide de secours, de nourriture et de fournitures.
+ En fin, nous avons les Etats unis qui presentent toutes les caracteristiques presentées. Dans ce pays, le developpement de tous les types d'aeroports sont entrepris pour des raisons économiques(la plus grande economique en terme de PIB), militaires(la plus grande puuissance militaire) mais egalement pour des raisons sociaux(comme la lutte contre le feu de brousse, tsunami...)
 
 
 # **Section 2: L'impact des revenus nationaux sur les infrastructures aeroportuaires**
@@ -87,20 +67,10 @@ Le choix des pays dans le developpemt des infrastructures aeroportuaires depend 
 
 
 
-
-
-
-
-
-
-
-
-
-
  
 # ** Conclusion **
 
-
+En resumé, nous pouvons noter que le choix du developpement se base sur les questions politiques du pays pour repondre plus au besoin que presentent les pays. Ce choix est une combinaison de plusieurs facteurs économiques, politiques et sociaux.
 
 
 # **Annexe**
@@ -255,7 +225,8 @@ corrplot(matrice_corr, method = "color", type = "full",
   graphique
 ```
 On constate une forte correlation entre les grands, les petits et les moyens aeroports. Cependant, les grands aeroports ne sont pas trop correlés avec les seaplane_airports, les ballonports, les heliports et les aeroports fermés qui sont trés corrélés entre eux. cette analyse de la matrice de correlation nous indique qu'il est possible de creer de groupe en fonction de la correlation entre les types d'aeroports. 
-```{r}
+
+```{r,echo=FALSE}
 # Tableau de contingence (tableau croisé)
 tableau_croise <- table(data$type, data$iso_country)
 
@@ -266,7 +237,7 @@ chi2_test
 
 Etant donné que la p-value est inferieure à 0.05, nous rejetons l'hypothése nulle. Cela signifie qu'il existe une relation significative entre les deux variables qualitatives que nous allons tester.
 
-```{r}
+```{r,echo=FALSE}
 # Test exact de Fisher avec approximation via Monte Carlo
 fisher_test_approx <- fisher.test(tableau_croise, simulate.p.value = TRUE, B = 10000)
 fisher_test_approx
@@ -274,7 +245,7 @@ fisher_test_approx
 
 Cela signifie que le test de Fisher teste une association bilatérale, c'est-à-dire qu'il teste si les deux variables sont significativement liées dans n'importe quelle direction, sans spécifier a priori une direction particulière pour l'association.
 
-```{r}
+```{r,echo=FALSE}
 # Charger le package vcd
 library(vcd)
 # Calcul de Cramér's V
@@ -410,84 +381,24 @@ Le troisième axe oppose les autres types d'aeroports aux hydravions(seaplane_ba
 # projection des nuages des profils lignes sur le plan principal
 plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
 ```
-<<<<<<< HEAD
 Nous remarquons à ce niveau que l'analyse se focalise sur le deuxième et troisième axe. Nous notons que la Chine explique en grande partie le deuxième axe d'une part et le Canada qui contribue fortement dans l'explication du troisième axe. Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires. La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents. Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées. La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique. 
-=======
 
-Nous remarquons à ce niveau que l'analyse se focalise sur la Chine qui explique le deuxième axe d'une part et le Canada qui exlique le troisième axe. Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires. La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents. Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées. La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique. 
 
-# ** Deuxième Partie: Methode de l'ACP **
 
-L'Analyse en Composantes Principales (l'ACP) est une méthode statistique utilisée pour réduire la dimensionnalité des données tout en préservant l’information essentielle. Elle est particulièrement utile dans des contextes de données multidimensionnelles, difficiles à analyser ou à visualiser.
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
-
-## **Les données utilisées **
-
-<<<<<<< HEAD
-
-L'Analyse en Composantes Principales (ACP) est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information. Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
+La deuxième partie concerne l'analyse en Composantes Principales (ACP) qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information. Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
 
 ```{r,echo=FALSE}
 hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
 ```
 `
 ``{r}
-=======
-Pour cette étude, nous avons combiné plusieurs ensembles de données :
-
-- "Airports" – informations sur plus de 75 000 aéroports à l'échelle mondiale.
-- "Iso_table" - Codes ISO des pays – utilisés comme clé pour fusionner les données avec left_join.
-- "Income_table" - Revenu national par habitant – pour évaluer la richesse économique des pays.
-- "Passagers" – données spécifiques aux 50 principaux aéroports extraites de Wikipedia, en raison de limitations d’accès aux données complètes.
-
-Après avoir combiné et reformaté tous les ensembles de données, nous avons décidé d'effectuer une analyse ACP à partir de ces variables :
-« National.income », “runway_length_ft”, “runway_width_ft”, et “passengers”. En utilisant ces variables, nous avons cherché à explorer les relations entre ces variables afin de déterminer si les pays les plus riches investissent davantage dans leurs aéroports et si cela se traduit par un trafic plus grand.
-
-## **Analyse des résultats**  
-
-L’ACP révèle que les deux premières composantes principales expliquent 69,08% de la variance totale, ce qui permet de capturer efficacement les principales tendances des données.  
-
-### Distribution des longueurs de piste  
-
-En utilisant l'analyse univarié, l’analyse visuelle met en évidence une différence marquée entre les 50 top aéroports et l’ensemble des 75 000 aéroports mondiaux. Les grandes infrastructures, notamment des pistes plus longues, sont concentrées dans les principaux aéroports, tandis que la majorité des aéroports mondiaux présentent des pistes plus courtes et homogènes. Cela signifie que les top aéroports ont des pistes plus longues, ce qui indique plusieurs observations possibles : leurs pistes sont conçues pour les avions transcontinentaux qui ont besoin de pistes plus longues pour décoller et atterrir ; ils investissent davantage dans l'infrastructure pour construire des « hubs » pour toutes sortes de vols. 
-
-### Revenu national et trafic passagers  
-
-Les graphiques des variables et des individus confirment une corrélation positive entre le revenu national et le nombre de passagers. Les pays les plus riches développent généralement de grandes infrastructures aéroportuaires pour répondre à une demande accrue en transport aérien. Toutefois, des exceptions notables apparaissent :  
-- Certains pays à revenu limité enregistrent un trafic élevé, souvent grâce à leur rôle de hubs régionaux ou à leur dépendance au tourisme.  
-- À l’inverse, des pays avec des infrastructures avancées présentent un trafic faible, suggérant des inefficacités ou une demande insuffisante. 
-
-**Important de noter** : pour une analyse plus approfondie, nous avons besoin de données sur un plus grand nombre d'aéroports, et pas seulement sur les plus importants. Cette analyse pourra donc être améliorée à l'avenir. 
-
-### Corrélation entre variables  
-La matrice de corrélation met en évidence des relations importantes :  
-- Le revenu national et le nombre de passagers sont fortement corrélés, traduisant leur interdépendance.  
-- Les dimensions des pistes (longueur et largeur) sont étroitement liées entre elles, mais elles n’entretiennent pas de relation significative avec le revenu national ou le trafic passagers. Cela montre que l’investissement dans les infrastructures ne garantit pas automatiquement une augmentation du trafic aérien. D'ailleurs, cela montre que plus la piste est longue, plus elle doit être large, ce qui est logique et peut être prouvé par cette analyse. 
-
-## Interprétation globale  
-
-Les résultats de l’ACP soulignent une relation nuancée entre la richesse, les infrastructures et le transport aérien. Bien que les pays les plus riches investissent généralement dans des infrastructures aéroportuaires et connaissent des volumes de trafic plus élevés, les écarts par rapport à ce schéma, comme la présence d’observations atypiques, suggèrent l’influence d’autres facteurs. La localisation géographique, les politiques publiques, la connectivité aérienne ou la dépendance au tourisme pourraient tous contribuer à ces variations. Une étude approfondie de ces anomalies permettrait de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les mouvements de passagers.
-
-## Perspectives futures  
-Pour aller plus loin, une analyse approfondie des outliers et des facteurs externes s’avère nécessaire. De plus, l’utilisation d’un ensemble de données plus complet, incluant un plus grand nombre d’aéroports, permettrait de confirmer ces observations et d’affiner les conclusions de cette étude.
-
-# **Annexe**
-```{r,echo=FALSE}
-hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
-```
-L'analyse univariée de la variable National Income révèle une distribution fortement asymétrique, avec la majorité des observations concentrées dans les tranches de revenu les plus basses. La raison en est le grand nombre d'aéroports asiatiques présents dans la liste (Chine, Inde, Philippines). Dans ces pays, le revenu national par habitant est faible, ce qui contribue à l'asymétrie du graphique. Une proportion significative du jeu de données se situe entre 20 000 et 60 000, comme le montrent les barres les plus hautes. En revanche, très peu d'observations dépassent la tranche des 80 000, ce qui met en évidence une disparité. Cela suggère que la majorité des entités du jeu de données appartiennent à des pays ou régions ayant des revenus nationaux modestes, tandis qu'une minorité représente des économies à revenu élevé.
-
-```{r}
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
 boxplot(data_for_pca$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
 ```
 
 ```{r}
 boxplot(airports$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
 ```
-La comparaison des longueurs de pistes met en évidence une nette disparité entre les grands aéroports et les petites pistes d’aviation. Les 50 principaux aéroports disposent de pistes nettement plus longues et plus homogènes, avec une médiane autour de 11 000 pieds, reflétant leur capacité à accueillir de grands avions comme les avions gros-porteurs (. En revanche, l’ensemble des 75 052 aéroports montre que la plupart des pistes sont beaucoup plus courtes, avec une médiane inférieure à 5 000 pieds, représentant des petits aérodromes régionaux, privés ou ruraux. Cependant, ce dataset inclut également des valeurs extrêmes, avec des pistes dépassant les 30 000 pieds, correspondant aux grands aéroports internationaux. Dans l’ensemble, la distribution est fortement asymétrique, soulignant la différence entre les petites pistes et quelques grands hubs internationaux.
 
-<<<<<<< HEAD
 ```{r}
 library(ggplot2)
 ggplot(data_with_passengers, aes(x=type, y=National.income)) +
@@ -498,8 +409,6 @@ ggplot(data_with_passengers, aes(x=type, y=National.income)) +
 
 ```
 
-=======
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
 ```{r, echo=FALSE}
 install.packages("Factoshiny")
 install.packages("FactoInvestigate")
@@ -514,10 +423,6 @@ R <- cor(pca_data_scaled) #matrice des correlation
 corrplot::corrplot(R, type = "upper", method = "square")
 
 ```
-<<<<<<< HEAD
-=======
-La matrice de corrélation montre une relation positive forte entre le revenu national et le nombre de passagers, ce qui suggère que les aéroports avec un trafic de passagers plus élevé génèrent davantage de revenus. La longueur des pistes et la largeur des pistes sont fortement corrélées entre elles, mais n’ont que peu ou pas de relation avec le revenu national ou le trafic de passagers. Cela indique que, bien que les dimensions des pistes soient liées entre elles, elles n’influencent pas directement les revenus ou le flux de passagers. Globalement, le nombre de passagers semble être le principal moteur du revenu national pour les aéroports.
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
 
 ```{r,echo=FALSE}
 install.packages("FactoMineR")
@@ -530,11 +435,6 @@ res_pca <- PCA(X = pca_data_scaled,
 plot.PCA(res_pca, axes = c(1,2), choix = "ind")
 
 ```
-<<<<<<< HEAD
-=======
-Le graphique des individus illustre la répartition des observations en fonction de ces composantes principales. Les points situés dans le quadrant supérieur droit, comme 27 (Emirats Arabes Unis) et 38 (Singapour), représentent des nations riches avec des infrastructures avancées et un trafic passagers élevé, reflétant la corrélation positive entre ces variables. En revanche, des observations comme 6 et 18, situées dans le quadrant supérieur gauche, correspondent aux États Unis ayant un revenu modéré mais des infrastructures aéroportuaires atypiques qui s’écartent de la tendance générale. De manière similaire, des points comme 43 (La Chine) et 32 (Brésil) dans le quadrant inférieur droit représentent les pays avec des infrastructures importantes mais des volumes de passagers faibles.
-
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
 
 ```{r, echo=FALSE}
 install.packages("FactoMineR")
@@ -544,20 +444,12 @@ res_pca <- PCA(X = pca_data_scaled,
                graph = FALSE)
 plot.PCA(res_pca, axes = c(1,2), choix = "var")
 ```
-<<<<<<< HEAD
-=======
-L’alignement de “National.income” avec passengers sur Dim 1 met en évidence une forte corrélation positive entre la richesse d’un pays et la demande de transport aérien. En revanche, les vecteurs représentant la longueur et la largeur des pistes sont étroitement groupés et orientés principalement sur Dim 2, ce qui suggère que les caractéristiques physiques des infrastructures sont interdépendantes mais influencées par des facteurs ne dépendant pas uniquement du revenu national. Cette séparation entre le trafic passagers lié au revenu et les caractéristiques physiques des infrastructures implique que, bien que les pays riches investissent généralement dans des aéroports plus grands et mieux équipés, l’expansion des infrastructures n’est pas toujours proportionnelle aux niveaux de revenu.
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
 
 ```{r,echo=FALSE}
 res_pca$eig
 barplot(res_pca$eig[,1])
 ```
-<<<<<<< HEAD
 
-=======
-L'histogramme des valeurs propres montre la contribution des quatre composantes principales (comp 1, comp 2, comp 3 et comp 4) à l’explication de la variance dans le jeu de données. La composante 1 capture la majeure partie de la variance, révélant les principales structures des données (comme le revenu national, le volume de passagers ou les dimensions des pistes). La composante 2 contribue également de manière significative, bien qu’à un degré moindre, en expliquant des variations complémentaires. En revanche, les composantes 3 et 4 ont des contributions nettement plus faibles, indiquant qu’elles expliquent des variations mineures. Cela suggère que les deux premières composantes suffisent pour représenter la majorité des informations du jeu de données tout en simplifiant l’analyse et la visualisation.
->>>>>>> 791af148a542d984f69b5ec7887ad6dd8822b17f
 
 # **Source**
 
