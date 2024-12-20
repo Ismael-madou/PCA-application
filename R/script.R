@@ -91,9 +91,36 @@ tableau_contingence <- donnee_temporaire %>%
   count(type, iso_country) %>%
   spread(key = type, value = n, fill = 0)
 
+# Calculer le nombre d'aéroports par pays
+aeroports_par_pays <- donnee_temporaire %>%
+  count(iso_country) %>%
+  rename(nombre_aeroports = n)
+
+# Décider d'un seuil basé sur la distribution (par exemple, utiliser le quantile)
+seuil <- 200 # Utiliser le 10ème percentile
+
+# Créer une nouvelle colonne qui regroupe les pays avec moins que le seuil en "Autres"
+aeroports_par_pays_regroupe <- aeroports_par_pays %>%
+  mutate(iso_country_regroupe = ifelse(nombre_aeroports < seuil, "Autres", iso_country))
+
+# Compter le nombre de pays avec moins de 200 aéroports
+nombre_pays_faible_aeroports <- aeroports_par_pays %>%
+  filter(nombre_aeroports < seuil) %>%
+  count()
+
+# Afficher la distribution après regroupement
+table(aeroports_par_pays_regroupe$iso_country_regroupe)
+
+# Recréer la table de contingence avec les pays regroupés
+tableau_contingence_regroupe <- donnee_temporaire %>%
+  mutate(iso_country_regroupe = ifelse(iso_country %in% aeroports_par_pays_regroupe$iso_country[aeroports_par_pays_regroupe$nombre_aeroports < seuil], 
+                                       "Autres", iso_country)) %>%
+  count(iso_country_regroupe, type) %>%
+  spread(key = type, value = n, fill = 0)
+
 # Calcul de la matrice de corrélation entre les colonnes (types d'aéroports)
 # Nous excluons la colonne iso_country
-matrice_corr <- cor(tableau_contingence[, -1], method = "pearson")
+matrice_corr <- cor(tableau_contingence_regroupe[, -1], method = "pearson")
 
 # Affichage de la matrice de corrélation avec corrplot
 corrplot(matrice_corr, method = "color", type = "full", 
@@ -102,17 +129,17 @@ corrplot(matrice_corr, method = "color", type = "full",
          addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
  
 # Vérifier s'il y a des valeurs manquantes dans la colonne iso_country
-if(any(is.na(tableau_contingence$iso_country))) {
+if(any(is.na(tableau_contingence_regroupe$iso_country_regroupe))) {
   # Si oui, nous les supprimons (ou vous pouvez les gérer différemment)
-  tableau_contingence <- tableau_contingence %>% filter(!is.na(iso_country))
+  tableau_contingence_regroupe <- tableau_contingence_regroupe %>% filter(!is.na(iso_country_regroupe))
 }
 
 # Supprimer la colonne iso_country et mettre iso_country comme rownames
-tableau_contingence_no_iso <- tableau_contingence %>%
-  select(-iso_country)
+tableau_contingence_no_iso <- tableau_contingence_regroupe%>%
+  select(-iso_country_regroupe)
 
 # Ajouter les iso_country comme rownames
-rownames(tableau_contingence_no_iso) <- tableau_contingence$iso_country
+rownames(tableau_contingence_no_iso) <- tableau_contingence_regroupe$iso_country_regroupe
 
 #calcul des profils lignes 
 PL <- prop.table(as.matrix(tableau_contingence_no_iso, margin=1))
@@ -129,7 +156,7 @@ PC <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 2)
 
 #representation des profils colonnes 
 barplot(height = PC, beside = FALSE, legend.text = rownames(PC))
----------------------------------------Impossible-------------------------------------
+
 #test d'independence du Khi deux
 chisq.test(tableau_contingence_no_iso)-> res_chisq
 res_chisq$statistic
@@ -140,9 +167,10 @@ res_chisq$statistic
 res_chisq$statistic/sum(children) + 1
 #l'impossibilité du calcul du test d'independance rend aussi impossible le calcul
 # de l'inertie puisqu'elle est dependante du test d'independance.
--------------------------------------------------------------------------------------
+
 #recherche des valeurs propres
-library("FactoMineR")
+install.packages("FactoMineR")
+library(FactoMineR)
 res_afc <- CA(X = tableau_contingence_no_iso, ncp = 7,
    graph = FALSE)
 res_afc

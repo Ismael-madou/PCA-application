@@ -330,8 +330,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(corrplot)
-install.packages("urcadown")
-library(urcadown)
+
 library(FactoMineR)
 
 # Création du tableau de contingence
