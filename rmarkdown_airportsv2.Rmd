@@ -52,23 +52,18 @@ Cela nous permettra de comprendre si les pays les plus riches investissent davan
 
 # **Section 1: les choix des pays dans le developpement des infrastructures**
 
-  Le choix des pays dans le developpemt des infrastructures aeroportuaires depend de plusieurs facteurs qui peuvent etre liés à l'economie, la politique, la geopolitique mais aussi pour des raisons purement sociaux.
+  A ce niveau, nous avons rassemblé les pays qui ont un nombre d'aéroports inferieur à 2OO dans une classe appélée "autres". Ce qui nous donne dans  ce cas 38 pays au lieu de 245. Ceci a été fait suite à la remarque apportée par Mr Regnault qui stipule que l'AFC a tendance à biaiser les resultats en donnant un poids plus important aux pays qui ont un nombre faible d'aéroports.
+
+  Le choix des pays dans le developpemt des infrastructures aéroportuaires depend de plusieurs facteurs qui peuvent etre liés à l'economie, la politique, la géopolitique mais aussi pour des raisons purement sociaux.
 Les pays développés ou à revenu élevé investissent généralement massivement dans leurs infrastructures aéroportuaires en raison de leur forte demande de transport aérien et de leur rôle central dans le commerce mondial.
 
-  Par exemple, des pays comme la Chine, d'après les resultats de nos analyses, possède un grand nombre des moyens aéroports mais aussi des grands aéroports (moins importants que les moyens) pour répondre à ses besoins internes et internationaux en matière de transport, stimulés par sa taille, sa population, son développement économique, ses ambitions commerciales et ses politiques de décentralisation.
-Ces facteurs se combinent pour expliquer pourquoi la Chine est dotée de nombreux aéroports, tant pour les passagers que pour le fret aérien.
+  Par exemple, des pays comme la Chine et les Etats Unis, d'après les resultats de nos analyses, possèdent un grand nombre des moyens aéroports en raison de plusieurs facteurs. Leur vaste taille géographique et leur population importante créent une forte demande pour un réseau aérien étendu. Les États-Unis, avec une économie développée et une politique de décentralisation, ont de nombreux aéroports régionaux pour desservir des villes moyennes et petites. En Chine, l'urbanisation rapide et la croissance économique ont conduit à la construction d'aéroports dans des régions moins accessibles. Ces deux pays investissent massivement dans les infrastructures pour connecter efficacement leurs vastes territoires. Le tourisme international et les échanges commerciaux renforcent également la nécessité de ces aéroports. Les États-Unis et la Chine, grâce à leur réseau aérien dense, facilitent les déplacements internes et internationaux. Le développement rapide de la Chine dans les dernières décennies a particulièrement accentué cette dynamique.
 
-  Les choix des pays comme le Canada sont liés aux raisons géographiques. Ces infrastructures sont essentielles pour relier les régions éloignées et faciliter les déplacements internes.Le nombre important d'aéroports fermés et l'utilisation des hydravions au Canada peuvent être attribués à la géographie vaste et diversifiée du pays, à son climat rigoureux, à la dispersion de sa population dans des zones isolées, et à des considérations économiques et pratiques.
+  Le nombre élevé d'héliports en Corée du Sud et au Japon s'explique par plusieurs facteurs. Ces pays, très urbanisés, ont une forte densité de population dans leurs grandes villes comme Tokyo et Séoul, où l'espace est limité. L’hélicoptère permet d’offrir une solution de transport rapide et flexible, surtout dans des zones difficiles d'accès. La géographie particulière, notamment les montagnes et les îles du Japon, rend l'utilisation des infrastructures terrestres coûteuse et complexe. Les héliports facilitent également l'accès aux zones rurales ou isolées. De plus, ces pays sont souvent confrontés à des catastrophes naturelles, ce qui rend les hélicoptères essentiels pour les opérations de secours d'urgence. Le Japon et la Corée du Sud ont aussi investi dans des technologies de pointe pour rendre ces infrastructures plus sûres et efficaces. Les héliports sont utilisés à la fois pour des fins commerciales, médicales et militaires. Enfin, la forte demande de services aériens dans des environnements urbains denses renforce leur présence.
   
-  Les hydravions offrent une solution flexible et pratique pour desservir des régions qui seraient autrement difficiles d'accès par des infrastructures aéroportuaires traditionnelles.
-Les aéroports fermés, quant à eux, reflètent la baisse de la demande pour des installations dans des zones peu peuplées et éloignées.
+  Le nombre élevé d'aéroports fermés et d'hydravions au Canada et au Brésil s'explique par des facteurs géographiques et logistiques. Ces deux pays sont vastes, avec de nombreuses régions isolées difficiles d'accès par route. En raison de la faible densité de population et des coûts élevés pour maintenir des infrastructures aériennes dans certaines zones, de nombreux petits aéroports ont été fermés. Les hydravions, en revanche, représentent une solution pratique et économique pour atteindre ces zones reculées, notamment dans les régions montagneuses du Canada et l'Amazonie au Brésil. Ces aéronefs sont adaptés aux conditions géographiques spécifiques, comme les lacs et rivières, et permettent de desservir efficacement les communautés isolées. De plus, au Canada, les hydravions sont couramment utilisés pour des services de transport et d'urgence dans des régions difficiles d'accès. Ainsi, les aéroports fermés sont remplacés par ces solutions aériennes plus flexibles et adaptées.
 
-  C'est l'exemple de la Russie ou l'Australie qui dans notre n'avaient pas pesé soit à cause de la non prise en compte d'un grand nombre de leurs aeroports soit à leurs faibles proportions comparées à celle du Canada.
-Nous avons egalement des pays qui ont developpé un grand nombre d'heliports et des petits aeroports en l'occurence le Japon et la Coree du Sud.ces infrastructures sont également principalement développées pour des raisons civiles et économiques, mais il y a aussi des considérations militaires indirectes. Le Japon et la Corée du Sud ont des zones urbaines très densément peuplées, notamment à Tokyo, Osaka, et Séoul, et l'espace pour construire des aéroports traditionnels est très limité. De plus, leurs terrains sont souvent montagneux, ce qui complique davantage l’expansion des grandes infrastructures.
-
-  Les héliports et les petits aéroports permettent de relier rapidement des zones urbaines ou des régions difficiles d’accès sans nécessiter de vastes espaces. En raison de la vulnérabilité du Japon aux catastrophes naturelles (comme les tsunamis et les séismes), les héliports sont une infrastructure stratégique pour les secours en cas de catastrophes, facilitant l'acheminement rapide de secours, de nourriture et de fournitures.
-En fin, nous avons les Etats unis qui presentent toutes les caracteristiques presentées.
-Dans ce pays, le developpement de tous les types d'aeroports sont entrepris pour des raisons économiques (la plus grande economique en terme de PIB), militaires(la plus grande puuissance militaire) mais egalement pour des raisons sociaux(comme la lutte contre le feu de brousse, tsunami...)
+ De plus, nous avons remarqué que Les États possèdent des proportions similaires de différents types d'aéroports en raison de la diversité de leurs besoins en transport. Les grands aéroports desservent les voyages internationaux, tandis que les moyens et petits aéroports répondent aux déplacements domestiques ou régionaux. De plus, des pays vastes et géographiquement variés, comme les États-Unis ou la Chine, nécessitent une combinaison d'aéroports pour connecter efficacement leurs zones urbaines, rurales et isolées. Cette diversité permet également de répondre à des besoins spécifiques, comme les transports d'urgence ou l'accès à des zones éloignées, assurant une couverture complète et flexible du réseau aérien.
 
 # **Section 2: L'impact des revenus nationaux sur les infrastructures aeroportuaires**
 
@@ -172,7 +167,7 @@ barplot(frequence_type,
 ```
 
   Ce graphique nous renseigne sur la frequence des differents types d'aeroports.
-les Small_airport sont plus nombreux et represente la plus grande partie de notre base de données.Ensuite, viennent les heliports avec une proportion moins importante.
+les petits aeroports sont plus nombreux et represente la plus grande partie de notre base de données.Ensuite, viennent les heliports avec une proportion moins importante. Après suit les moyens aeroports et enfin nous avons les autres types d'aeroports qui ont une faible proportion.
 
 ```{r, echo = FALSE, eval = TRUE}
 # Diagramme en barres pour 'iso_country' (pays)
@@ -184,8 +179,7 @@ barplot(frequence_iso_country,
 
 ```
 
-  A ce niveau, on constate que les aerports americains apparaissent trop souvent avec plus de 25OOO aeroports.
-Par contre, les autres pays ont une frequence comprise entre 0 et 5000.
+  A ce niveau, on constate que les aerports americains apparaissent trop souvent avec plus de 25OOO aeroports. C'est-à-dire que les Etats Unis ont  un nombre important des aéroports comparé aux autres pays qui ont unnombre compris entre 0 et 5000.
 
 ```{r setupcolours, eval = TRUE, echo = FALSE}
 urcalightbrown <- "#D1AD55"
@@ -319,10 +313,6 @@ assoc_result
   Nous constatons encore une p-value faible, ce qui signifie qu'il existe une forte correlation entre les deux variables qualitatives.
 De plus, les variables "contigency coeff" et "Cramer's V" indiquent une association moderée.
 
-```{r, include=FALSE}
-tableau_contingence_no_iso <- tableau_contingence_regroupe %>%
-  select(-iso_country_regroupe)
-```
 
 ```{r,echo=FALSE}
 # Test du Khi-deux pour l'indépendance
@@ -358,18 +348,25 @@ apply(PL, 1, sum)
 
 # Tracer le barplot avec réduction de la taille des noms des pays
 barplot(height = t(PL), beside = FALSE, 
-        legend.text = colnames(PL), 
+       legend.text = colnames(PL),
         names.arg = rownames(PL),    # Utiliser les rownames pour les noms des pays
         las = 2,                    # Faire pivoter les étiquettes si elles sont trop longues
         col = rainbow(ncol(PL)),    # Exemple de coloration des barres
         cex.names = 0.6)            # Réduire la taille des noms des pays
 ```
 
-  A ce niveau, nous avons un graphique qui indique la repartition des pays en fonction des types d'aeroports.
-Cependant, il est difficile pour nous d'analyser ce graphique en raison du nombre élèvé des pays.
-Notons qu'il y'a une forte apparition des small_airports vers le haut et une forte occurence des ballonporte et closed vers le bas.
-une autre solution est de regrouper les pays qui ont des similarités pour les reduire et effectuer des bonnes analyses.
 
+
+  A ce niveau, nous avons un graphique qui indique la repartition des types d'aeroports pour chaque pays.
+  Pour les petits aéroports, nous avons en première position le Kenya ensuite la Tanzanie, puis la Bolivie et l'Afrique du Sud. Globalement, on remarque que les petits aéroports sont plus nombreux que les autres types d'aéroports.
+  pour les hydravions, nous n'avons beaucoup. Cependant, nous constatons que le Canada semble developper ce type d'aéroports que n'importe autre pays.
+  Concernant, les moyens aéroports , nous pouvons enumerer la Chine qui presente le plus grand nombre de ce type d'aeroports parmi tous les pays.
+  De plus, le Japon, la Turquie, la Coree du Sud et les Emirats Arabes Unis ont plus tendance à developper les héliports. 
+  Les grands aéroports sont construits dans des regions comme la Chine, la Norvége, Turquie
+  En fin, nous constatons des pays comme l'Ukraine, la Grande Bretagne,le Canada et les Etats Unis qui ont fermé beaucoup d'aéropots notamment en raison de plusieurs facteurs.
+  Cependant, nous ne pouvons rien dire concernant les ports de Ballon.
+  
+  
 ```{r}
 #calcul des profils colonnes
 PC <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 2)
@@ -441,14 +438,14 @@ plot.CA(x = res_afc, choix = "CA", axes = c(1,2), cex = 0.5)
 ```
 
   A ce niveau, nous nous focaliserons sur les deux premiers axes pour analyser les données.
-les deux dimensions expliquent 69% de l'information(variance exliqueé).
+les deux dimensions expliquent 74,19% de l'information(variance exliqueé).
 
   Les types d'aeroports qui sont bien representés sont les héliports(heliport) et les petits aéroports(small_airport) sur le premier axe.En plus, l'heliport contribue en grande partie à la construction du premier axe sans oublier la contribution du small airoport.
-Ce premier axe oppose les heliports aux small_airports. Sur cet axe, les pays comme le Japon et la corée du Sud sont bien representés et contribuent en grande partie à la construction du premier axe.
+Ce premier axe oppose les heliports aux small_airports. Sur cet axe, les pays comme le Japon et Corée du Sud sont bien representés et contribuent en grande partie à la construction du premier axe.
 
-  Sur le second axe,on a une opposition entre les petits aeroports, les heliports d'une part et les moyens aéroports, les grands aéroports d'autre part.
-ces deux derniers contribuent à la construction du deuxieme axe meme si les grands aeroports n'ont pas un poids important dans la construction du deuxième axe.
-sur cet axe, la chine est bien representée et contribue à la construction du second axe.
+  Sur le second axe,on a une opposition entre les hydravions d'une part et les autres types d'aéroports d'autre part.
+  Les hydravions et les aéroports fermés contribuent  en grande partie à la construction du deuxieme axe et ils ont très bien representés sur cet axe.
+sur cet axe, Le Canada et le Bresil  sont bien representés et contribuent enormement à la construction du second axe. Ce qui signifie que ces deux pays ont plus de hydravions et des aéroports fermés.
 
 ```{r,echo=FALSE}
 # projection des nuages des profils lignes sur le plan principal
@@ -458,10 +455,10 @@ plot.CA(x = res_afc, choix = "CA", axes = c(1,3), cex = 0.5)
   Nous nous'attarderons sur les dimensions 1 et 3 pour effectuer notre analyse.
 Nous pouvons alors comprendre l'évolution de nos données avec une vision panoramique et differente à la precedente.En effet, d'autres variables qui n'ont pas eu d'effets sur les autres dimensions peuvent s'averer importantes.
 
-  Le troisième axe oppose les autres types d'aeroports aux hydravions(seaplane_base) et aux aéroports fermés(closed).
-Ces aéroports sont bien representés et contribuent enormement à la construction du troisième axe.
-Le Canada contribue en grande partie à la construction de cet axe.
-Par consequent, nous pouvons conclure que le Canada a un nombre important des hydravions et des fermés.
+Le troisième axe oppose les grands, moyens aéroports aux autres types d'aéroports. 
+A ce stade, les moyens aéroports sont très bien representés et contribuent enormement à la construction du troisième axe.
+La chine, les Etats Unis et les pays classés dans le groupe des "autres" contribuent en grande partie à la construction de cet axe.
+Par consequent, nous pouvons conclure que la Chine et les Etats Unis ont  un nombre important des moyens aéroports.
 
 ```{r,echo=FALSE}
 # projection des nuages des profils lignes sur le plan principal
@@ -469,11 +466,11 @@ plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
 ```
 
   Nous remarquons à ce niveau que l'analyse se focalise sur le deuxième et troisième axe.
-Nous notons que la Chine explique en grande partie le deuxième axe d'une part et le Canada qui contribue fortement dans l'explication du troisième axe.
+Nous notons que le Canada et le Bresil expliquent en grande partie le deuxième axe d'une part et, la Chine et les Etats Unis  qui contribuent  fortement dans l'explication du troisième axe.
   Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires.
 La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents.
 Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées.
-La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique.
+La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de moyens aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique.
 
 ## L'ACP
 
