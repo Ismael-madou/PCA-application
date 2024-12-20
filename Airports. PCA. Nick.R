@@ -2,8 +2,8 @@
 # j'ai besoin de ISO codes pour joindre le tableau d'aeroports avec le income
 library(dplyr)    
 
-income_table <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/National income.csv", sep = ";") 
-iso_table <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/Countries ISO.csv", sep = ",")        
+income_table <- read.csv("data/National income.csv", sep = ";") 
+iso_table <- read.csv("data/Countries ISO.csv", sep = ",")        
 
 iso_table <- iso_table %>%
   rename(Country = Name)
@@ -35,7 +35,7 @@ combined_table$Code[combined_table$Country == "Namibia"] <- "NA"
 combined_table <- combined_table %>%
   rename(iso_country = Code)
 
-airports <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/World_Airports_Edited.csv", sep = ";")
+airports <- read.csv("data/World_Airports_Edited.csv", sep = ";")
 
 combined_table_final <- airports %>%
   left_join(combined_table, by = "iso_country")  
@@ -55,8 +55,7 @@ combined_table_final <- combined_table_final %>%
 # adding passengers info for top airports 
 
 
-passengers <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/Top airports filtered - Top airports filtered-2.csv", sep = ",") 
-passengers <- read.csv('/Users/nickpomozov/Downloads/Programming/Project with Isamel/Top airports filtered - Top airports filtered-2.csv', sep = ",") 
+passengers <- read.csv("data/Top airports filtered - Top airports filtered-2.csv", sep = ",") 
 
 passengers <- passengers %>%
   rename(name = Airport) %>% 
@@ -140,9 +139,6 @@ res_pca <- PCA(X = pca_data_scaled,
 plot.PCA(res_pca, axes = c(1,2), choix = "ind")
 plot.PCA(res_pca, axes = c(1,2), choix = "var")
 
-res_pca$eig
-barplot(res_pca$eig[,1])
 
-PCAshiny(X = res_pca)
 
 

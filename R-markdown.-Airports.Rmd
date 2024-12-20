@@ -8,20 +8,16 @@ geometry:
   - top=2.5cm
   - bottom=2.5cm
 title: "Projet d'analyse des données : AFC sur les données"
-author: 
+auteurs: 
   - Ismaël Madou Gagi Grema
   - Nikita Pomozov
 email: 
   - ismael.madou-gagi-grema@etudiant.univ-reims.fr
   - nikita.pomozov@etudiant.univ-reims.fr
-
-date: "`r format(Sys.time(), '%d %B %Y')`"
+  
+output: html_document
+date: "2024-12-18"
 abstract: "La problematique est d'apprehender l'impact du revenu national sur les infrastructures aeroportuaires ainsi que les choix des differents pays dans le developpement des infrastructures aeroportuaires "
-
-keywords:
-  - Schtroumpf
-  - Marsupilami
-  - Pokemon
 git: "https://github.com/pregnault/urcadown"
 database: "https://data.gouv.fr"
 anac: "2024-2025"
@@ -29,20 +25,13 @@ diplome: "Master 1 Statistique pour l'evaluation et la prévision."
 module: "SEO0702"
 enseig: "Philippe Regnault"
 evaluation: "Compte-rendu d'analyse"
-coefficient: "50 \\%"
-output: 
-  bookdown::pdf_book:
-    citation_package: biblatex
-    template: template.tex
-    fig_caption: yes
-    keep_tex: yes
-    toc: yes
-biblatex: true
-bibliography: biblio-cr-urca.bib
-biblio-style : alphabetic
-link-citations: yes
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
 
 #**Introduction**
 
@@ -79,7 +68,6 @@ Pour cette étude, nous avons combiné plusieurs ensembles de données sur les a
 Les résultats de l’ACP soulignent une relation nuancée entre la richesse, les infrastructures et le transport aérien. Bien que les pays les plus riches investissent généralement dans des infrastructures aéroportuaires et connaissent des volumes de trafic plus élevés, les écarts par rapport à ce schéma, comme la présence d’observations atypiques, suggèrent l’influence d’autres facteurs. La localisation géographique, les politiques publiques, la connectivité aérienne ou la dépendance au tourisme pourraient tous contribuer à ces variations. Une étude approfondie de ces anomalies permettrait de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les mouvements de passagers. Pour aller plus loin, une analyse approfondie des outliers et des facteurs externes s’avère nécessaire. De plus, l’utilisation d’un ensemble de données plus complet, incluant un plus grand nombre d’aéroports, permettrait de confirmer ces observations et d’affiner les conclusions de cette étude.
 En resumé, nous pouvons noter que le choix du developpement se base sur les questions politiques du pays pour repondre plus au besoin que presentent les pays. Ce choix est une combinaison de plusieurs facteurs économiques, politiques et sociaux.
 
-
 # **Annexe**
 
 L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives. Cela nous permet de visualiser et d'interpréter les relations entre les lignes et les colonnes d'un tableau de contingence.Dans notre cas,nous allons analyser le tableau de contingence avec les differents pays representés en ligne et les types d'aeroports en colonne.
@@ -94,7 +82,6 @@ data <- read.csv("data/World_Airports.csv", sep = ";")
 
 L'analyse univariée se concentre sur l'étude d'une seule variable à la fois, qu'elle soit quantitative ou qualitative. L'objectif de cette analyse est de décrire les caractéristiques de la variable et de comprendre sa distribution. Elle permet de donner une première idée de la structure des données avant d'aller plus loin dans l'analyse bivariée ou multivariée.
 
-
 ```{r tableex, message = FALSE, echo=FALSE}
 
 library(knitr)
@@ -107,8 +94,6 @@ kable(summary_stats, format = "latex", caption = "Tableau des statistiques descr
 
 
 ```
-
-
 ```{r, echo=FALSE}
 # Calcul du nombre de valeurs manquantes par colonne
 missing_values <- colSums(is.na(data))
@@ -125,16 +110,13 @@ kable(missing_values, format = "latex",
 ```
 
 Les resultats montrent que presque toutes les variables n'ont pas de valeurs manquantes à l'exception de X,Y,frequency, runway_length_ft, runway_width_ft, runway_lighted, runway_closed. Pour notre part, nous nous attarderons sur les variables comme "iso_country".
- 
+
 ```{r,echo=FALSE} 
 table(data$type)
 
 ```
 
 la première variable comporte sept types d'aeroports. le Nombre d'occurence de chaque type d'aeroports varie d'un pays à un autre en fonction des choix d'orientations de ces derniers. Pour des pays qui ont des penchants commerciaux ont tendance à developper les petits, moyens et grands aeroports contrairement aux pays qui ont des priorités differentes.
-
-
-
 
 ```{r, echo=FALSE}
 # Fréquences pour une variable catégorielle
@@ -167,6 +149,7 @@ barplot(frequence_iso_country,
         ylab = "Fréquence des pays")
 
 ```
+
 A ce niveau, on constate que les aerports americains apparaissent trop souvent avec plus de 25OOO aeroports. Par contre, les autres pays ont une frequence comprise entre 0 et 5000.
 
 ```{r setupcolours, eval = TRUE, echo = FALSE}
@@ -224,6 +207,7 @@ corrplot(matrice_corr, method = "color", type = "full",
          title = "Matrice de Corrélation entre les Types d'Aéroports",
          addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
 ```
+
 On constate une forte correlation entre les grands, les petits et les moyens aeroports. Cependant, les grands aeroports ne sont pas trop correlés avec les seaplane_airports, les ballonports, les heliports et les aeroports fermés qui sont trés corrélés entre eux. cette analyse de la matrice de correlation nous indique qu'il est possible de creer de groupe en fonction de la correlation entre les types d'aeroports. 
 
 ```{r,echo=FALSE}
@@ -300,6 +284,7 @@ apply(PL, 1, sum)
 barplot(height = t(PL), beside = FALSE, legend.text = colnames(PL))
 
 ```
+
 A ce niveau, nous avons un graphique qui indique la repartition des pays en fonction des types d'aeroports. Cependant, il est difficile pour nous d'analyser ce graphique en raison du nombre élèvé des pays. Notons qu'il y'a une forte apparition des small_airports vers le haut et une forte occurence des ballonporte et closed vers le bas.
 une autre solution est de regrouper les pays qui ont des similarités pour les reduire et effectuer des bonnes analyses.
 
@@ -327,10 +312,6 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(corrplot)
-<<<<<<< HEAD
-
-=======
->>>>>>> 4260674463bcb22aa35a4ee1fcba750140fea9eb
 library(FactoMineR)
 
 # Création du tableau de contingence
@@ -358,6 +339,7 @@ barplot(valeurs_propres[, 1],
         xlab = "Composantes", 
         border = "white")
 ```
+
 Ces resultats nous donnent des informations sur les valeurs propres ainsi que la variance expliquée qui n'est rien d'autres que l'explication de la variabilité des données observées.
 Regle du coude : on retient  3 valeurs propres qui representent 88,41% de l'inertie. Cela veut dire que les trois valeurs expliquent à elles seules la plus grande partie de l'information. 
 
@@ -385,9 +367,7 @@ plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
 ```
   Nous remarquons à ce niveau que l'analyse se focalise sur le deuxième et troisième axe. Nous notons que la Chine explique en grande partie le deuxième axe d'une part et le Canada qui contribue fortement dans l'explication du troisième axe. Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires. La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents. Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées. La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique. 
 
-
-
-  La deuxième partie concerne l'analyse en Composantes Principales (ACP) qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information. Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
+ La deuxième partie concerne l'analyse en Composantes Principales (ACP) qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information. Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
 
 ```{r,echo=FALSE}
 hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")

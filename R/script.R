@@ -1,5 +1,5 @@
 #chargement des données 
-data <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/World_Airports.csv", sep = ";")
+data <- read.csv("data/World_Airports.csv", sep = ";")
 
 #statistiques descriptives 
 summary(data)
@@ -118,21 +118,7 @@ tableau_contingence_regroupe <- donnee_temporaire %>%
   count(iso_country_regroupe, type) %>%
   spread(key = type, value = n, fill = 0)
 
-# Calcul de la matrice de corrélation entre les colonnes (types d'aéroports)
-# Nous excluons la colonne iso_country
-matrice_corr <- cor(tableau_contingence_regroupe[, -1], method = "pearson")
-
-# Affichage de la matrice de corrélation avec corrplot
-corrplot(matrice_corr, method = "color", type = "full", 
-         col = colorRampPalette(c("white", "blue"))(200),
-         title = "Matrice de Corrélation entre les Types d'Aéroports",
-         addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
- 
-# Vérifier s'il y a des valeurs manquantes dans la colonne iso_country
-if(any(is.na(tableau_contingence_regroupe$iso_country_regroupe))) {
-  # Si oui, nous les supprimons (ou vous pouvez les gérer différemment)
-  tableau_contingence_regroupe <- tableau_contingence_regroupe %>% filter(!is.na(iso_country_regroupe))
-}
+tableau_contingence_regroupe <- na.omit(tableau_contingence_regroupe)
 
 # Supprimer la colonne iso_country et mettre iso_country comme rownames
 tableau_contingence_no_iso <- tableau_contingence_regroupe%>%
@@ -141,21 +127,45 @@ tableau_contingence_no_iso <- tableau_contingence_regroupe%>%
 # Ajouter les iso_country comme rownames
 rownames(tableau_contingence_no_iso) <- tableau_contingence_regroupe$iso_country_regroupe
 
-#calcul des profils lignes 
-PL <- prop.table(as.matrix(tableau_contingence_no_iso, margin=1))
+# Calcul de la matrice de corrélation entre les colonnes (types d'aéroports)
+# Nous excluons la colonne iso_country
+matrice_corr <- cor(tableau_contingence_no_iso[, -1], method = "pearson")
 
-#verification
-apply(PL,1,sum)
-barplot(height = t(PL), beside = FALSE,legend.text=colnames(PL))
+# Affichage de la matrice de corrélation avec corrplot
+corrplot(matrice_corr, method = "color", type = "full", 
+         col = colorRampPalette(c("white", "blue"))(200),
+         title = "Matrice de Corrélation entre les Types d'Aéroports",
+         addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
+ 
 
-#representation du profil ligne
-barplot(height = t(PL), beside = FALSE,legend.text=colnames(PL))
+# Calcul des profils ligne (PL) : normalisation par ligne
+PL <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 1)
+
+# Vérification que la somme des profils ligne est égale à 1
+apply(PL, 1, sum)
+
+# Tracer le barplot avec réduction de la taille des noms des pays
+barplot(height = t(PL), beside = FALSE, 
+        legend.text = colnames(PL), 
+        names.arg = rownames(PL),    # Utiliser les rownames pour les noms des pays
+        las = 2,                    # Faire pivoter les étiquettes si elles sont trop longues
+        col = rainbow(ncol(PL)),    # Exemple de coloration des barres
+        cex.names = 0.6)            # Réduire la taille des noms des pays
 
 #calcul des profils colonnes
 PC <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 2)
 
-#representation des profils colonnes 
-barplot(height = PC, beside = FALSE, legend.text = rownames(PC))
+# Vérification que la somme des profils colonnes est égale à 1 pour chaque colonne
+apply(PC, 2, sum)
+
+# Tracer le barplot avec les profils colonnes
+barplot(height = t(PC), beside = FALSE, 
+        legend.text = rownames(PC),    # Légende en utilisant les noms des lignes (pays)
+        names.arg = colnames(PC),      # Utiliser les noms des colonnes pour les abscisses
+        las = 2,                       # Faire pivoter les étiquettes des colonnes si nécessaire
+        col = rainbow(nrow(PC)),       # Exemple de coloration des barres (ici avec une palette arc-en-ciel)
+        cex.names = 0.6)               # Réduire la taille des noms des colonnes pour plus de lisibilité
+
 
 #test d'independence du Khi deux
 chisq.test(tableau_contingence_no_iso)-> res_chisq

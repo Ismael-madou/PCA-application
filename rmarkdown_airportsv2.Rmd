@@ -1,0 +1,636 @@
+---
+documentclass: "compterendu"
+lang: true
+babel-lang: "french"
+geometry: 
+  - left=2cm
+  - right=2cm
+  - top=2.5cm
+  - bottom=2.5cm
+title: "Projet d'analyse des données sur les aéroports"
+
+author: 
+- Ismaël Madou Gagi Grema  
+- Nikita Pomozov  
+
+email: 
+  - ismael.madou-gagi-grema@etudiant.univ-reims.fr
+  - nikita.pomozov@etudiant.univ-reims.fr
+output: 
+  html_document: 
+    theme: yeti
+    toc: true
+    toc_float: true
+date: "2024-12-18"
+abstract: "La problématique est d'appréhender l'impact du revenu national sur les infrastructures aéroportuaires ainsi que les choix des différents pays dans le développement des infrastructures aéroportuaires."
+
+git: "https://github.com/pregnault/urcadown"
+database: "https://data.gouv.fr"
+anac: "2024-2025"
+diplome: "Master 1 Statistique pour l'évaluation et la prévision."
+module: "SEO0702"
+enseig: "Philippe Regnault"
+evaluation: "Compte-rendu d'analyse"
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **Introduction**
+
+  Les aéroports jouent un rôle central dans le transport aérien mondial, facilitant les échanges internationaux, le tourisme, les affaires et le commerce. En tant qu'infrastructures stratégiques, leur gestion et leur développement sont essentiels pour les économies locales et mondiales.
+  
+  Cette étude se concentre sur une base de données des aéroports du monde, qui réunit des informations détaillées sur la localisation, le type et les caractéristiques des aéroports répartis à travers différents pays.
+À travers cette analyse, nous explorerons des variables clés telles que le type d'aéroport (grands, petits, moyens, héliports , etc.), les codes ISO des pays d'une part avec la methode d'AFC pour comprendre les choix des pays dans le developpment des infrastructures aroportuaires et de l'autre part, nous allons etudier les variables comme le revenu national(qu'on a récuperée sur une autre base de donnée puis on l'a fusionné avec la presente base de donnée),les passagers, les longueurs des pistes ainsi que les largeurs des pistes avec la methode de l'ACP pour evaluer l'impact des revenus nationaux sur le developpemt de ces infrastructures.
+
+  La problèmatique est de comprendre le choix des pays dans la construction des infrastructures aéroportuaires mais egalement l'impact des revenus nationaux dans la mise en oeuvre des constructions de ces infrastructures.
+Cela nous permettra de comprendre si les pays les plus riches investissent davantage dans les aéroports et si cela se traduit par une augmentation du nombre des passagers.
+
+# **Section 1: les choix des pays dans le developpement des infrastructures**
+
+  Le choix des pays dans le developpemt des infrastructures aeroportuaires depend de plusieurs facteurs qui peuvent etre liés à l'economie, la politique, la geopolitique mais aussi pour des raisons purement sociaux.
+Les pays développés ou à revenu élevé investissent généralement massivement dans leurs infrastructures aéroportuaires en raison de leur forte demande de transport aérien et de leur rôle central dans le commerce mondial.
+
+  Par exemple, des pays comme la Chine, d'après les resultats de nos analyses, possède un grand nombre des moyens aéroports mais aussi des grands aéroports(moins importants que les moyens) pour répondre à ses besoins internes et internationaux en matière de transport, stimulés par sa taille, sa population, son développement économique, ses ambitions commerciales et ses politiques de décentralisation.
+Ces facteurs se combinent pour expliquer pourquoi la Chine est dotée de nombreux aéroports, tant pour les passagers que pour le fret aérien.
+
+  Les choix des pays comme le Canada sont liés aux raisons géographiques. Ces infrastructures sont essentielles pour relier les régions éloignées et faciliter les déplacements internes.Le nombre important d'aéroports fermés et l'utilisation des hydravions au Canada peuvent être attribués à la géographie vaste et diversifiée du pays, à son climat rigoureux, à la dispersion de sa population dans des zones isolées, et à des considérations économiques et pratiques.
+  
+  Les hydravions offrent une solution flexible et pratique pour desservir des régions qui seraient autrement difficiles d'accès par des infrastructures aéroportuaires traditionnelles.
+Les aéroports fermés, quant à eux, reflètent la baisse de la demande pour des installations dans des zones peu peuplées et éloignées.
+
+  C'est l'exemple de la Russie ou l'Australie qui dans notre n'avaient pas pesé soit à cause de la non prise en compte d'un grand nombre de leurs aeroports soit à leurs faibles proportions comparées à celle du Canada.
+Nous avons egalement des pays qui ont developpé un grand nombre d'heliports et des petits aeroports en l'occurence le Japon et la Coree du Sud.ces infrastructures sont également principalement développées pour des raisons civiles et économiques, mais il y a aussi des considérations militaires indirectes.Le Japon et la Corée du Sud ont des zones urbaines très densément peuplées, notamment à Tokyo, Osaka, et Séoul, et l'espace pour construire des aéroports traditionnels est très limité.
+
+  De plus, leurs terrains sont souvent montagneux, ce qui complique davantage l’expansion des grandes infrastructures.
+
+  Les héliports et les petits aéroports permettent de relier rapidement des zones urbaines ou des régions difficiles d’accès sans nécessiter de vastes espaces.En raison de la vulnérabilité du Japon aux catastrophes naturelles (comme les tsunamis et les séismes), les héliports sont une infrastructure stratégique pour les secours en cas de catastrophes, facilitant l'acheminement rapide de secours, de nourriture et de fournitures.
+En fin, nous avons les Etats unis qui presentent toutes les caracteristiques presentées.
+Dans ce pays, le developpement de tous les types d'aeroports sont entrepris pour des raisons économiques(la plus grande economique en terme de PIB), militaires(la plus grande puuissance militaire) mais egalement pour des raisons sociaux(comme la lutte contre le feu de brousse, tsunami...)
+
+# **Section 2: L'impact des revenus nationaux sur les infrastructures aeroportuaires**
+
+  L'Analyse en Composantes Principales (ACP) est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information.
+Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
+Pour cette étude, nous avons combiné plusieurs ensembles de données sur les aéroports, les codes ISO (pour utiliser comme un clé pour combiner les data), les revenus nationales par habitant (pour évaluer la richesse économique des pays) et le trafic de passagers dans top 50 aéroports (données spécifiques aux 50 principaux aéroports extraites de Wikipedia, en raison de limitations d’accès aux données complètes).
+
+  En utilisant les variables sur les revenus, les longeurs et largeurs de pistes et les données sur le nombre des passagers, nous avons cherché à explorer les relations entre ces variables afin de déterminer si les pays les plus riches investissent davantage dans leurs aéroports et si cela se traduit par un trafic plus grand.
+L’ACP révèle que les deux premières composantes principales expliquent 69,08% de la variance totale, ce qui permet de capturer efficacement les principales tendances des données.
+
+  L’analyse visuelle met en évidence une différence marquée entre les 50 top aéroports et l’ensemble des 75 000 aéroports mondiaux.
+Les grandes infrastructures, notamment des pistes plus longues, sont concentrées dans les principaux aéroports, tandis que la majorité des aéroports mondiaux présentent des pistes plus courtes et homogènes.
+Cela signifie que les top aéroports ont des pistes plus longues, ce qui indique plusieurs observations possibles : leurs pistes sont conçues pour les avions transcontinentaux qui ont besoin de pistes plus longues pour décoller et atterrir ; ils investissent davantage dans l'infrastructure pour construire des « hubs » pour toutes sortes de vols.
+
+  Les graphiques des variables et des individus confirment une corrélation positive entre le revenu national et le nombre de passagers.
+Les pays les plus riches développent généralement de grandes infrastructures aéroportuaires pour répondre à une demande accrue en transport aérien.
+Toutefois, des exceptions notables apparaissent :\
+- Certains pays à revenu limité enregistrent un trafic élevé, souvent grâce à leur rôle de hubs régionaux ou à leur dépendance au tourisme.\
+- À l’inverse, des pays avec des infrastructures avancées présentent un trafic faible, suggérant des inefficacités ou une demande insuffisante.
+
+  Important de noter : pour une analyse plus approfondie, nous avons besoin de données sur un plus grand nombre d'aéroports, et pas seulement sur les plus grands.
+Cette analyse pourra donc être améliorée à l'avenir.
+
+# **Conclusion**
+
+  Les résultats de l’ACP soulignent une relation nuancée entre la richesse, les infrastructures et le transport aérien.Bien que les pays les plus riches investissent généralement dans des infrastructures aéroportuaires et connaissent des volumes de trafic plus élevés, les écarts par rapport à ce schéma, comme la présence d’observations atypiques, suggèrent l’influence d’autres facteurs.
+La localisation géographique, les politiques publiques, la connectivité aérienne ou la dépendance au tourisme pourraient tous contribuer à ces variations.
+Une étude approfondie de ces anomalies permettrait de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les mouvements de passagers.
+Pour aller plus loin, une analyse approfondie des outliers et des facteurs externes s’avère nécessaire.
+De plus, l’utilisation d’un ensemble de données plus complet, incluant un plus grand nombre d’aéroports, permettrait de confirmer ces observations et d’affiner les conclusions de cette étude.
+En resumé, nous pouvons noter que le choix du developpement se base sur les questions politiques du pays pour repondre plus au besoin que presentent les pays.
+Ce choix est une combinaison de plusieurs facteurs économiques, politiques et sociaux.
+
+# **Annexe**
+
+  L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives.
+Cela nous permet de visualiser et d'interpréter les relations entre les lignes et les colonnes d'un tableau de contingence.Dans notre cas,nous allons analyser le tableau de contingence avec les differents pays representés en ligne et les types d'aeroports en colonne.
+La première partie de notre methode AFC concerne l'analyse descriptive.
+cette analyse descriptive va nous permettre de résumer de façon simple et concise l'ensemble des données.
+
+```{r,echo=FALSE}
+# Chargement des données
+data <- read.csv("data/World_Airports.csv", sep = ";")
+```
+
+  L'analyse univariée se concentre sur l'étude d'une seule variable à la fois, qu'elle soit quantitative ou qualitative.
+L'objectif de cette analyse est de décrire les caractéristiques de la variable et de comprendre sa distribution.
+Elle permet de donner une première idée de la structure des données avant d'aller plus loin dans l'analyse bivariée ou multivariée.
+
+```{r, include=FALSE}
+library(knitr)
+```
+
+```{r tableex, message = FALSE, echo=FALSE}
+
+# Appliquer summary() à votre dataset
+summary_stats <- summary(data)
+
+# Convertir le résultat de summary en un tableau formaté avec kable pour LaTeX
+kable(summary_stats, format = "latex", caption = "Tableau des statistiques descriptives", booktabs = TRUE)
+```
+
+```{r, include=FALSE}
+library(kableExtra)
+```
+
+```{r, echo=FALSE}
+# Calcul du nombre de valeurs manquantes par colonne
+missing_values <- colSums(is.na(data))
+
+# Convertir le tableau des valeurs manquantes en format LaTeX avec style
+
+kable(missing_values, format = "latex", 
+      caption = "Nombre de valeurs manquantes par colonne") %>%
+  kable_styling(latex_options = c("striped", "hold_position")) %>%
+  row_spec(0, bold = TRUE)  # Mettre en gras l'en-tête
+```
+
+  Les resultats montrent que presque toutes les variables n'ont pas de valeurs manquantes à l'exception de X,Y,frequency, runway_length_ft, runway_width_ft, runway_lighted, runway_closed.
+Pour notre part, nous nous attarderons sur les variables comme "iso_country".
+
+```{r,echo=FALSE}
+table(data$type)
+
+```
+
+La première variable comporte sept types d'aeroports.
+le Nombre d'occurence de chaque type d'aeroports varie d'un pays à un autre en fonction des choix d'orientations de ces derniers.
+Pour des pays qui ont des penchants commerciaux ont tendance à developper les petits, moyens et grands aeroports contrairement aux pays qui ont des priorités differentes.
+
+```{r, echo=FALSE}
+# Fréquences pour une variable catégorielle
+frequence_type <- table(data$type)
+frequence_iso_country <- table(data$iso_country)
+
+```
+
+  A la suite, nous allons presenter les graphiques des variables que nous avons retenus pour effectuer l'AFC en l'occurence du type et du pays.
+
+```{r, echo = FALSE, eval = FALSE}
+# Diagramme en barres pour 'le type d'aéroport'
+barplot(frequence_type, 
+        main = "Le type d'aéroport", 
+        col = "skyblue", 
+        xlab = "Type", 
+        ylab = "Fréquence du type")
+```
+
+  Ce graphique nous renseigne sur la frequence des differents types d'aeroports.
+les Small_airport sont plus nombreux et represente la plus grande partie de notre base de données.Ensuite, viennent les heliports avec une proportion moins importante.
+
+```{r, echo = FALSE, eval = TRUE}
+# Diagramme en barres pour 'iso_country' (pays)
+barplot(frequence_iso_country, 
+        main = "Répartition par pays", 
+        col = "lightgreen", 
+        xlab = "Pays", 
+        ylab = "Fréquence des pays")
+
+```
+
+  A ce niveau, on constate que les aerports americains apparaissent trop souvent avec plus de 25OOO aeroports.
+Par contre, les autres pays ont une frequence comprise entre 0 et 5000.
+
+```{r setupcolours, eval = TRUE, echo = FALSE}
+urcalightbrown <- "#D1AD55"
+urcamediumbrown <- "#AE7433"
+urcaheavybrown <- "#480000"
+urcalightblue <- "#88C7FA"
+urcamediumblue <- "#1A9DDD"
+urcaheavyblue <- "#365A8E"
+senolive <- "#76bc21"
+sendarkgreen <- "#007934"
+senlightgreen <- "#00ae42"
+darkpink <- "#DB6761"
+clay <- "#D95F02"
+sand <- "#FED976"
+shadedpurple <- "#CD7FC5"
+```
+
+  L'analyse bivariée est une methode statistique utilisée pour examiner relation entre deux variables.
+Dans ce cas, nous pourrons etudier la relation entre le "type" et "iso_country".
+
+```{r, include=FALSE}
+# application de l'AFC sur tableau_contingence_is_no
+library(FactoMineR)
+library(Factoshiny)
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(corrplot)
+```
+
+```{r defdonneestemp, include=FALSE}
+donnee_temporaire <- data %>% select(type, iso_country)
+  
+  
+```
+
+```{r,echo=FALSE}
+
+# Création du tableau de contingence (avec 'type' comme colonnes et 'iso_country' comme lignes)
+tableau_contingence <- donnee_temporaire %>%
+  count(type, iso_country) %>%
+  spread(key = type, value = n, fill = 0)
+
+# Calculer le nombre d'aéroports par pays
+aeroports_par_pays <- donnee_temporaire %>%
+  count(iso_country) %>%
+  rename(nombre_aeroports = n)
+
+# Décider d'un seuil basé sur la distribution (par exemple, utiliser le quantile)
+seuil <- 200 # Utiliser le 10ème percentile
+
+# Créer une nouvelle colonne qui regroupe les pays avec moins que le seuil en "Autres"
+aeroports_par_pays_regroupe <- aeroports_par_pays %>%
+  mutate(iso_country_regroupe = ifelse(nombre_aeroports < seuil, "Autres", iso_country))
+
+# Compter le nombre de pays avec moins de 200 aéroports
+nombre_pays_faible_aeroports <- aeroports_par_pays %>%
+  filter(nombre_aeroports < seuil) %>%
+  count()
+
+# Afficher la distribution après regroupement
+table(aeroports_par_pays_regroupe$iso_country_regroupe)
+
+# Recréer la table de contingence avec les pays regroupés
+tableau_contingence_regroupe <- donnee_temporaire %>%
+  mutate(iso_country_regroupe = ifelse(iso_country %in% aeroports_par_pays_regroupe$iso_country[aeroports_par_pays_regroupe$nombre_aeroports < seuil], 
+                                       "Autres", iso_country)) %>%
+  count(iso_country_regroupe, type) %>%
+  spread(key = type, value = n, fill = 0)
+
+tableau_contingence_regroupe <- na.omit(tableau_contingence_regroupe)
+
+# Supprimer la colonne iso_country et mettre iso_country comme rownames
+tableau_contingence_no_iso <- tableau_contingence_regroupe%>%
+  select(-iso_country_regroupe)
+
+# Ajouter les iso_country comme rownames
+rownames(tableau_contingence_no_iso) <- tableau_contingence_regroupe$iso_country_regroupe
+
+# Calcul de la matrice de corrélation entre les colonnes (types d'aéroports)
+# Nous excluons la colonne iso_country
+matrice_corr <- cor(tableau_contingence_no_iso[, -1], method = "pearson")
+
+
+# Affichage de la matrice de corrélation avec corrplot
+corrplot(matrice_corr, method = "color", type = "full", 
+         col = colorRampPalette(c("white", "blue"))(200),
+         title = "Matrice de Corrélation entre les Types d'Aéroports",
+         addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
+```
+
+  On constate une faible correlation entre les aeroports aeroports fermés, heliports d'un coté et les grands aeroports de l'autre coté.
+Cependant, On remarque aussi qu'il y'a une correlation moyenne entre les hydravions et grands avions. En plus, nous remarquons une correlation assez moyenne entre les petits et les grands aeroports mais cette correlation n'est pas importante.
+Notons aussi qu'il existe une correlation faible entre les hydravions et les moyens aeroports sans oublier de parler de la correlation moyenne entre les aeroports moyens d'une part et heliports, aeroports fermés.
+  Cela pourrait refléter la diversité des fonctions de ces aéroports (vols commerciaux, services régionaux, activités spécialisées, etc.), et il est probable que des facteurs géographiques, économiques et techniques jouent un rôle important dans la manière dont ces éléments sont interconnectés. Les grandes infrastructures (grands aéroports) semblent être relativement indépendantes des autres types d'infrastructures aéronautiques, tandis que des corrélations modérées existent entre certains types d'aéroports plus petits et spécifiques (héliports, aéroports fermés, etc.).
+
+```{r,echo=FALSE}
+# Tableau de contingence (tableau croisé)
+tableau_croise <- table(tableau_contingence_no_iso$type, tableau_contingence_no_iso$iso_country)
+
+# Test du chi-carré
+chi2_test <- chisq.test(tableau_croise)
+chi2_test
+```
+
+  Etant donné que la p-value est inferieure à 0.05, nous rejetons l'hypothése nulle.
+Cela signifie qu'il existe une relation significative entre les deux variables qualitatives que nous allons tester.
+
+
+```{r,echo=FALSE}
+# Test exact de Fisher avec approximation via Monte Carlo
+fisher_test_approx <- fisher.test(tableau_croise, simulate.p.value = TRUE, B = 10000)
+fisher_test_approx
+```
+
+  Cela signifie que le test de Fisher teste une association bilatérale, c'est-à-dire qu'il teste si les deux variables sont significativement liées dans n'importe quelle direction, sans spécifier a priori une direction particulière pour l'association.
+
+```{r,include=FALSE}
+# Charger le package vcd
+library(vcd)
+```
+
+```{r,echo=FALSE}
+
+# Calcul de Cramér's V
+assoc_result <- assocstats(table(data$type, data$iso_country))
+assoc_result
+```
+
+  Nous constatons encore une p-value faible, ce qui signifie qu'il existe une forte correlation entre les deux variables qualitatives.
+De plus, les variables "contigency coeff" et "Cramer's V" indiquent une association moderée.
+
+```{r, include=FALSE}
+tableau_contingence_no_iso <- tableau_contingence_regroupe %>%
+  select(-iso_country_regroupe)
+```
+
+```{r,echo=FALSE}
+# Test du Khi-deux pour l'indépendance
+chisq.test(tableau_contingence_no_iso) -> res_chisq
+res_chisq$statistic  # Affichage du statistic du test Khi-deux
+
+# Définition de 'children' comme étant les valeurs attendues du test Khi-deux
+children <- res_chisq$expected
+
+# Calcul de l'inertie du nuage des profils
+inertie <- res_chisq$statistic / sum(children) + 1
+inertie
+
+```
+
+  Avec une statistique χ² de 30863.32, et une p-value proche de 0, vous pouvez conclure qu'il y a une forte association entre les deux variables catégorielles étudiées.
+Cette présence d'association nous permet d'expliquer une des variables en fonction de l'autre par consequent il ameliore la comprehension.
+
+```{r,include=FALSE}
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+```{r,echo=FALSE}
+
+# Calcul des profils ligne (PL) : normalisation par ligne
+PL <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 1)
+
+# Vérification que la somme des profils ligne est égale à 1
+apply(PL, 1, sum)
+
+# Tracer le barplot avec réduction de la taille des noms des pays
+barplot(height = t(PL), beside = FALSE, 
+        legend.text = colnames(PL), 
+        names.arg = rownames(PL),    # Utiliser les rownames pour les noms des pays
+        las = 2,                    # Faire pivoter les étiquettes si elles sont trop longues
+        col = rainbow(ncol(PL)),    # Exemple de coloration des barres
+        cex.names = 0.6)            # Réduire la taille des noms des pays
+```
+
+  A ce niveau, nous avons un graphique qui indique la repartition des pays en fonction des types d'aeroports.
+Cependant, il est difficile pour nous d'analyser ce graphique en raison du nombre élèvé des pays.
+Notons qu'il y'a une forte apparition des small_airports vers le haut et une forte occurence des ballonporte et closed vers le bas.
+une autre solution est de regrouper les pays qui ont des similarités pour les reduire et effectuer des bonnes analyses.
+
+```{r}
+#calcul des profils colonnes
+PC <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 2)
+
+# Vérification que la somme des profils colonnes est égale à 1 pour chaque colonne
+apply(PC, 2, sum)
+
+# Tracer le barplot avec les profils colonnes
+barplot(height = t(PC), beside = FALSE, 
+        legend.text = rownames(PC),    # Légende en utilisant les noms des lignes (pays)
+        names.arg = colnames(PC),      # Utiliser les noms des colonnes pour les abscisses
+        las = 2,                       # Faire pivoter les étiquettes des colonnes si nécessaire
+        col = rainbow(nrow(PC)),       # Exemple de coloration des barres (ici avec une palette arc-en-ciel)
+        cex.names = 0.6)               # Réduire la taille des noms des colonnes pour plus de lisibilité
+
+
+```
+
+  Ce barplot des profils lignes indique le repartition des chaque type d'aeroports en fonction du pays.
+on remarque un nombre limité des pays possédent des ballonports, des heliports et des seaplanes.
+Cependant, pour les autres types d'aeroports, l'occurence est presente dans presque tous les pays.
+Par ailleurs, nous notons aussi que certains pays ont une frequence plus forte que celle des autres pays pour les types d'aeroports les plus frequents.
+
+```{r,echo=FALSE}
+#recherche des valeurs propres
+library("FactoMineR")
+res_afc <- CA(X = tableau_contingence_no_iso, ncp = 7,
+   graph = FALSE)
+res_afc
+res_afc$eig
+```
+
+```{r,echo=FALSE}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(corrplot)
+library(FactoMineR)
+```
+
+```{r,echo=FALSE}
+
+# Appliquer l'Analyse de Correspondances (CA) sur le tableau de contingence (exclure iso_country)
+res_afc <- CA(X = tableau_contingence_no_iso, ncp = 7, graph = FALSE)
+
+# Extraire et afficher les valeurs propres
+valeurs_propres <- res_afc$eig
+
+# Affichage des valeurs propres
+print(valeurs_propres)
+
+# Tracer l'histogramme des valeurs propres
+barplot(valeurs_propres[, 1], 
+        main = "Histogramme des Valeurs Propres de l'Analyse de Correspondances", 
+        col = "skyblue", 
+        ylab = "Valeurs Propres", 
+        xlab = "Composantes", 
+        border = "white")
+```
+
+  Ces resultats nous donnent des informations sur les valeurs propres ainsi que la variance expliquée qui n'est rien d'autres que l'explication de la variabilité des données observées.
+Regle du coude : on retient 3 valeurs propres qui representent 94.31% de l'inertie.
+Cela veut dire que les trois valeurs expliquent à elles seules la plus grande partie de l'information.
+
+```{r,echo=FALSE}
+# projection des nuages des profils lignes sur le plan principal
+plot.CA(x = res_afc, choix = "CA", axes = c(1,2), cex = 0.5)
+```
+
+  A ce niveau, nous nous focaliserons sur les deux premiers axes pour analyser les données.
+les deux dimensions expliquent 69% de l'information(variance exliqueé).
+
+  Les types d'aeroports qui sont bien representés sont les héliports(heliport) et les petits aéroports(small_airport) sur le premier axe.En plus, l'heliport contribue en grande partie à la construction du premier axe sans oublier la contribution du small airoport.
+Ce premier axe oppose les heliports aux small_airports. Sur cet axe, les pays comme le Japon et la corée du Sud sont bien representés et contribuent en grande partie à la construction du premier axe.
+
+  Sur le second axe,on a une opposition entre les petits aeroports, les heliports d'une part et les moyens aéroports, les grands aéroports d'autre part.
+ces deux derniers contribuent à la construction du deuxieme axe meme si les grands aeroports n'ont pas un poids important dans la construction du deuxième axe.
+sur cet axe, la chine est bien representée et contribue à la construction du second axe.
+
+```{r,echo=FALSE}
+# projection des nuages des profils lignes sur le plan principal
+plot.CA(x = res_afc, choix = "CA", axes = c(1,3), cex = 0.5)
+```
+
+  Nous nous'attarderons sur les dimensions 1 et 3 pour effectuer notre analyse.
+Nous pouvons alors comprendre l'évolution de nos données avec une vision panoramique et differente à la precedente.En effet, d'autres variables qui n'ont pas eu d'effets sur les autres dimensions peuvent s'averer importantes.
+
+  Le troisième axe oppose les autres types d'aeroports aux hydravions(seaplane_base) et aux aéroports fermés(closed).
+Ces aéroports sont bien representés et contribuent enormement à la construction du troisième axe.
+Le Canada contribue en grande partie à la construction de cet axe.
+Par consequent, nous pouvons conclure que le Canada a un nombre important des hydravions et des fermés.
+
+```{r,echo=FALSE}
+# projection des nuages des profils lignes sur le plan principal
+plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
+```
+
+  Nous remarquons à ce niveau que l'analyse se focalise sur le deuxième et troisième axe.
+Nous notons que la Chine explique en grande partie le deuxième axe d'une part et le Canada qui contribue fortement dans l'explication du troisième axe.
+  Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires.
+La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents.
+Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées.
+La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique.
+
+  La deuxième partie concerne l'analyse en Composantes Principales (ACP) qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information.
+  Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
+
+```{r,include=FALSE}
+
+income_table <- read.csv("data/National income.csv", sep = ";") 
+iso_table <- read.csv("data/Countries ISO.csv", sep = ",")        
+
+iso_table <- iso_table %>%
+  rename(Country = Name)
+
+income_table$Country <- trimws(income_table$Country)
+combined_table <- income_table %>%
+  left_join(iso_table, by = "Country")  
+
+combined_table$Code[combined_table$Country == "USA"] <- "US"
+combined_table$Code[combined_table$Country == "Bolivia"] <- "BO"
+combined_table$Code[combined_table$Country == "Cabo Verde"] <- "CV"
+combined_table$Code[combined_table$Country == "Cote d'Ivoire"] <- "CI"
+combined_table$Code[combined_table$Country == "Curacao"] <- "CW"
+combined_table$Code[combined_table$Country == "DR Congo"] <- "CD"
+combined_table$Code[combined_table$Country == "Iran"] <- "IR"
+combined_table$Code[combined_table$Country == "Lao PDR"] <- "LA"
+combined_table$Code[combined_table$Country == "Moldova"] <- "MD"
+combined_table$Code[combined_table$Country == "North Macedonia"] <- "MK"
+combined_table$Code[combined_table$Country == "Taiwan"] <- "TW"
+combined_table$Code[combined_table$Country == "Tanzania"] <- "TZ"
+combined_table$Code[combined_table$Country == "Venezuela"] <- "VE"
+combined_table$Code[combined_table$Country == "British Virgin Islands"] <- "VG"
+combined_table$Code[combined_table$Country == "Cote d’Ivoire"] <- "CI"
+combined_table$Code[combined_table$Country == "Namibia"] <- "NA"
+
+combined_table <- combined_table %>%
+  rename(iso_country = Code)
+
+airports <- read.csv("data/World_Airports_Edited.csv", sep = ";")
+
+combined_table_final <- airports %>%
+  left_join(combined_table, by = "iso_country")  
+
+combined_table_final$Country[combined_table_final$iso_country == "VI"] <- "Virgin Islands (US)"
+
+passengers <- read.csv("data/Top airports filtered - Top airports filtered-2.csv", sep = ",") 
+
+passengers <- passengers %>%
+  rename(name = Airport) %>% 
+  mutate(name = recode(name, "Heathrow Airport"="London Heathrow Airport"))
+
+final_data <- combined_table_final %>%
+  left_join(passengers, by = "name")  
+data_with_passengers <- final_data %>% filter(!is.na(passengers))
+data_for_pca <- data_with_passengers %>% 
+  select("name", "iso_country", "National.income", "runway_length_ft", "runway_width_ft", "passengers")
+data_for_pca[data_for_pca$name == "Toronto Aerodrome", "runway_length_ft"] <- 12000
+data_for_pca[data_for_pca$name == "Toronto Aerodrome", "runway_width_ft"] <- 200
+data_for_pca[data_for_pca$name == "Incheon International Airport", "National.income"] <- 33299
+```
+
+```{r,echo=FALSE}
+hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
+```
+
+  L'analyse univariée de la variable National Income révèle une distribution fortement asymétrique, avec la majorité des observations concentrées dans les tranches de revenu les plus basses.
+La raison en est le grand nombre d'aéroports asiatiques présents dans la liste (Chine, Inde, Philippines).
+Dans ces pays, le revenu national par habitant est faible, ce qui contribue à l'asymétrie du graphique.
+Une proportion significative du jeu de données se situe entre 20 000 et 60 000, comme le montrent les barres les plus hautes.
+  En revanche, très peu d'observations dépassent la tranche des 80 000, ce qui met en évidence une disparité.
+Cela suggère que la majorité des entités du jeu de données appartiennent à des pays ou régions ayant des revenus nationaux modestes, tandis qu'une minorité représente des économies à revenu élevé.
+
+```{r}
+boxplot(data_for_pca$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
+```
+
+```{r}
+boxplot(airports$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
+```
+
+  La comparaison des longueurs de pistes met en évidence une nette disparité entre les grands aéroports et les petites pistes d’aviation.
+  Les 50 principaux aéroports disposent de pistes nettement plus longues et plus homogènes, avec une médiane autour de 11 000 pieds, reflétant leur capacité à accueillir de grands avions comme les avions gros-porteurs (. En revanche, l’ensemble des 75 052 aéroports montre que la plupart des pistes sont beaucoup plus courtes, avec une médiane inférieure à 5 000 pieds, représentant des petits aérodromes régionaux, privés ou ruraux. Cependant, ce dataset inclut également des valeurs extrêmes, avec des pistes dépassant les 30 000 pieds, correspondant aux grands aéroports internationaux. Dans l’ensemble, la distribution est fortement asymétrique, soulignant la différence entre les petites pistes et quelques grands hubs internationaux.
+
+```{r, include=FALSE}
+library("DataExplorer")
+library("FactoMineR")
+library("Factoshiny")
+```
+
+```{r, include=FALSE}
+sapply(data_for_pca[, c("National.income", "runway_length_ft", "runway_width_ft", "passengers")], class)
+data_for_pca$passengers <- as.numeric(gsub(",", "", data_for_pca$passengers))
+pca <- data_for_pca[, c("National.income", "runway_length_ft", "runway_width_ft", "passengers")]
+pca_data_scaled <- scale(pca)
+```
+
+```{r, echo=FALSE}
+
+V <- cov(pca_data_scaled) #matrice des covariances
+R <- cor(pca_data_scaled) #matrice des correlation
+corrplot::corrplot(R, type = "upper", method = "square")
+
+```
+
+  La matrice de corrélation montre une relation positive forte entre le revenu national et le nombre de passagers, ce qui suggère que les aéroports avec un trafic de passagers plus élevé génèrent davantage de revenus.
+La longueur des pistes et la largeur des pistes sont fortement corrélées entre elles, mais n’ont que peu ou pas de relation avec le revenu national ou le trafic de passagers.
+  Cela indique que, bien que les dimensions des pistes soient liées entre elles, elles n’influencent pas directement les revenus ou le flux de passagers.
+  Globalement, le nombre de passagers semble être le principal moteur du revenu national pour les aéroports.
+
+```{r,echo=FALSE}
+res_pca <- PCA(X = pca_data_scaled,
+               scale.unit = TRUE, # On précise qu'on souhaite réaliser une ACP sur données réduites
+               graph = FALSE)
+            
+# On peut représenter le résultat de l'acp par la suite
+plot.PCA(res_pca, axes = c(1,2), choix = "ind")
+
+```
+
+  Le graphique des individus illustre la répartition des observations en fonction de ces composantes principales.
+Les points situés dans le quadrant supérieur droit, comme 27 (Emirats Arabes Unis) et 38 (Singapour), représentent des nations riches avec des infrastructures avancées et un trafic passagers élevé, reflétant la corrélation positive entre ces variables.
+  En revanche, des observations comme 6 et 18, situées dans le quadrant supérieur gauche, correspondent aux États Unis ayant un revenu modéré mais des infrastructures aéroportuaires atypiques qui s’écartent de la tendance générale.
+  De manière similaire, des points comme 43 (La Chine) et 32 (Brésil) dans le quadrant inférieur droit représentent les pays avec des infrastructures importantes mais des volumes de passagers faibles.
+
+```{r, echo=FALSE}
+res_pca <- PCA(X = pca_data_scaled,
+               scale.unit = TRUE, # On précise qu'on souhaite réaliser une ACP sur données réduites
+               graph = FALSE)
+plot.PCA(res_pca, axes = c(1,2), choix = "var")
+```
+
+  L’alignement de “National.income” avec passengers sur Dim 1 met en évidence une forte corrélation positive entre la richesse d’un pays et la demande de transport aérien.
+En revanche, les vecteurs représentant la longueur et la largeur des pistes sont étroitement groupés et orientés principalement sur Dim 2, ce qui suggère que les caractéristiques physiques des infrastructures sont interdépendantes mais influencées par des facteurs ne dépendant pas uniquement du revenu national.
+Cette séparation entre le trafic passagers lié au revenu et les caractéristiques physiques des infrastructures implique que, bien que les pays riches investissent généralement dans des aéroports plus grands et mieux équipés, l’expansion des infrastructures n’est pas toujours proportionnelle aux niveaux de revenu.
+
+```{r,echo=FALSE}
+res_pca$eig
+barplot(res_pca$eig[,1])
+```
+
+  L'histogramme des valeurs propres montre la contribution des quatre composantes principales (comp 1, comp 2, comp 3 et comp 4) à l’explication de la variance dans le jeu de données.
+La composante 1 capture la majeure partie de la variance, révélant les principales structures des données (comme le revenu national, le volume de passagers ou les dimensions des pistes).
+La composante 2 contribue également de manière significative, bien qu’à un degré moindre, en expliquant des variations complémentaires.
+  En revanche, les composantes 3 et 4 ont des contributions nettement plus faibles, indiquant qu’elles expliquent des variations mineures.
+  Cela suggère que les deux premières composantes suffisent pour représenter la majorité des informations du jeu de données tout en simplifiant l’analyse et la visualisation.
+
+# **Source**
+
+Airports : <https://www.kaggle.com/datasets/danishjmeo/world-airports-data> 
+
+Top airports : <https://en.wikipedia.org/wiki/List_of_busiest_airports_by_passenger_traffic>
+ISO codes : <https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes> 
+
+National Income : <https://wid.world/data/>

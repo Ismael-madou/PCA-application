@@ -327,10 +327,6 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(corrplot)
-<<<<<<< HEAD
-
-=======
->>>>>>> 4260674463bcb22aa35a4ee1fcba750140fea9eb
 library(FactoMineR)
 
 # Création du tableau de contingence
