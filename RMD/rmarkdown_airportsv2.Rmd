@@ -7,7 +7,7 @@ geometry:
   - right=2cm
   - top=2.5cm
   - bottom=2.5cm
-title: "Analyse des données sur les infrastructures aéroportuaires"
+title: "Projet d'analyse des données sur les aéroports"
 
 author: 
 - Ismaël Madou Gagi Grema  
@@ -55,7 +55,7 @@ Cela nous permettra de comprendre si les pays les plus riches investissent davan
   Le choix des pays dans le developpemt des infrastructures aeroportuaires depend de plusieurs facteurs qui peuvent etre liés à l'economie, la politique, la geopolitique mais aussi pour des raisons purement sociaux.
 Les pays développés ou à revenu élevé investissent généralement massivement dans leurs infrastructures aéroportuaires en raison de leur forte demande de transport aérien et de leur rôle central dans le commerce mondial.
 
-  Par exemple, des pays comme la Chine, d'après les resultats de nos analyses, possède un grand nombre des moyens aéroports mais aussi des grands aéroports (moins importants que les moyens) pour répondre à ses besoins internes et internationaux en matière de transport, stimulés par sa taille, sa population, son développement économique, ses ambitions commerciales et ses politiques de décentralisation.
+  Par exemple, des pays comme la Chine, d'après les resultats de nos analyses, possède un grand nombre des moyens aéroports mais aussi des grands aéroports(moins importants que les moyens) pour répondre à ses besoins internes et internationaux en matière de transport, stimulés par sa taille, sa population, son développement économique, ses ambitions commerciales et ses politiques de décentralisation.
 Ces facteurs se combinent pour expliquer pourquoi la Chine est dotée de nombreux aéroports, tant pour les passagers que pour le fret aérien.
 
   Les choix des pays comme le Canada sont liés aux raisons géographiques. Ces infrastructures sont essentielles pour relier les régions éloignées et faciliter les déplacements internes.Le nombre important d'aéroports fermés et l'utilisation des hydravions au Canada peuvent être attribués à la géographie vaste et diversifiée du pays, à son climat rigoureux, à la dispersion de sa population dans des zones isolées, et à des considérations économiques et pratiques.
@@ -64,21 +64,28 @@ Ces facteurs se combinent pour expliquer pourquoi la Chine est dotée de nombreu
 Les aéroports fermés, quant à eux, reflètent la baisse de la demande pour des installations dans des zones peu peuplées et éloignées.
 
   C'est l'exemple de la Russie ou l'Australie qui dans notre n'avaient pas pesé soit à cause de la non prise en compte d'un grand nombre de leurs aeroports soit à leurs faibles proportions comparées à celle du Canada.
-Nous avons egalement des pays qui ont developpé un grand nombre d'heliports et des petits aeroports en l'occurence le Japon et la Coree du Sud.ces infrastructures sont également principalement développées pour des raisons civiles et économiques, mais il y a aussi des considérations militaires indirectes. Le Japon et la Corée du Sud ont des zones urbaines très densément peuplées, notamment à Tokyo, Osaka, et Séoul, et l'espace pour construire des aéroports traditionnels est très limité. De plus, leurs terrains sont souvent montagneux, ce qui complique davantage l’expansion des grandes infrastructures.
+Nous avons egalement des pays qui ont developpé un grand nombre d'heliports et des petits aeroports en l'occurence le Japon et la Coree du Sud.ces infrastructures sont également principalement développées pour des raisons civiles et économiques, mais il y a aussi des considérations militaires indirectes.Le Japon et la Corée du Sud ont des zones urbaines très densément peuplées, notamment à Tokyo, Osaka, et Séoul, et l'espace pour construire des aéroports traditionnels est très limité.
 
-  Les héliports et les petits aéroports permettent de relier rapidement des zones urbaines ou des régions difficiles d’accès sans nécessiter de vastes espaces. En raison de la vulnérabilité du Japon aux catastrophes naturelles (comme les tsunamis et les séismes), les héliports sont une infrastructure stratégique pour les secours en cas de catastrophes, facilitant l'acheminement rapide de secours, de nourriture et de fournitures.
+  De plus, leurs terrains sont souvent montagneux, ce qui complique davantage l’expansion des grandes infrastructures.
+
+  Les héliports et les petits aéroports permettent de relier rapidement des zones urbaines ou des régions difficiles d’accès sans nécessiter de vastes espaces.En raison de la vulnérabilité du Japon aux catastrophes naturelles (comme les tsunamis et les séismes), les héliports sont une infrastructure stratégique pour les secours en cas de catastrophes, facilitant l'acheminement rapide de secours, de nourriture et de fournitures.
 En fin, nous avons les Etats unis qui presentent toutes les caracteristiques presentées.
-Dans ce pays, le developpement de tous les types d'aeroports sont entrepris pour des raisons économiques (la plus grande economique en terme de PIB), militaires(la plus grande puuissance militaire) mais egalement pour des raisons sociaux(comme la lutte contre le feu de brousse, tsunami...)
+Dans ce pays, le developpement de tous les types d'aeroports sont entrepris pour des raisons économiques(la plus grande economique en terme de PIB), militaires(la plus grande puuissance militaire) mais egalement pour des raisons sociaux(comme la lutte contre le feu de brousse, tsunami...)
 
 # **Section 2: L'impact des revenus nationaux sur les infrastructures aeroportuaires**
 
-Pour étudier l'impact des recenus nationaux sur les infrastructures aeroportuaires, nous avons combiné plusieurs ensembles de données sur les aéroports, les codes ISO (pour utiliser comme un clé pour combiner les data), les revenus nationales par habitant (pour évaluer la richesse économique des pays) et le trafic de passagers dans top 50 aéroports (données spécifiques aux 50 principaux aéroports extraites de Wikipedia, en raison de limitations d’accès aux données complètes).
+  L'Analyse en Composantes Principales (ACP) est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information.
+Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
+Pour cette étude, nous avons combiné plusieurs ensembles de données sur les aéroports, les codes ISO (pour utiliser comme un clé pour combiner les data), les revenus nationales par habitant (pour évaluer la richesse économique des pays) et le trafic de passagers dans top 50 aéroports (données spécifiques aux 50 principaux aéroports extraites de Wikipedia, en raison de limitations d’accès aux données complètes).
 
-  En utilisant les variables sur les revenus, les longeurs et largeurs de pistes et les données sur le nombre des passagers, nous avons cherché à explorer les relations entre ces variables afin de déterminer si les pays les plus riches investissent davantage dans leurs aéroports et si cela se traduit par un trafic plus grand. 
+  En utilisant les variables sur les revenus, les longeurs et largeurs de pistes et les données sur le nombre des passagers, nous avons cherché à explorer les relations entre ces variables afin de déterminer si les pays les plus riches investissent davantage dans leurs aéroports et si cela se traduit par un trafic plus grand.
+L’ACP révèle que les deux premières composantes principales expliquent 69,08% de la variance totale, ce qui permet de capturer efficacement les principales tendances des données.
 
   L’analyse visuelle met en évidence une différence marquée entre les 50 top aéroports et l’ensemble des 75 000 aéroports mondiaux.
-Les grandes infrastructures, notamment des pistes plus longues, sont concentrées dans les principaux aéroports, tandis que la majorité des aéroports mondiaux présentent des pistes plus courtes et homogènes. Cela signifie que les top aéroports ont des pistes plus longues, ce qui indique plusieurs observations possibles : leurs pistes sont conçues pour les avions transcontinentaux qui ont besoin de pistes plus longues pour décoller et atterrir ; ils investissent davantage dans l'infrastructure pour construire des « hubs » pour toutes sortes de vols.
+Les grandes infrastructures, notamment des pistes plus longues, sont concentrées dans les principaux aéroports, tandis que la majorité des aéroports mondiaux présentent des pistes plus courtes et homogènes.
+Cela signifie que les top aéroports ont des pistes plus longues, ce qui indique plusieurs observations possibles : leurs pistes sont conçues pour les avions transcontinentaux qui ont besoin de pistes plus longues pour décoller et atterrir ; ils investissent davantage dans l'infrastructure pour construire des « hubs » pour toutes sortes de vols.
 
+  Les graphiques des variables et des individus confirment une corrélation positive entre le revenu national et le nombre de passagers.
 Les pays les plus riches développent généralement de grandes infrastructures aéroportuaires pour répondre à une demande accrue en transport aérien.
 Toutefois, des exceptions notables apparaissent :\
 - Certains pays à revenu limité enregistrent un trafic élevé, souvent grâce à leur rôle de hubs régionaux ou à leur dépendance au tourisme.\
@@ -89,14 +96,15 @@ Cette analyse pourra donc être améliorée à l'avenir.
 
 # **Conclusion**
 
-  Les résultats de l’ACP soulignent une relation nuancée entre la richesse, les infrastructures et le transport aérien. Bien que les pays les plus riches investissent généralement dans des infrastructures aéroportuaires et connaissent des volumes de trafic plus élevés, les écarts par rapport à ce schéma, comme la présence d’observations atypiques, suggèrent l’influence d’autres facteurs.
-La localisation géographique, les politiques publiques, la connectivité aérienne ou la dépendance au tourisme pourraient tous contribuer à ces variations. Une étude approfondie de ces anomalies permettrait de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les mouvements de passagers.
-Pour aller plus loin, une analyse approfondie des outliers et des facteurs externes s’avère nécessaire. De plus, l’utilisation d’un ensemble de données plus complet, incluant un plus grand nombre d’aéroports, permettrait de confirmer ces observations et d’affiner les conclusions de cette étude.
-En resumé, nous pouvons noter que le choix du developpement se base sur les questions politiques du pays pour repondre plus au besoin que presentent les pays. Ce choix est une combinaison de plusieurs facteurs économiques, politiques et sociaux.
+  Les résultats de l’ACP soulignent une relation nuancée entre la richesse, les infrastructures et le transport aérien.Bien que les pays les plus riches investissent généralement dans des infrastructures aéroportuaires et connaissent des volumes de trafic plus élevés, les écarts par rapport à ce schéma, comme la présence d’observations atypiques, suggèrent l’influence d’autres facteurs.
+La localisation géographique, les politiques publiques, la connectivité aérienne ou la dépendance au tourisme pourraient tous contribuer à ces variations.
+Une étude approfondie de ces anomalies permettrait de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les mouvements de passagers.
+Pour aller plus loin, une analyse approfondie des outliers et des facteurs externes s’avère nécessaire.
+De plus, l’utilisation d’un ensemble de données plus complet, incluant un plus grand nombre d’aéroports, permettrait de confirmer ces observations et d’affiner les conclusions de cette étude.
+En resumé, nous pouvons noter que le choix du developpement se base sur les questions politiques du pays pour repondre plus au besoin que presentent les pays.
+Ce choix est une combinaison de plusieurs facteurs économiques, politiques et sociaux.
 
 # **Annexe**
-
-## L'AFC
 
   L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives.
 Cela nous permet de visualiser et d'interpréter les relations entre les lignes et les colonnes d'un tableau de contingence.Dans notre cas,nous allons analyser le tableau de contingence avec les differents pays representés en ligne et les types d'aeroports en colonne.
@@ -443,8 +451,6 @@ La politique aéroportuaire du Canada et de la Chine répond à des besoins et �
 Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées.
 La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique.
 
-## L'ACP
-
   La deuxième partie concerne l'analyse en Composantes Principales (ACP) qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information.
   Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
 
@@ -593,7 +599,6 @@ La composante 2 contribue également de manière significative, bien qu’à un 
 Airports : <https://www.kaggle.com/datasets/danishjmeo/world-airports-data> 
 
 Top airports : <https://en.wikipedia.org/wiki/List_of_busiest_airports_by_passenger_traffic>
-
 ISO codes : <https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes> 
 
 National Income : <https://wid.world/data/>
