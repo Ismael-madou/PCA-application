@@ -536,12 +536,8 @@ data_for_pca[data_for_pca$name == "Incheon International Airport", "National.inc
 hist(data_for_pca$National.income, main="Distribution de National Income", xlab="National Income")
 ```
 
-  L'analyse univariée de la variable National Income révèle une distribution fortement asymétrique, avec la majorité des observations concentrées dans les tranches de revenu les plus basses.
-La raison en est le grand nombre d'aéroports asiatiques présents dans la liste (Chine, Inde, Philippines).
-Dans ces pays, le revenu national par habitant est faible, ce qui contribue à l'asymétrie du graphique.
-Une proportion significative du jeu de données se situe entre 20 000 et 60 000, comme le montrent les barres les plus hautes.
-  En revanche, très peu d'observations dépassent la tranche des 80 000, ce qui met en évidence une disparité.
-Cela suggère que la majorité des entités du jeu de données appartiennent à des pays ou régions ayant des revenus nationaux modestes, tandis qu'une minorité représente des économies à revenu élevé.
+  L'analyse univariée de la variable National Income révèle une distribution fortement asymétrique, avec la majorité des observations concentrées dans les tranches de revenu les plus basses. La raison en est le grand nombre d'aéroports asiatiques présents dans la liste (Chine, Inde, Philippines). Dans ces pays, le revenu national par habitant est faible, ce qui contribue à l'asymétrie du graphique. Une proportion significative du jeu de données se situe entre 20 000 et 60 000, comme le montrent les barres les plus hautes.
+  En revanche, très peu d'observations dépassent la tranche des 80 000, ce qui met en évidence une disparité. Cela suggère que la majorité des entités du jeu de données appartiennent à des pays ou régions ayant des revenus nationaux modestes, tandis qu'une minorité représente des économies à revenu élevé.
 
 ```{r}
 boxplot(data_for_pca$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
