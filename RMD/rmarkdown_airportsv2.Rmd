@@ -7,7 +7,7 @@ geometry:
   - right=2cm
   - top=2.5cm
   - bottom=2.5cm
-title: "Projet d'analyse des données sur les aéroports"
+title: "Analyse des données sur les infrastructures aéroportuaires"
 
 author: 
 - Ismaël Madou Gagi Grema  
@@ -105,6 +105,8 @@ En resumé, nous pouvons noter que le choix du developpement se base sur les que
 Ce choix est une combinaison de plusieurs facteurs économiques, politiques et sociaux.
 
 # **Annexe**
+
+## L'AFC
 
   L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives.
 Cela nous permet de visualiser et d'interpréter les relations entre les lignes et les colonnes d'un tableau de contingence.Dans notre cas,nous allons analyser le tableau de contingence avec les differents pays representés en ligne et les types d'aeroports en colonne.
@@ -451,6 +453,8 @@ La politique aéroportuaire du Canada et de la Chine répond à des besoins et �
 Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées.
 La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de nouveaux aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique.
 
+## L'ACP
+
   La deuxième partie concerne l'analyse en Composantes Principales (ACP) qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information.
   Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
 
@@ -599,6 +603,7 @@ La composante 2 contribue également de manière significative, bien qu’à un 
 Airports : <https://www.kaggle.com/datasets/danishjmeo/world-airports-data> 
 
 Top airports : <https://en.wikipedia.org/wiki/List_of_busiest_airports_by_passenger_traffic>
+
 ISO codes : <https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes> 
 
 National Income : <https://wid.world/data/>
