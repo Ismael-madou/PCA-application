@@ -1,5 +1,5 @@
 #chargement des données 
-data <- read.csv("C:/Users/MGI/Desktop/projet-analysis-homework/World_Airports.csv", sep = ";")
+data <- read.csv("data/World_Airports.csv", sep = ";")
 
 #statistiques descriptives 
 summary(data)

@@ -139,9 +139,6 @@ res_pca <- PCA(X = pca_data_scaled,
 plot.PCA(res_pca, axes = c(1,2), choix = "ind")
 plot.PCA(res_pca, axes = c(1,2), choix = "var")
 
-res_pca$eig
-barplot(res_pca$eig[,1])
 
-PCAshiny(X = res_pca)
 
 
