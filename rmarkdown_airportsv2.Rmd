@@ -1,38 +1,39 @@
 ---
-documentclass: "compterendu"
-lang: true
-babel-lang: "french"
-geometry: 
-  - left=2cm
-  - right=2cm
-  - top=2.5cm
-  - bottom=2.5cm
 title: "Analyse des données sur les infrastructures aéroportuaires"
-
-author: 
-- Ismaël Madou Gagi Grema  
-- Nikita Pomozov  
-
-email: 
-  - ismael.madou-gagi-grema@etudiant.univ-reims.fr
-  - nikita.pomozov@etudiant.univ-reims.fr
-output: 
-  html_document: 
+author:
+- Ismaël Madou Gagi Grema
+- Nikita Pomozov
+date: "2024-12-18"
+output:
+  pdf_document:
+    toc: true
+  html_document:
     theme: yeti
     toc: true
     toc_float: true
-date: "2024-12-18"
-abstract: "La problématique est d'appréhender l'impact du revenu national sur les infrastructures aéroportuaires ainsi que les choix des différents pays dans le développement des infrastructures aéroportuaires."
-
-git: "https://github.com/pregnault/urcadown"
-database: "https://data.gouv.fr"
+documentclass: compterendu
+lang: true
+email:
+- "ismael.madou-gagi-grema@etudiant.univ-reims.fr"
+- "nikita.pomozov@etudiant.univ-reims.fr"
+geometry:
+- left=2cm
+- right=2cm
+- top=2.5cm
+- bottom=2.5cm
+babel-lang: french
+abstract: La problématique est d'appréhender l'impact du revenu national sur les infrastructures
+  aéroportuaires ainsi que les choix des différents pays dans le développement des
+  infrastructures aéroportuaires.
+git: https://github.com/pregnault/urcadown
+database: https://data.gouv.fr
 anac: "2024-2025"
-diplome: "Master 1 Statistique pour l'évaluation et la prévision."
-module: "SEO0702"
-enseig: "Philippe Regnault"
+diplome: Master 1 Statistique pour l'évaluation et la prévision.
+module: SEO0702
+enseig: Philippe Regnault
 evaluation: "Compte-rendu d'analyse"
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: sentence
 ---
 
@@ -40,72 +41,113 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# **Les acronyms des pays utilisés pour l'analyse**
+
+### Pays
+| Acronyme | Pays                |
+|----------|---------------------|
+| AE       | Emirats Arabes Unis |
+| BR       | Brésil              |
+| CA       | Canada              |
+| CN       | Chine               |
+| JP       | Japon               |
+| KR       | Corée du Sud        |
+| US       | États-Unis          |
+
+### Types d'aéroports
+| Acronyme        | Type d'aéroport       |
+|-----------------|-----------------------|
+| Small_airports  | Petit aéroport        |
+| medium_airport  | Moyen aéroport        |
+| large_airport   | Grand aéroport        |
+| heliport        | Héliport              |
+| closed          | Fermé                 |
+| balloonport     | Port de ballons       |
+| seaplane_base   | Base d'hydravions     |
+
 # **Introduction**
 
-  Les aéroports jouent un rôle central dans le transport aérien mondial, facilitant les échanges internationaux, le tourisme, les affaires et le commerce. En tant qu'infrastructures stratégiques, leur gestion et leur développement sont essentiels pour les économies locales et mondiales.
-  
-  Cette étude se concentre sur une base de données des aéroports du monde, qui réunit des informations détaillées sur la localisation, le type et les caractéristiques des aéroports répartis à travers différents pays.
-À travers cette analyse, nous explorerons des variables clés telles que le type d'aéroport (grands, petits, moyens, héliports , etc.), les codes ISO des pays d'une part avec la methode d'AFC pour comprendre les choix des pays dans le developpment des infrastructures aroportuaires et de l'autre part, nous allons etudier les variables comme le revenu national(qu'on a récuperée sur une autre base de donnée puis on l'a fusionné avec la presente base de donnée),les passagers, les longueurs des pistes ainsi que les largeurs des pistes avec la methode de l'ACP pour evaluer l'impact des revenus nationaux sur le developpemt de ces infrastructures.
+  Les aéroports jouent un rôle central dans le transport aérien mondial, facilitant les échanges internationaux, le tourisme, les affaires et le commerce. En tant qu’infrastructures stratégiques, leur gestion et leur développement sont essentiels pour les économies locales et mondiales.
 
-  La problèmatique est de comprendre le choix des pays dans la construction des infrastructures aéroportuaires mais egalement l'impact des revenus nationaux dans la mise en oeuvre des constructions de ces infrastructures.
-Cela nous permettra de comprendre si les pays les plus riches investissent davantage dans les aéroports et si cela se traduit par une augmentation du nombre des passagers.
+  Cette étude se concentre sur une base de données regroupant des informations détaillées sur les aéroports du monde, incluant leur localisation, leur type et leurs caractéristiques, répartis à travers différents pays.
+
+  À travers cette analyse, nous explorerons des variables clés telles que le type d’aéroport (grands, petits, moyens, héliports, etc.) et les codes ISO des pays en utilisant la méthode d’AFC, afin de comprendre les choix des pays dans le développement des infrastructures aéroportuaires. D’autre part, nous étudierons des variables telles que le revenu national (provenant d’une autre base de données fusionnée avec la présente base), le nombre de passagers, la longueur des pistes ainsi que leur largeur, en utilisant la méthode de l’ACP pour évaluer l’impact des revenus nationaux sur le développement de ces infrastructures.
+
+  La problématique est de comprendre les choix des pays dans la construction des infrastructures aéroportuaires, mais également d’analyser l’impact des revenus nationaux sur la mise en œuvre de ces infrastructures. Cela nous permettra de déterminer si les pays les plus riches investissent davantage dans les aéroports et si cela se traduit par une augmentation du nombre de passagers.
 
 # **Section 1: les choix des pays dans le developpement des infrastructures**
 
-  A ce niveau, nous avons rassemblé les pays qui ont un nombre d'aéroports inferieur à 2OO dans une classe appélée "autres". Ce qui nous donne dans  ce cas 38 pays au lieu de 245. Ceci a été fait suite à la remarque apportée par Mr Regnault qui stipule que l'AFC a tendance à biaiser les resultats en donnant un poids plus important aux pays qui ont un nombre faible d'aéroports.
+  À ce niveau, nous avons regroupé les pays ayant un nombre d’aéroports inférieur à 200 dans une classe appelée “autres”. Cela nous donne, dans ce cas, 38 pays au lieu de 245. Cette modification a été réalisée suite à une remarque de M. Regnault, qui a souligné que l’AFC tend à biaiser les résultats en attribuant un poids disproportionné aux pays ayant un faible nombre d’aéroports.
 
-  Le choix des pays dans le developpemt des infrastructures aéroportuaires depend de plusieurs facteurs qui peuvent etre liés à l'economie, la politique, la géopolitique mais aussi pour des raisons purement sociaux.
+  Le choix des pays dans le développement des infrastructures aéroportuaires dépend de plusieurs facteurs, qui peuvent être liés à l’économie, à la politique, à la géopolitique, mais aussi à des raisons purement sociales.
 Les pays développés ou à revenu élevé investissent généralement massivement dans leurs infrastructures aéroportuaires en raison de leur forte demande de transport aérien et de leur rôle central dans le commerce mondial.
 
-  Par exemple, des pays comme la Chine et les Etats Unis, d'après les resultats de nos analyses, possèdent un grand nombre des moyens aéroports en raison de plusieurs facteurs. Leur vaste taille géographique et leur population importante créent une forte demande pour un réseau aérien étendu. Les États-Unis, avec une économie développée et une politique de décentralisation, ont de nombreux aéroports régionaux pour desservir des villes moyennes et petites. En Chine, l'urbanisation rapide et la croissance économique ont conduit à la construction d'aéroports dans des régions moins accessibles. Ces deux pays investissent massivement dans les infrastructures pour connecter efficacement leurs vastes territoires. Le tourisme international et les échanges commerciaux renforcent également la nécessité de ces aéroports. Les États-Unis et la Chine, grâce à leur réseau aérien dense, facilitent les déplacements internes et internationaux. Le développement rapide de la Chine dans les dernières décennies a particulièrement accentué cette dynamique.
+  Par exemple, des pays comme la Chine et les États-Unis, d’après les résultats de nos analyses, possèdent un grand nombre de moyens aéroports en raison de plusieurs facteurs. Leur vaste taille géographique et leur population importante génèrent une forte demande pour un réseau aérien étendu.
 
-  Le nombre élevé d'héliports en Corée du Sud et au Japon s'explique par plusieurs facteurs. Ces pays, très urbanisés, ont une forte densité de population dans leurs grandes villes comme Tokyo et Séoul, où l'espace est limité. L’hélicoptère permet d’offrir une solution de transport rapide et flexible, surtout dans des zones difficiles d'accès. La géographie particulière, notamment les montagnes et les îles du Japon, rend l'utilisation des infrastructures terrestres coûteuse et complexe. Les héliports facilitent également l'accès aux zones rurales ou isolées. De plus, ces pays sont souvent confrontés à des catastrophes naturelles, ce qui rend les hélicoptères essentiels pour les opérations de secours d'urgence. Le Japon et la Corée du Sud ont aussi investi dans des technologies de pointe pour rendre ces infrastructures plus sûres et efficaces. Les héliports sont utilisés à la fois pour des fins commerciales, médicales et militaires. Enfin, la forte demande de services aériens dans des environnements urbains denses renforce leur présence.
+  Les États-Unis, avec une économie développée et une politique de décentralisation, disposent de nombreux aéroports régionaux pour desservir des villes moyennes et petites. En Chine, l’urbanisation rapide et la croissance économique ont conduit à la construction d’aéroports dans des régions moins accessibles. Ces deux pays investissent massivement dans les infrastructures pour connecter efficacement leurs vastes territoires.
+
+  Le tourisme international et les échanges commerciaux renforcent également la nécessité de ces aéroports. Grâce à leur réseau aérien dense, les États-Unis et la Chine facilitent les déplacements internes et internationaux. Enfin, le développement rapide de la Chine au cours des dernières décennies a particulièrement accentué cette dynamique.
+
+  Le nombre élevé d’héliports en Corée du Sud et au Japon s’explique par plusieurs facteurs. Ces pays, fortement urbanisés, présentent une densité de population élevée dans leurs grandes villes, telles que Tokyo et Séoul, où l’espace est limité. Les hélicoptères offrent une solution de transport rapide et flexible, particulièrement utile dans les zones difficiles d’accès.
+
+  La géographie particulière de ces pays, notamment les montagnes et les nombreuses îles du Japon, rend l’utilisation des infrastructures terrestres coûteuse et complexe. Les héliports permettent de faciliter l’accès aux zones rurales ou isolées. Par ailleurs, ces nations sont fréquemment confrontées à des catastrophes naturelles, ce qui rend les hélicoptères indispensables pour les opérations de secours d’urgence.
+
+  Le Japon et la Corée du Sud ont également investi dans des technologies de pointe pour améliorer la sécurité et l’efficacité de ces infrastructures. Les héliports sont utilisés à des fins variées, notamment commerciales, médicales et militaires. Enfin, la forte demande de services aériens dans des environnements urbains densément peuplés renforce leur développement et leur utilisation.
   
-  Le nombre élevé d'aéroports fermés et d'hydravions au Canada et au Brésil s'explique par des facteurs géographiques et logistiques. Ces deux pays sont vastes, avec de nombreuses régions isolées difficiles d'accès par route. En raison de la faible densité de population et des coûts élevés pour maintenir des infrastructures aériennes dans certaines zones, de nombreux petits aéroports ont été fermés. Les hydravions, en revanche, représentent une solution pratique et économique pour atteindre ces zones reculées, notamment dans les régions montagneuses du Canada et l'Amazonie au Brésil. Ces aéronefs sont adaptés aux conditions géographiques spécifiques, comme les lacs et rivières, et permettent de desservir efficacement les communautés isolées. De plus, au Canada, les hydravions sont couramment utilisés pour des services de transport et d'urgence dans des régions difficiles d'accès. Ainsi, les aéroports fermés sont remplacés par ces solutions aériennes plus flexibles et adaptées.
+  Le nombre élevé d’aéroports fermés et d’hydravions au Canada et au Brésil s’explique par des facteurs géographiques et logistiques. Ces deux pays, caractérisés par leur immense territoire, comptent de nombreuses régions isolées et difficiles d’accès par voie terrestre.
 
- De plus, nous avons remarqué que Les États possèdent des proportions similaires de différents types d'aéroports en raison de la diversité de leurs besoins en transport. Les grands aéroports desservent les voyages internationaux, tandis que les moyens et petits aéroports répondent aux déplacements domestiques ou régionaux. De plus, des pays vastes et géographiquement variés, comme les États-Unis ou la Chine, nécessitent une combinaison d'aéroports pour connecter efficacement leurs zones urbaines, rurales et isolées. Cette diversité permet également de répondre à des besoins spécifiques, comme les transports d'urgence ou l'accès à des zones éloignées, assurant une couverture complète et flexible du réseau aérien.
+  En raison de la faible densité de population dans certaines zones et des coûts élevés pour maintenir des infrastructures aériennes, de nombreux petits aéroports ont été fermés. Les hydravions, en revanche, offrent une solution pratique et économique pour relier ces régions reculées. Au Canada, ils sont particulièrement adaptés aux conditions géographiques, comme les lacs et rivières, tandis qu’au Brésil, ils jouent un rôle crucial dans l’Amazonie, où le réseau routier est limité.
+
+  Ces aéronefs permettent de desservir efficacement les communautés isolées tout en s’intégrant aux contraintes géographiques locales. Au Canada, les hydravions sont également largement utilisés pour des services de transport et d’urgence dans des zones difficiles d’accès. Ainsi, dans les deux pays, les hydravions remplacent efficacement les petits aéroports fermés, offrant une solution aérienne plus flexible et adaptée aux besoins locaux.
+
+De plus, nous avons observé que certains États, comme les États-Unis et la Chine, possèdent des proportions similaires de différents types d’aéroports, reflétant la diversité de leurs besoins en transport. Les grands aéroports sont principalement destinés aux voyages internationaux, tandis que les aéroports moyens et petits répondent aux déplacements domestiques ou régionaux.
+
+Dans des pays vastes et géographiquement variés, cette diversité est essentielle pour connecter efficacement les zones urbaines, rurales et isolées. Elle permet également de répondre à des besoins spécifiques, tels que le transport d’urgence ou l’accès à des régions éloignées. Cette combinaison assure une couverture complète et flexible du réseau aérien, adaptée à des contextes variés et à des enjeux économiques, sociaux et géographiques.
 
 # **Section 2: L'impact des revenus nationaux sur les infrastructures aeroportuaires**
 
-Pour étudier l'impact des recenus nationaux sur les infrastructures aeroportuaires, nous avons combiné plusieurs ensembles de données sur les aéroports, les codes ISO (pour utiliser comme un clé pour combiner les data), les revenus nationales par habitant (pour évaluer la richesse économique des pays) et le trafic de passagers dans top 50 aéroports (données spécifiques aux 50 principaux aéroports extraites de Wikipedia, en raison de limitations d’accès aux données complètes).
+  Pour analyser l’impact des revenus nationaux sur les infrastructures aéroportuaires, nous avons combiné plusieurs ensembles de données. Cela inclut des informations sur les aéroports (localisation, taille et caractéristiques), les codes ISO des pays (utilisés comme clés pour fusionner les ensembles), les revenus nationaux par habitant (comme indicateur de la richesse économique) et le trafic annuel de passagers des 50 principaux aéroports (extraits de Wikipedia en raison de limitations d’accès aux données complètes sur tous les aéroports).
 
-  En utilisant les variables sur les revenus, les longeurs et largeurs de pistes et les données sur le nombre des passagers, nous avons cherché à explorer les relations entre ces variables afin de déterminer si les pays les plus riches investissent davantage dans leurs aéroports et si cela se traduit par un trafic plus grand. 
+  En utilisant des variables comme les revenus nationaux, la longueur et la largeur des pistes, ainsi que le nombre de passagers, nous avons cherché à comprendre les relations entre ces facteurs pour déterminer si les pays les plus riches investissent davantage dans leurs aéroports et si ces investissements se traduisent par un trafic aérien accru.
 
-  L’analyse visuelle met en évidence une différence marquée entre les 50 top aéroports et l’ensemble des 75 000 aéroports mondiaux.
-Les grandes infrastructures, notamment des pistes plus longues, sont concentrées dans les principaux aéroports, tandis que la majorité des aéroports mondiaux présentent des pistes plus courtes et homogènes. Cela signifie que les top aéroports ont des pistes plus longues, ce qui indique plusieurs observations possibles : leurs pistes sont conçues pour les avions transcontinentaux qui ont besoin de pistes plus longues pour décoller et atterrir ; ils investissent davantage dans l'infrastructure pour construire des « hubs » pour toutes sortes de vols.
+  L’analyse visuelle montre des différences notables entre les 50 principaux aéroports mondiaux et les 75 000 aéroports dans leur ensemble. Les grandes infrastructures, comme des pistes plus longues et plus larges, sont principalement concentrées dans ces grands aéroports. Cela s’explique par plusieurs observations :
+  - Les pistes plus longues sont nécessaires pour accueillir des avions transcontinentaux, qui nécessitent des distances supplémentaires pour décoller et atterrir.
+	- Ces grands aéroports agissent comme des hubs internationaux, nécessitant des investissements massifs dans les infrastructures pour répondre aux flux croissants de passagers et de marchandises.
 
-Les pays les plus riches développent généralement de grandes infrastructures aéroportuaires pour répondre à une demande accrue en transport aérien.
-Toutefois, des exceptions notables apparaissent :\
-- Certains pays à revenu limité enregistrent un trafic élevé, souvent grâce à leur rôle de hubs régionaux ou à leur dépendance au tourisme.\
-- À l’inverse, des pays avec des infrastructures avancées présentent un trafic faible, suggérant des inefficacités ou une demande insuffisante.
+  Les données confirment que les pays les plus riches tendent à développer de grandes infrastructures aéroportuaires pour répondre à une demande accrue en transport aérien. Cependant, certaines exceptions apparaissent, révélant des schémas intéressants :
+	- Certains pays à revenu limité enregistrent un trafic élevé, souvent grâce à leur rôle de hubs régionaux ou à leur dépendance au tourisme, comme les Maldives ou des pays d’Afrique de l’Est.
+	- À l’inverse, certains pays comme le Bresil et la Chine disposant d’infrastructures avancées affichent un trafic passagers relativement faible, ce qui pourrait indiquer des inefficacités dans la gestion de ces aéroports ou une faible demande due à des facteurs économiques, sociaux ou géopolitiques. 
 
-  Important de noter : pour une analyse plus approfondie, nous avons besoin de données sur un plus grand nombre d'aéroports, et pas seulement sur les plus grands.
-Cette analyse pourra donc être améliorée à l'avenir.
+Notre analyse a été limitée par l’accès restreint aux données détaillées sur l’ensemble des aéroports mondiaux. En conséquence, les conclusions actuelles s’appuient principalement sur les 50 top aéroports. Pour une compréhension plus complète des tendances, il serait essentiel de disposer de données couvrant une plus large gamme d’aéroports, y compris ceux situés dans des pays en développement ou dans des régions peu accessibles.
 
 # **Conclusion**
 
-  Les résultats de l’ACP soulignent une relation nuancée entre la richesse, les infrastructures et le transport aérien. Bien que les pays les plus riches investissent généralement dans des infrastructures aéroportuaires et connaissent des volumes de trafic plus élevés, les écarts par rapport à ce schéma, comme la présence d’observations atypiques, suggèrent l’influence d’autres facteurs.
-La localisation géographique, les politiques publiques, la connectivité aérienne ou la dépendance au tourisme pourraient tous contribuer à ces variations. Une étude approfondie de ces anomalies permettrait de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les mouvements de passagers.
-Pour aller plus loin, une analyse approfondie des outliers et des facteurs externes s’avère nécessaire. De plus, l’utilisation d’un ensemble de données plus complet, incluant un plus grand nombre d’aéroports, permettrait de confirmer ces observations et d’affiner les conclusions de cette étude.
-En resumé, nous pouvons noter que le choix du developpement se base sur les questions politiques du pays pour repondre plus au besoin que presentent les pays. Ce choix est une combinaison de plusieurs facteurs économiques, politiques et sociaux.
+  Les résultats de l’analyse mettent en évidence une relation complexe entre la richesse nationale, les infrastructures aéroportuaires et le transport aérien. Si les pays les plus riches investissent généralement davantage dans leurs infrastructures aéroportuaires, ce qui se traduit par des volumes de trafic plus élevés, certaines exceptions notables suggèrent l’influence de facteurs supplémentaires.
+
+  Des éléments tels que la localisation géographique, les politiques publiques, la connectivité aérienne ou encore la dépendance au tourisme jouent un rôle déterminant dans ces variations. Ces facteurs soulignent la nécessité d’examiner de manière approfondie les anomalies et les écarts par rapport au schéma général, afin de mieux comprendre la dynamique complexe entre le développement économique, les infrastructures aéroportuaires et les flux de passagers.
+
+  Pour aller plus loin, une analyse détaillée des outliers et des facteurs externes s’avère indispensable. De plus, l’utilisation d’un ensemble de données plus exhaustif, incluant un plus grand nombre d’aéroports, serait cruciale pour confirmer ces observations et affiner les conclusions.
+
+  En résumé, le développement des infrastructures aéroportuaires reflète souvent des choix stratégiques basés sur des besoins spécifiques propres à chaque pays. Ces décisions résultent d’une combinaison de facteurs économiques, politiques et sociaux, permettant aux nations d’adapter leurs investissements pour répondre aux exigences de leurs territoires et de leurs populations.
 
 # **Annexe**
 
 ## L'AFC
 
-  L'AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives.
-Cela nous permet de visualiser et d'interpréter les relations entre les lignes et les colonnes d'un tableau de contingence.Dans notre cas,nous allons analyser le tableau de contingence avec les differents pays representés en ligne et les types d'aeroports en colonne.
-La première partie de notre methode AFC concerne l'analyse descriptive.
-cette analyse descriptive va nous permettre de résumer de façon simple et concise l'ensemble des données.
+  L’AFC (Analyse Factorielle des Correspondances) est une méthode statistique exploratoire utilisée pour analyser des tableaux de contingence, généralement dans le cadre de variables qualitatives.
+Elle permet de visualiser et d’interpréter les relations entre les lignes et les colonnes d’un tableau de contingence. Dans notre cas, nous allons analyser le tableau de contingence avec les différents pays représentés en ligne et les types d’aéroports en colonne.
+
+La première partie de notre méthode d’AFC concerne l’analyse descriptive.
+Cette analyse descriptive nous permettra de résumer de façon simple et concise l’ensemble des données.
 
 ```{r,echo=FALSE}
 # Chargement des données
 data <- read.csv("data/World_Airports.csv", sep = ";")
 ```
 
-  L'analyse univariée se concentre sur l'étude d'une seule variable à la fois, qu'elle soit quantitative ou qualitative.
-L'objectif de cette analyse est de décrire les caractéristiques de la variable et de comprendre sa distribution.
-Elle permet de donner une première idée de la structure des données avant d'aller plus loin dans l'analyse bivariée ou multivariée.
+  L’analyse univariée se concentre sur l’étude d’une seule variable à la fois, qu’elle soit quantitative ou qualitative.
+L’objectif de cette analyse est de décrire les caractéristiques de la variable et de comprendre sa distribution.
+Elle permet d’obtenir une première idée de la structure des données avant de passer à une analyse bivariée ou multivariée.
 
 ```{r, include=FALSE}
 library(knitr)
@@ -136,17 +178,15 @@ kable(missing_values, format = "latex",
   row_spec(0, bold = TRUE)  # Mettre en gras l'en-tête
 ```
 
-  Les resultats montrent que presque toutes les variables n'ont pas de valeurs manquantes à l'exception de X,Y,frequency, runway_length_ft, runway_width_ft, runway_lighted, runway_closed.
-Pour notre part, nous nous attarderons sur les variables comme "iso_country".
+  Les résultats montrent que presque toutes les variables n’ont pas de valeurs manquantes, à l’exception de X, Y, frequency, runway_length_ft, runway_width_ft, runway_lighted et runway_closed.
+Pour notre part, nous nous concentrerons sur des variables telles que “iso_country”.
 
 ```{r,echo=FALSE}
 table(data$type)
 
 ```
 
-La première variable comporte sept types d'aeroports.
-le Nombre d'occurence de chaque type d'aeroports varie d'un pays à un autre en fonction des choix d'orientations de ces derniers.
-Pour des pays qui ont des penchants commerciaux ont tendance à developper les petits, moyens et grands aeroports contrairement aux pays qui ont des priorités differentes.
+  La première variable comporte sept types d’aéroports. Le nombre d’occurrences de chaque type d’aéroport varie d’un pays à l’autre en fonction des choix stratégiques de ces derniers. Les pays ayant des orientations commerciales ont tendance à développer des aéroports petits, moyens et grands, contrairement aux pays ayant d’autres priorités.
 
 ```{r, echo=FALSE}
 # Fréquences pour une variable catégorielle
@@ -155,9 +195,9 @@ frequence_iso_country <- table(data$iso_country)
 
 ```
 
-  A la suite, nous allons presenter les graphiques des variables que nous avons retenus pour effectuer l'AFC en l'occurence du type et du pays.
+  Ensuite, nous allons présenter les graphiques des variables que nous avons retenues pour effectuer l’AFC, à savoir le type d’aéroport et le pays.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE, eval = TRUE}
 # Diagramme en barres pour 'le type d'aéroport'
 barplot(frequence_type, 
         main = "Le type d'aéroport", 
@@ -166,9 +206,8 @@ barplot(frequence_type,
         ylab = "Fréquence du type")
 ```
 
-  Ce graphique nous renseigne sur la frequence des differents types d'aeroports.
-les petits aeroports sont plus nombreux et represente la plus grande partie de notre base de données.Ensuite, viennent les heliports avec une proportion moins importante. Après suit les moyens aeroports et enfin nous avons les autres types d'aeroports qui ont une faible proportion.
-
+  Ce graphique nous renseigne sur la fréquence des différents types d’aéroports. Les petits aéroports sont les plus nombreux et représentent la plus grande partie de notre base de données. Viennent ensuite les héliports, avec une proportion moins importante. Puis, suivent les aéroports moyens, et enfin, les autres types d’aéroports, qui ont une faible proportion.
+  
 ```{r, echo = FALSE, eval = TRUE}
 # Diagramme en barres pour 'iso_country' (pays)
 barplot(frequence_iso_country, 
@@ -179,7 +218,7 @@ barplot(frequence_iso_country,
 
 ```
 
-  A ce niveau, on constate que les aerports americains apparaissent trop souvent avec plus de 25OOO aeroports. C'est-à-dire que les Etats Unis ont  un nombre important des aéroports comparé aux autres pays qui ont unnombre compris entre 0 et 5000.
+  À ce niveau, on constate que les aéroports américains apparaissent très fréquemment, avec plus de 25 000 aéroports. Cela signifie que les États-Unis possèdent un nombre d’aéroports bien plus élevé que les autres pays, dont le nombre se situe généralement entre 0 et 5 000.
 
 ```{r setupcolours, eval = TRUE, echo = FALSE}
 urcalightbrown <- "#D1AD55"
@@ -197,8 +236,7 @@ sand <- "#FED976"
 shadedpurple <- "#CD7FC5"
 ```
 
-  L'analyse bivariée est une methode statistique utilisée pour examiner relation entre deux variables.
-Dans ce cas, nous pourrons etudier la relation entre le "type" et "iso_country".
+  L’analyse bivariée est une méthode statistique utilisée pour examiner la relation entre deux variables. Dans ce cas, nous allons étudier la relation entre les variables “type” et “iso_country”.
 
 ```{r, include=FALSE}
 # application de l'AFC sur tableau_contingence_is_no
@@ -213,7 +251,6 @@ library(corrplot)
 
 ```{r defdonneestemp, include=FALSE}
 donnee_temporaire <- data %>% select(type, iso_country)
-  
   
 ```
 
@@ -272,31 +309,29 @@ corrplot(matrice_corr, method = "color", type = "full",
          addCoef.col = "black")  # Ajouter les coefficients de corrélation dans le graphique
 ```
 
-  On constate une faible correlation entre les aeroports aeroports fermés, heliports d'un coté et les grands aeroports de l'autre coté.
-Cependant, On remarque aussi qu'il y'a une correlation moyenne entre les hydravions et grands avions. En plus, nous remarquons une correlation assez moyenne entre les petits et les grands aeroports mais cette correlation n'est pas importante.
-Notons aussi qu'il existe une correlation faible entre les hydravions et les moyens aeroports sans oublier de parler de la correlation moyenne entre les aeroports moyens d'une part et heliports, aeroports fermés.
-  Cela pourrait refléter la diversité des fonctions de ces aéroports (vols commerciaux, services régionaux, activités spécialisées, etc.), et il est probable que des facteurs géographiques, économiques et techniques jouent un rôle important dans la manière dont ces éléments sont interconnectés. Les grandes infrastructures (grands aéroports) semblent être relativement indépendantes des autres types d'infrastructures aéronautiques, tandis que des corrélations modérées existent entre certains types d'aéroports plus petits et spécifiques (héliports, aéroports fermés, etc.).
+  On constate une faible corrélation entre les aéroports fermés, les héliports d’une part, et les grands aéroports d’autre part. Cependant, il existe une corrélation moyenne entre les hydravions et les grands aéroports. De plus, une corrélation modérée est observée entre les petits et les grands aéroports, bien que cette corrélation ne soit pas très forte.
 
-```{r,echo=FALSE}
-# Tableau de contingence (tableau croisé)
-tableau_croise <- table(tableau_contingence_no_iso$type, tableau_contingence_no_iso$iso_country)
+  Il convient également de noter une corrélation faible entre les hydravions et les moyens aéroports. Une corrélation modérée existe aussi entre les aéroports moyens, d’une part, et les héliports ainsi que les aéroports fermés.
 
-# Test du chi-carré
-chi2_test <- chisq.test(tableau_croise)
-chi2_test
-```
-
-  Etant donné que la p-value est inferieure à 0.05, nous rejetons l'hypothése nulle.
-Cela signifie qu'il existe une relation significative entre les deux variables qualitatives que nous allons tester.
+  Cela pourrait refléter la diversité des fonctions de ces aéroports (vols commerciaux, services régionaux, activités spécialisées, etc.). Il est probable que des facteurs géographiques, économiques et techniques jouent un rôle important dans la manière dont ces types d’aéroports sont interconnectés. Les grandes infrastructures (grands aéroports) semblent être relativement indépendantes des autres types d’infrastructures aéronautiques, tandis que des corrélations modérées existent entre certains types d’aéroports plus petits et spécifiques (héliports, aéroports fermés, etc.).
 
 
-```{r,echo=FALSE}
-# Test exact de Fisher avec approximation via Monte Carlo
-fisher_test_approx <- fisher.test(tableau_croise, simulate.p.value = TRUE, B = 10000)
-fisher_test_approx
-```
+Pearson's Chi-squared test
 
-  Cela signifie que le test de Fisher teste une association bilatérale, c'est-à-dire qu'il teste si les deux variables sont significativement liées dans n'importe quelle direction, sans spécifier a priori une direction particulière pour l'association.
+data:  tableau_croise
+X-squared = 30863, df = 1458, p-value < 2.2e-16
+
+Étant donné que la p-value est inférieure à 0,05, nous rejetons l’hypothèse nulle. Cela signifie qu’il existe une relation significative entre les deux variables qualitatives que nous avons testées. En d’autres termes, les résultats suggèrent que le type d’aéroport et le pays (ou le code ISO du pays) sont liés d’une manière statistiquement significative, et cette relation mérite d’être explorée davantage.
+
+
+
+Fisher's Exact Test for Count Data with simulated p-value (based on 10000 replicates)
+
+data:  tableau_croise
+p-value = 9.999e-05
+alternative hypothesis: two.sided
+
+  Cela signifie que le test de Fisher examine une association bilatérale, c’est-à-dire qu’il teste si les deux variables sont significativement liées, sans spécifier à priori une direction particulière pour l’association.
 
 ```{r,include=FALSE}
 # Charger le package vcd
@@ -310,8 +345,7 @@ assoc_result <- assocstats(table(data$type, data$iso_country))
 assoc_result
 ```
 
-  Nous constatons encore une p-value faible, ce qui signifie qu'il existe une forte correlation entre les deux variables qualitatives.
-De plus, les variables "contigency coeff" et "Cramer's V" indiquent une association moderée.
+  Nous constatons une p-value faible, ce qui signifie qu’il existe une forte corrélation entre les deux variables qualitatives. De plus, les variables “coefficient de contingence” et “V de Cramér” indiquent une association modérée.
 
 
 ```{r,echo=FALSE}
@@ -328,8 +362,7 @@ inertie
 
 ```
 
-  Avec une statistique χ² de 30863.32, et une p-value proche de 0, vous pouvez conclure qu'il y a une forte association entre les deux variables catégorielles étudiées.
-Cette présence d'association nous permet d'expliquer une des variables en fonction de l'autre par consequent il ameliore la comprehension.
+  Avec une statistique χ² de 30863,32 et une p-value proche de 0, vous pouvez conclure qu’il existe une forte association entre les deux variables catégorielles étudiées. Cette association nous permet d’expliquer l’une des variables en fonction de l’autre, ce qui améliore la compréhension.
 
 ```{r,include=FALSE}
 # Charger les bibliothèques nécessaires
@@ -338,15 +371,18 @@ library(tidyr)
 library(ggplot2)
 ```
 
-```{r,echo=FALSE}
+```{r, include=FALSE}
 
 # Calcul des profils ligne (PL) : normalisation par ligne
 PL <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 1)
 
 # Vérification que la somme des profils ligne est égale à 1
 apply(PL, 1, sum)
+```
 
+```{r,echo=FALSE}
 # Tracer le barplot avec réduction de la taille des noms des pays
+
 barplot(height = t(PL), beside = FALSE, 
        legend.text = colnames(PL),
         names.arg = rownames(PL),    # Utiliser les rownames pour les noms des pays
@@ -357,38 +393,52 @@ barplot(height = t(PL), beside = FALSE,
 
 
 
-  A ce niveau, nous avons un graphique qui indique la repartition des types d'aeroports pour chaque pays.
-  Pour les petits aéroports, nous avons en première position le Kenya ensuite la Tanzanie, puis la Bolivie et l'Afrique du Sud. Globalement, on remarque que les petits aéroports sont plus nombreux que les autres types d'aéroports.
-  pour les hydravions, nous n'avons beaucoup. Cependant, nous constatons que le Canada semble developper ce type d'aéroports que n'importe autre pays.
-  Concernant, les moyens aéroports , nous pouvons enumerer la Chine qui presente le plus grand nombre de ce type d'aeroports parmi tous les pays.
-  De plus, le Japon, la Turquie, la Coree du Sud et les Emirats Arabes Unis ont plus tendance à developper les héliports. 
-  Les grands aéroports sont construits dans des regions comme la Chine, la Norvége, Turquie
-  En fin, nous constatons des pays comme l'Ukraine, la Grande Bretagne,le Canada et les Etats Unis qui ont fermé beaucoup d'aéropots notamment en raison de plusieurs facteurs.
-  Cependant, nous ne pouvons rien dire concernant les ports de Ballon.
+  À ce niveau, nous avons un graphique qui indique la répartition des types d’aéroports pour chaque pays.
+
+  Pour les petits aéroports, nous avons en première position le Kenya, suivi de la Tanzanie, puis de la Bolivie et de l’Afrique du Sud. Globalement, on remarque que les petits aéroports sont plus nombreux que les autres types d’aéroports.
+
+  Concernant les hydravions, leur nombre est relativement faible. Cependant, nous constatons que le Canada semble développer ce type d’aéroports plus que n’importe quel autre pays.
+
+  En ce qui concerne les moyens aéroports, la Chine se distingue par le plus grand nombre de ce type d’aéroports parmi tous les pays.
+
+  De plus, le Japon, la Turquie, la Corée du Sud et les Émirats Arabes Unis ont tendance à développer davantage les héliports.
+
+  Les grands aéroports sont concentrés dans des pays comme la Chine, la Norvège et la Turquie.
+
+  Enfin, nous constatons que des pays comme l’Ukraine, la Grande-Bretagne, le Canada et les États-Unis ont fermé de nombreux aéroports, notamment en raison de plusieurs facteurs.
+
+  Cependant, nous ne pouvons rien dire concernant les ports de ballons.
   
-  
-```{r}
+```{r, include=FALSE}
+
 #calcul des profils colonnes
 PC <- prop.table(as.matrix(tableau_contingence_no_iso), margin = 2)
 
 # Vérification que la somme des profils colonnes est égale à 1 pour chaque colonne
 apply(PC, 2, sum)
 
-# Tracer le barplot avec les profils colonnes
-barplot(height = t(PC), beside = FALSE, 
-        legend.text = rownames(PC),    # Légende en utilisant les noms des lignes (pays)
-        names.arg = colnames(PC),      # Utiliser les noms des colonnes pour les abscisses
-        las = 2,                       # Faire pivoter les étiquettes des colonnes si nécessaire
-        col = rainbow(nrow(PC)),       # Exemple de coloration des barres (ici avec une palette arc-en-ciel)
-        cex.names = 0.6)               # Réduire la taille des noms des colonnes pour plus de lisibilité
 
+# Ensure row and column names are valid
+rownames(PC)[is.na(rownames(PC)) | rownames(PC) == ""] <- paste0("Row", seq_len(nrow(PC)))
+colnames(PC)[is.na(colnames(PC)) | colnames(PC) == ""] <- paste0("Col", seq_len(ncol(PC)))
+```
+
+```{r, echo=FALSE}
+# Barplot where types of airports are on the x-axis and countries are stacked
+barplot(height = PC, beside = FALSE, 
+        legend.text = rownames(PC),       # Use row names (countries) for the legend
+        names.arg = colnames(PC),        # Use column names (types of airports) for x-axis
+        las = 2,                         # Rotate x-axis labels for readability
+        col = rainbow(nrow(PC)),         # Apply a color palette for each country
+        cex.names = 0.8)                 # Adjust x-axis label size for better readability
 
 ```
 
-  Ce barplot des profils lignes indique le repartition des chaque type d'aeroports en fonction du pays.
-on remarque un nombre limité des pays possédent des ballonports, des heliports et des seaplanes.
-Cependant, pour les autres types d'aeroports, l'occurence est presente dans presque tous les pays.
-Par ailleurs, nous notons aussi que certains pays ont une frequence plus forte que celle des autres pays pour les types d'aeroports les plus frequents.
+Ce barplot des profils de lignes indique la répartition de chaque type d’aéroport en fonction du pays.
+
+On remarque qu’un nombre limité de pays possèdent des ballonports, des héliports et des hydravions. Cependant, pour les autres types d’aéroports, l’occurrence est présente dans presque tous les pays.
+
+Par ailleurs, nous notons également que certains pays ont une fréquence plus élevée que celle des autres pays pour les types d’aéroports les plus fréquents.
 
 ```{r,echo=FALSE}
 #recherche des valeurs propres
@@ -428,54 +478,42 @@ barplot(valeurs_propres[, 1],
         border = "white")
 ```
 
-  Ces resultats nous donnent des informations sur les valeurs propres ainsi que la variance expliquée qui n'est rien d'autres que l'explication de la variabilité des données observées.
-Regle du coude : on retient 3 valeurs propres qui representent 94.31% de l'inertie.
-Cela veut dire que les trois valeurs expliquent à elles seules la plus grande partie de l'information.
+  Ces résultats nous fournissent des informations sur les valeurs propres ainsi que la variance expliquée, qui correspond à l’explication de la variabilité des données observées.
+
+Règle du coude : on retient 3 valeurs propres qui représentent 94,31 % de l’inertie. Cela signifie que ces trois valeurs expliquent à elles seules la majeure partie de l’information.
 
 ```{r,echo=FALSE}
 # projection des nuages des profils lignes sur le plan principal
 plot.CA(x = res_afc, choix = "CA", axes = c(1,2), cex = 0.5)
 ```
 
-  A ce niveau, nous nous focaliserons sur les deux premiers axes pour analyser les données.
-les deux dimensions expliquent 74,19% de l'information(variance exliqueé).
+  À ce niveau, nous nous focaliserons sur les deux premiers axes pour analyser les données. Ces deux dimensions expliquent 74,19 % de l’information (variance expliquée).
 
-  Les types d'aeroports qui sont bien representés sont les héliports(heliport) et les petits aéroports(small_airport) sur le premier axe.En plus, l'heliport contribue en grande partie à la construction du premier axe sans oublier la contribution du small airoport.
-Ce premier axe oppose les heliports aux small_airports. Sur cet axe, les pays comme le Japon et Corée du Sud sont bien representés et contribuent en grande partie à la construction du premier axe.
+  Les types d’aéroports qui sont bien représentés sur le premier axe sont les héliports (heliport) et les petits aéroports (small_airport). De plus, l’héliport contribue en grande partie à la construction du premier axe, sans oublier la contribution des petits aéroports. Ce premier axe oppose les héliports aux petits aéroports. Sur cet axe, des pays comme le Japon et la Corée du Sud sont bien représentés et contribuent fortement à la construction du premier axe.
 
-  Sur le second axe,on a une opposition entre les hydravions d'une part et les autres types d'aéroports d'autre part.
-  Les hydravions et les aéroports fermés contribuent  en grande partie à la construction du deuxieme axe et ils ont très bien representés sur cet axe.
-sur cet axe, Le Canada et le Bresil  sont bien representés et contribuent enormement à la construction du second axe. Ce qui signifie que ces deux pays ont plus de hydravions et des aéroports fermés.
+  Sur le second axe, on observe une opposition entre les hydravions d’une part et les autres types d’aéroports d’autre part. Les hydravions et les aéroports fermés contribuent en grande partie à la construction du deuxième axe et sont très bien représentés sur cet axe. Le Canada et le Brésil sont bien représentés et contribuent énormément à la construction du second axe, ce qui signifie que ces deux pays possèdent davantage d’hydravions et d’aéroports fermés.
 
 ```{r,echo=FALSE}
 # projection des nuages des profils lignes sur le plan principal
 plot.CA(x = res_afc, choix = "CA", axes = c(1,3), cex = 0.5)
 ```
 
-  Nous nous'attarderons sur les dimensions 1 et 3 pour effectuer notre analyse.
-Nous pouvons alors comprendre l'évolution de nos données avec une vision panoramique et differente à la precedente.En effet, d'autres variables qui n'ont pas eu d'effets sur les autres dimensions peuvent s'averer importantes.
+  Nous nous attarderons sur les dimensions 1 et 3 pour effectuer notre analyse. Cela nous permet de comprendre l’évolution de nos données avec une vision panoramique et différente de la précédente. En effet, d’autres variables qui n’ont pas eu d’effet sur les autres dimensions peuvent s’avérer importantes.
 
-Le troisième axe oppose les grands, moyens aéroports aux autres types d'aéroports. 
-A ce stade, les moyens aéroports sont très bien representés et contribuent enormement à la construction du troisième axe.
-La chine, les Etats Unis et les pays classés dans le groupe des "autres" contribuent en grande partie à la construction de cet axe.
-Par consequent, nous pouvons conclure que la Chine et les Etats Unis ont  un nombre important des moyens aéroports.
+  Le troisième axe oppose les grands et moyens aéroports aux autres types d’aéroports. À ce stade, les moyens aéroports sont très bien représentés et contribuent énormément à la construction du troisième axe. La Chine, les États-Unis et les pays classés dans le groupe des “autres” contribuent en grande partie à la construction de cet axe. Par conséquent, nous pouvons conclure que la Chine et les États-Unis possèdent un nombre important de moyens aéroports.
 
 ```{r,echo=FALSE}
 # projection des nuages des profils lignes sur le plan principal
 plot.CA(x = res_afc, choix = "CA", axes = c(2,3), cex = 0.5)
 ```
 
-  Nous remarquons à ce niveau que l'analyse se focalise sur le deuxième et troisième axe.
-Nous notons que le Canada et le Bresil expliquent en grande partie le deuxième axe d'une part et, la Chine et les Etats Unis  qui contribuent  fortement dans l'explication du troisième axe.
-  Ceci nous permet de comparer les politiques de ces deux pays en terme d'infrastructures aéroportuaires.
-La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents.
-Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour les zones isolées.
-La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de moyens aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique.
+  Nous remarquons à ce niveau que l’analyse se focalise sur le deuxième et le troisième axe. Nous notons que le Canada et le Brésil expliquent en grande partie le deuxième axe, d’une part, et que la Chine et les États-Unis contribuent fortement à l’explication du troisième axe, d’autre part.
+
+  Cela nous permet de comparer les politiques de ces deux pays en termes d’infrastructures aéroportuaires. La politique aéroportuaire du Canada et de la Chine répond à des besoins et à des contextes très différents. Le Canada privilégie une approche flexible et régionale, adaptée à son vaste territoire et aux particularités géographiques, en utilisant des solutions comme les hydravions pour desservir les zones isolées. La Chine, quant à elle, adopte une approche ambitieuse et centralisée pour développer ses infrastructures, en réponse à une forte demande intérieure et internationale, en se concentrant sur la construction rapide de moyens aéroports et la modernisation des infrastructures existantes pour soutenir sa croissance économique.
 
 ## L'ACP
 
-  La deuxième partie concerne l'analyse en Composantes Principales (ACP) qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d'un jeu de données tout en préservant autant que possible l'information.
-  Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c'est-à-dire quand il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
+  La deuxième partie concerne l’analyse en Composantes Principales (ACP), qui est une méthode statistique utilisée pour analyser et réduire la dimensionnalité d’un jeu de données tout en préservant autant que possible l’information. Elle est souvent utilisée dans des contextes où les données sont de haute dimension, c’est-à-dire lorsqu’il y a de nombreuses variables (caractéristiques) qui peuvent être difficiles à analyser ou à visualiser.
 
 ```{r,include=FALSE}
 
@@ -539,16 +577,16 @@ hist(data_for_pca$National.income, main="Distribution de National Income", xlab=
   L'analyse univariée de la variable National Income révèle une distribution fortement asymétrique, avec la majorité des observations concentrées dans les tranches de revenu les plus basses. La raison en est le grand nombre d'aéroports asiatiques présents dans la liste (Chine, Inde, Philippines). Dans ces pays, le revenu national par habitant est faible, ce qui contribue à l'asymétrie du graphique. Une proportion significative du jeu de données se situe entre 20 000 et 60 000, comme le montrent les barres les plus hautes.
   En revanche, très peu d'observations dépassent la tranche des 80 000, ce qui met en évidence une disparité. Cela suggère que la majorité des entités du jeu de données appartiennent à des pays ou régions ayant des revenus nationaux modestes, tandis qu'une minorité représente des économies à revenu élevé.
 
-```{r}
+```{r, echo=FALSE}
 boxplot(data_for_pca$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
 ```
 
-```{r}
+```{r, echo=FALSE}
 boxplot(airports$runway_length_ft, main="Distribution Runway Length", ylab="Runway Length (ft)")
 ```
 
   La comparaison des longueurs de pistes met en évidence une nette disparité entre les grands aéroports et les petites pistes d’aviation.
-  Les 50 principaux aéroports disposent de pistes nettement plus longues et plus homogènes, avec une médiane autour de 11 000 pieds, reflétant leur capacité à accueillir de grands avions comme les avions gros-porteurs (. En revanche, l’ensemble des 75 052 aéroports montre que la plupart des pistes sont beaucoup plus courtes, avec une médiane inférieure à 5 000 pieds, représentant des petits aérodromes régionaux, privés ou ruraux. Cependant, ce dataset inclut également des valeurs extrêmes, avec des pistes dépassant les 30 000 pieds, correspondant aux grands aéroports internationaux. Dans l’ensemble, la distribution est fortement asymétrique, soulignant la différence entre les petites pistes et quelques grands hubs internationaux.
+  Les 50 principaux aéroports disposent de pistes nettement plus longues et plus homogènes, avec une médiane autour de 11 000 pieds, reflétant leur capacité à accueillir de grands avions comme les avions gros-porteurs. En revanche, l’ensemble des 75 052 aéroports montre que la plupart des pistes sont beaucoup plus courtes, avec une médiane inférieure à 5 000 pieds, représentant des petits aérodromes régionaux, privés ou ruraux. Cependant, ce dataset inclut également des valeurs extrêmes, avec des pistes dépassant les 30 000 pieds, correspondant aux grands aéroports internationaux. Dans l’ensemble, la distribution est fortement asymétrique, soulignant la différence entre les petites pistes et quelques grands hubs internationaux.
 
 ```{r, include=FALSE}
 library("DataExplorer")
