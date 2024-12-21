@@ -66,7 +66,7 @@ final_data <- combined_table_final %>%
   left_join(passengers, by = "name")  
 
 colnames(final_data)
-
+str(final_data)
 data_with_passengers <- final_data %>% filter(!is.na(passengers))
 
 data_for_pca <- data_with_passengers %>% 
@@ -76,11 +76,18 @@ data_for_pca[data_for_pca$name == "Toronto Aerodrome", "runway_length_ft"] <- 12
 data_for_pca[data_for_pca$name == "Toronto Aerodrome", "runway_width_ft"] <- 200
 data_for_pca[data_for_pca$name == "Incheon International Airport", "National.income"] <- 33299
 
+# Export the table 'data_for_pca' to a CSV file
+write.csv(final_data, file = "final_data.csv", row.names = FALSE)
+# Export the table 'data_for_pca' to a CSV file
+write.csv(combined_table_final, file = "combined_table_final.csv", row.names = FALSE)
+
 
 sapply(data_for_pca[, c("National.income", "runway_length_ft", "runway_width_ft", "passengers")], class)
 data_for_pca$passengers <- as.numeric(gsub(",", "", data_for_pca$passengers))
 pca <- data_for_pca[, c("National.income", "runway_length_ft", "runway_width_ft", "passengers")]
 pca_data_scaled <- scale(pca)
+str(data_for_pca)
+write.csv(data_for_pca, file = "data_for_pca_test.csv", row.names = FALSE)
 
 install.packages("Factoshiny")
 install.packages("FactoInvestigate")
@@ -140,5 +147,16 @@ plot.PCA(res_pca, axes = c(1,2), choix = "ind")
 plot.PCA(res_pca, axes = c(1,2), choix = "var")
 
 
+str(data_for_pca)
+str(data_for_pca_scaled)
+library(dplyr)
 
+library(dplyr)
 
+country_income_unique <- data_for_pca %>%
+  select(iso_country, National.income) %>%
+  distinct()
+
+print(country_income_unique)
+write.csv(country_income_unique, file = "country_income_unique.csv", row.names = FALSE)
+str(country_income_unique)
