@@ -5,12 +5,12 @@ author:
 - Nikita Pomozov
 date: "2024-12-18"
 output:
-  pdf_document:
-    toc: true
   html_document:
     theme: yeti
     toc: true
     toc_float: true
+  pdf_document:
+    toc: true
 documentclass: compterendu
 lang: true
 email:
@@ -434,11 +434,11 @@ barplot(height = PC, beside = FALSE,
 
 ```
 
-Ce barplot des profils de lignes indique la répartition de chaque type d’aéroport en fonction du pays.
+Ce barplot des profils colonnes indique la répartition de chaque type d’aéroport en fonction du pays.
 
-On remarque qu’un nombre limité de pays possèdent des ballonports, des héliports et des hydravions. Cependant, pour les autres types d’aéroports, l’occurrence est présente dans presque tous les pays.
+On remarque que les États Unis possedent un nombre élevé de tous les types d'aéroports mis à part au niveau de "large_airport" et "medium_airport" où la Chine (le pays marqué en orange) domine. 
 
-Par ailleurs, nous notons également que certains pays ont une fréquence plus élevée que celle des autres pays pour les types d’aéroports les plus fréquents.
+Par ailleurs, nous notons également que le Canada (en jeune) possede plusieurs hydravions ("seaplane_base"). 
 
 ```{r,echo=FALSE}
 #recherche des valeurs propres
@@ -568,6 +568,7 @@ data_for_pca <- data_with_passengers %>%
 data_for_pca[data_for_pca$name == "Toronto Aerodrome", "runway_length_ft"] <- 12000
 data_for_pca[data_for_pca$name == "Toronto Aerodrome", "runway_width_ft"] <- 200
 data_for_pca[data_for_pca$name == "Incheon International Airport", "National.income"] <- 33299
+
 ```
 
 ```{r,echo=FALSE}
