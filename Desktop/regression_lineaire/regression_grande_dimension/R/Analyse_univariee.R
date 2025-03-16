@@ -57,39 +57,68 @@ boite_moust <- ggplot(bdd, aes_string(y= bdd$y_concrete_compresive)) +
 
 
 
-# Boucle pour générer un histogramme des frequences pour chaque variable au lieu de le faire 1 par 1. 
-for (var in colnames(bdd)) {
-    p <- ggplot(bdd, aes_string(x = var)) +
-      geom_histogram(bins = 30, fill = "blue", color = "darkgreen") +
-      labs(
-        title = paste("Distribution de la variable", var),
-        x = var,
-        y = "Fréquence"
-      ) +
-      theme_minimal() 
-    
-    print(p)  # Affiche chaque graphique 
-  }
+# 1️⃣ Histogramme pour Cement
+p1 <- ggplot(bdd, aes(x = cement)) +
+  geom_histogram(bins = 30, fill = "blue", color = "darkgreen") +
+  labs(title = "Distribution de la variable Cement", x = "Cement", y = "Fréquence") +
+  theme_minimal()
+print(p1)
 
+# 2️⃣ Histogramme pour Blast Furnace Slag
+p2 <- ggplot(bdd, aes(x = blast_furnace)) +
+  geom_histogram(bins = 30, fill = "red", color = "darkred") +
+  labs(title = "Distribution de la variable Blast Furnace Slag", x = "Blast Furnace Slag", y = "Fréquence") +
+  theme_minimal()
+print(p2)
 
-#Analyse 
+# 3️⃣ Histogramme pour Fly Ash
+p3 <- ggplot(bdd, aes(x = fly_ash)) +
+  geom_histogram(bins = 30, fill = "purple", color = "darkblue") +
+  labs(title = "Distribution de la variable Fly Ash", x = "Fly Ash", y = "Fréquence") +
+  theme_minimal()
+print(p3)
 
+# 4️⃣ Histogramme pour Water
+p4 <- ggplot(bdd, aes(x = water)) +
+  geom_histogram(bins = 30, fill = "cyan", color = "darkblue") +
+  labs(title = "Distribution de la variable Water", x = "Water", y = "Fréquence") +
+  theme_minimal()
+print(p4)
 
-#Variable resistance du beton("y_concrete_compresive ") :
-#Variable ("fine_aggr ") :
-#Variable eau ("Water"):
+# 5️⃣ Histogramme pour Superplasticizer
+p5 <- ggplot(bdd, aes(x = super_plast)) +
+  geom_histogram(bins = 30, fill = "orange", color = "darkorange") +
+  labs(title = "Distribution de la variable Superplasticizer", x = "Superplasticizer", y = "Fréquence") +
+  theme_minimal()
+print(p5)
 
-#les variable sont principalements concentrés autour de la médiane  
-#ce qui pourrait indiquer par exemple pour la variable de resitance du beton 
-#que la plupart  des échantillons de béton ont une résistance similaire
+# 6️⃣ Histogramme pour Coarse Aggregate
+p6 <- ggplot(bdd, aes(x = coarse)) +
+  geom_histogram(bins = 30, fill = "yellow", color = "gold") +
+  labs(title = "Distribution de la variable Coarse Aggregate", x = "Coarse Aggregate", y = "Fréquence") +
+  theme_minimal()
+print(p6)
 
+# 7️⃣ Histogramme pour Fine Aggregate
+p7 <- ggplot(bdd, aes(x = fine_aggr)) +
+  geom_histogram(bins = 30, fill = "pink", color = "black") +
+  labs(title = "Distribution de la variable Fine Aggregate", x = "Fine Aggregate", y = "Fréquence") +
+  theme_minimal()
+print(p7)
 
-#Variable cendre volante("fly_ash "):
-#Variable Quantité de laitier("blast_furnace "):
-#Variable cendre volante("fly_ash "):
-#Variable superplastique("super_plast "):
+# 8️⃣ Histogramme pour Age
+p8 <- ggplot(bdd, aes(x = age)) +
+  geom_histogram(bins = 30, fill = "brown", color = "black") +
+  labs(title = "Distribution de la variable Age", x = "Age (jours)", y = "Fréquence") +
+  theme_minimal()
+print(p8)
 
-#Ces variables sont fortements concentrés surdes données faibles
-#et minimales
+# 9️⃣ Histogramme pour Concrete Compressive Strength
+p9 <- ggplot(bdd, aes(x = y_concrete_compresive)) +
+  geom_histogram(bins = 30, fill = "darkgreen", color = "black") +
+  labs(title = "Distribution de la variable Concrete Compressive Strength", x = "Concrete Compressive Strength (MPa)", y = "Fréquence") +
+  theme_minimal()
+print(p9)
+
 
 

@@ -78,6 +78,16 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -98,9 +108,10 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[R]{\small 2025-02-28}
+\fancyhead[R]{\small 2025-03-16}
 \fancyhead[L]{\small Regression Linéaire}
 \renewcommand{\headrulewidth}{0.4pt}
+\usepackage[labelfont=bf, labelsep=colon, position=top]{caption} % Place la légende au-dessus de la figure
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -115,7 +126,7 @@
 \title{\fbox{\huge Regression Linéaire}}
 \author{Dimitri DELPECH, \and Timothé FADENIPO, \and Matthis
 ARVOIS, \and Ismael MADOU GAGI GREMA, \and Cheikh LO}
-\date{2025-02-28}
+\date{2025-03-16}
 
 \begin{document}
 \maketitle
@@ -124,6 +135,10 @@ ARVOIS, \and Ismael MADOU GAGI GREMA, \and Cheikh LO}
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
+\listoffigures
+
+\listoftables
+
 \newpage
 
 \section{Introduction}\label{introduction}
@@ -270,41 +285,108 @@ de la première semaine . Typiquement, un saut d'environ 10 MPa (environ
 durcissement ralentit, mais on atteint souvent plus de 90 \% de la
 résistance finale à 28 jours.
 
-\section{Analyse univariée.}\label{analyse-univariuxe9e.}
+\section{Zoom tour à tour sur les composantes de notre base de
+données.}\label{zoom-tour-uxe0-tour-sur-les-composantes-de-notre-base-de-donnuxe9es.}
 
-\subsection{Première variable.}\label{premiuxe8re-variable.}
+\subsection{Cement}\label{cement}
 
-La variable qui répertorie les résistances à la compression des bétons
-étudiés, que nous avons choisi d'expliquer grâce aux autres, est bien
-distribuée, sans valeurs aberrantes, avec des résistances variant entre
-2 MPa (mégapascals) et 80 MPa, pour une moyenne et une médiane autour de
-35 MPa. Cette bonne distribution nous sera utile pour la suite de
-l'étude.
+\begin{center}\includegraphics{rmd_final_files/figure-latex/boxplot_y-1} \end{center}
 
-\subsection{Suite}\label{suite}
+L'histogramme montre une distribution étalée avec plusieurs pics,
+indiquant une variabilité dans les proportions de ciment utilisées. Les
+valeurs les plus courantes se situent entre 100 et 400 kg/m³. Cette
+répartition suggère que différentes formulations de béton nécessitent
+des proportions de ciment variées, influençant potentiellement la
+résistance finale du béton.
 
-Variable resistance du beton(``y\_concrete\_compresive'') :
+\subsection{Blast Furnace Slag}\label{blast-furnace-slag}
 
-Variable (``fine\_aggr'') :
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-1-1} \end{center}
 
-Variable eau (``Water''):
+La majorité des valeurs sont proches de zéro, suggérant que le blast
+furnace slag est rarement utilisé en grande quantité. Cependant,
+quelques observations montrent une présence significative de ce
+composant, ce qui pourrait indiquer des formulations spécifiques
+cherchant à améliorer certaines propriétés du béton, comme la durabilité
+ou la résistance aux sulfates.
 
-les variable sont principalements concentrés autour de la médiane ce qui
-pourrait indiquer par exemple pour la variable de resitance du beton que
-la plupart des échantillons de béton ont une résistance similaire
+\subsection{Fly Ash}\label{fly-ash}
 
-Variable cendre volante(``fly\_ash''):
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-2-1} \end{center}
 
-Variable Quantité de laitier(``blast\_furnace''):
+La distribution est fortement biaisée vers zéro, montrant que le fly ash
+est peu utilisé dans la majorité des échantillons. Seules quelques
+observations présentent des valeurs plus élevées, ce qui indique que cet
+additif est employé dans des mélanges spécifiques, probablement pour
+optimiser la maniabilité ou réduire les coûts en substituant une partie
+du cement.
 
-Variable cendre volante(``fly\_ash''):
+\subsection{Water}\label{water}
 
-Variable superplastique(``super\_plast''):
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-3-1} \end{center}
 
-Ces variables sont fortements concentrés surdes données faibles et
-minimales
+La répartition est relativement normale avec un pic autour de 200 kg/m³,
+ce qui indique une quantité d'eau standardisée dans la plupart des
+mélanges. Une consommation d'eau bien contrôlée est essentielle pour
+assurer une bonne hydratation du ciment et éviter une porosité excessive
+pouvant affaiblir le matériau.
 
-\section{Analyse bivariée.}\label{analyse-bivariuxe9e.}
+\subsection{Superplasticizer}\label{superplasticizer}
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-4-1} \end{center}
+
+La plupart des valeurs sont proches de zéro, ce qui signifie que le
+superplasticizer est peu utilisé dans de nombreux échantillons.
+Cependant, certaines observations indiquent une utilisation plus
+importante, ce qui peut être lié à des mélanges nécessitant une
+meilleure fluidité tout en réduisant le rapport water/cement pour
+maximiser la résistance finale.
+
+\subsection{Coarse Aggregate}\label{coarse-aggregate}
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-5-1} \end{center}
+
+Le coarse aggregate suit une distribution centrée autour de 950-1000
+kg/m³, ce qui montre une standardisation dans son utilisation. La
+présence d'une quantité relativement constante de coarse aggregate est
+essentielle pour garantir la stabilité et la résistance mécanique du
+béton tout en minimisant la fissuration.
+
+\subsection{Fine Aggregate}\label{fine-aggregate}
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-6-1} \end{center}
+
+La distribution est également centrée autour de 750-800 kg/m³, suggérant
+une utilisation homogène du fine aggregate dans les différents mélanges
+de béton. Une quantité bien maîtrisée de fine aggregate améliore la
+compacité du béton et influe sur sa capacité de mise en œuvre et son
+imperméabilité.
+
+\subsection{Age}\label{age}
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-7-1} \end{center}
+
+L'âge du béton est majoritairement faible, avec une concentration autour
+de 28 jours. Quelques échantillons présentent des âges plus avancés,
+jusqu'à un an. Cela reflète l'importance de la période de cure du béton,
+puisque la résistance continue d'augmenter avec le temps grâce à
+l'hydratation prolongée du cement.
+
+\subsection{Concrete Compressive
+Strength}\label{concrete-compressive-strength}
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-8-1} \end{center}
+
+La concrete compressive strength suit une distribution proche d'une loi
+normale, avec un pic autour de 40 MPa. Cela indique une variabilité
+contrôlée de la résistance du béton. La concrete compressive strength
+étant un paramètre clé, cette distribution montre que la plupart des
+mélanges atteignent une performance attendue, bien qu'il existe des
+échantillons avec des valeurs plus élevées ou plus faibles en fonction
+des formulations utilisées.
+
+\section{Expliquons la résistance à la compression du béton par nos
+variables.}\label{expliquons-la-ruxe9sistance-uxe0-la-compression-du-buxe9ton-par-nos-variables.}
 
 La matrice de corrélation en annexe va nous aider à voir les différents
 liens de corrélation potentiels entre nos variables. Dans cette partie,
@@ -322,7 +404,7 @@ béton est significativement reliée à la résistance à la compression du
 béton. En effet, nous pouvons d'abord observer la distribution de ces
 deux variables à l'aide du graphique ci-dessous :
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-2-1} \end{center}
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-9-1} \end{center}
 
 Cette visualisation des données nous donne une première impression du
 lien potentiel entre ces deux variables. En étudiant plus précisément
@@ -353,7 +435,7 @@ aisément supposer qu'il existe une corrélation entre ces deux variables.
 En effet, dans l'ensemble, on remarque une diminution de l'ajout
 d'additif lorsque la quantité d'eau augmente.
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-3-1} \end{center}
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-10-1} \end{center}
 
 Pour avoir une certitude, nous effectuons alors un test de corrélation
 de Kendall, qui nous indique, premièrement, qu'il existe un lien
@@ -380,175 +462,288 @@ Dans un premier temps, l'observation de la distribution du temps par
 rapport à la compression nous aiderait à confirmer ou infirmer
 l'hypothèse de cette partie. Voyons le graphique ci-dessous.
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-4-1} \end{center}
-
-Cette première visualisation ne nous permet pas de dire s'il y aurait en
-réalité un quelconque lien entre ces deux variables. En conséquence, il
-est nécessaire de réaliser un test de corrélation.
-
-Ici, le test réalisé nous permet de voir que notre hypothèse est
-infirmée, car il y a en effet un lien significatif entre ces deux
-variables, et la corrélation indique que ce lien est positif. Cette
-corrélation est positive mais modérée, avec un coefficient de Kendall
-\(\tau\) de \textbf{0,449} (annexe). Les valeurs croissent
-significativement ensemble, mais il y aura tout de même quelques
-exceptions.
-
-\subsection{\texorpdfstring{\texttt{blast\_furnace} et résistance du
-béton.}{blast\_furnace et résistance du béton.}}\label{blast_furnace-et-ruxe9sistance-du-buxe9ton.}
-
-graph1 ; On
-
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-5-1} \end{center}
-
-test1 ;
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cor.test}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{blast\_furnace, bdd}\SpecialCharTok{$}\NormalTok{y\_concrete\_compresive, }\AttributeTok{method =} \StringTok{"spearman"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning in cor.test.default(bdd$blast_furnace, bdd$y_concrete_compresive, :
-## Impossible de calculer la p-value exacte avec des ex-aequos
-\end{verbatim}
-
-\begin{verbatim}
-## 
-##  Spearman's rank correlation rho
-## 
-## data:  bdd$blast_furnace and bdd$y_concrete_compresive
-## S = 152531172, p-value = 1.581e-07
-## alternative hypothesis: true rho is not equal to 0
-## sample estimates:
-##       rho 
-## 0.1624734
-\end{verbatim}
-
--\textgreater{} Significatif mais (tau plutot proche de zero et positif
-donc lien positif )
-
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-7-1} \end{center}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cor.test}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{fly\_ash, bdd}\SpecialCharTok{$}\NormalTok{y\_concrete\_compresive, }\AttributeTok{method =} \StringTok{"spearman"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning in cor.test.default(bdd$fly_ash, bdd$y_concrete_compresive, method =
-## "spearman"): Impossible de calculer la p-value exacte avec des ex-aequos
-\end{verbatim}
-
-\begin{verbatim}
-## 
-##  Spearman's rank correlation rho
-## 
-## data:  bdd$fly_ash and bdd$y_concrete_compresive
-## S = 196318556, p-value = 0.01233
-## alternative hypothesis: true rho is not equal to 0
-## sample estimates:
-##         rho 
-## -0.07795675
-\end{verbatim}
-
--\textgreater{} pvalue a 0.01 donc seuil de significativité et pour le
-tau on est a -0.07 donc inversement proportionel
-
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-9-1} \end{center}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cor.test}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{water, bdd}\SpecialCharTok{$}\NormalTok{y\_concrete\_compresive, }\AttributeTok{method =} \StringTok{"spearman"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning in cor.test.default(bdd$water, bdd$y_concrete_compresive, method =
-## "spearman"): Impossible de calculer la p-value exacte avec des ex-aequos
-\end{verbatim}
-
-\begin{verbatim}
-## 
-##  Spearman's rank correlation rho
-## 
-## data:  bdd$water and bdd$y_concrete_compresive
-## S = 238281768, p-value < 2.2e-16
-## alternative hypothesis: true rho is not equal to 0
-## sample estimates:
-##        rho 
-## -0.3083707
-\end{verbatim}
-
--\textgreater{} significatif car \textless2.2e-16 donc et inversement
-proportionel : moins il y a d'eau, plus la resistance est importante
-
 \begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-11-1} \end{center}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cor.test}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{super\_plast, bdd}\SpecialCharTok{$}\NormalTok{y\_concrete\_compresive, }\AttributeTok{method =} \StringTok{"kendall"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+Cette première visualisation ne nous permet pas de déterminer s'il
+existe réellement un lien entre ces deux variables. Une exagération
+pourrait peut-être nous amener à supposer l'existence d'une relation
+quadratique entre elles, mais cette hypothèse ne peut être vérifiée dans
+cette partie.
 
-\begin{verbatim}
-## 
-##  Kendall's rank correlation tau
-## 
-## data:  bdd$super_plast and bdd$y_concrete_compresive
-## z = 11.39, p-value < 2.2e-16
-## alternative hypothesis: true tau is not equal to 0
-## sample estimates:
-##       tau 
-## 0.2490572
-\end{verbatim}
+En conséquence, il est nécessaire de réaliser un test de corrélation.
+
+Le test effectué nous permet de constater que notre hypothèse est
+infirmée, car il existe bien un lien significatif entre ces deux
+variables, et la corrélation indique que ce lien est positif. Cette
+corrélation est positive mais modérée, avec un coefficient de Kendall
+\(\tau\) de 0,449 (voir annexe). Les valeurs croissent significativement
+ensemble, bien que certaines exceptions subsistent.
+
+\subsection{La resistance à la compression du béton peut-elle
+s'expliquer grâce au laitier de haut fournaux
+?}\label{la-resistance-uxe0-la-compression-du-buxe9ton-peut-elle-sexpliquer-gruxe2ce-au-laitier-de-haut-fournaux}
+
+On examine ici la relation entre le laitier de haut fourneau et la
+résistance à la compression du béton :
 
 \begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-13-1} \end{center}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cor.test}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{coarse, bdd}\SpecialCharTok{$}\NormalTok{y\_concrete\_compresive, }\AttributeTok{method =} \StringTok{"kendall"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+Ce graphique ne suggère aucun lien de corrélation entre la quantité de
+laitier de haut fourneau et la résistance à la compression du béton, mis
+à part une légère baisse de la résistance du béton lorsque la quantité
+de laitier de haut fourneau augmente. Afin de détecter une potentielle
+relation de dépendance, il pourrait être judicieux d'effectuer un test
+de corrélation de Spearman.
 
-\begin{verbatim}
-## 
-##  Kendall's rank correlation tau
-## 
-## data:  bdd$coarse and bdd$y_concrete_compresive
-## z = -5.915, p-value = 3.318e-09
-## alternative hypothesis: true tau is not equal to 0
-## sample estimates:
-##        tau 
-## -0.1237223
-\end{verbatim}
+En effet, ce test nous fournit une p-value inférieure à 0.05 et un
+coefficient \(\rho\) de 0.16. Ces valeurs indiquent qu'il existe bien un
+lien significatif positif entre ces deux variables, mais cette
+corrélation reste faible compte tenu de la proximité de \(\rho\) avec
+zéro.
 
--\textgreater{} lien significatif, tau a -0.123 donc fort lien négatif
+\subsection{Les cendres volantes peuvent-elles expliquer la resistance
+du béton
+?}\label{les-cendres-volantes-peuvent-elles-expliquer-la-resistance-du-buxe9ton}
+
+Pour tenter de répondre à cette question, on peut d'abord examiner la
+distribution de la quantité de cendres volantes en fonction de la
+résistance à la compression du béton.
 
 \begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-15-1} \end{center}
 
+La représentation de la distribution de notre variable à expliquer par
+rapport à la variable explicative suggère une légère corrélation
+linéaire négative. On pourrait alors en déduire que plus la quantité de
+cendres volantes augmente, moins le béton résiste à la compression.
+
+Pour s'assurer de la justesse de cette analyse, nous réalisons un test
+de corrélation de Spearman, qui met en évidence un lien significatif
+entre ces deux variables. Comme indiqué dans notre interprétation, ce
+lien est négatif, avec un coefficient \(\rho\) de -0.19, indiquant ainsi
+une corrélation faible mais non négligeable.
+
+\subsection{L'eau, un facteur de résistance
+?}\label{leau-un-facteur-de-ruxe9sistance}
+
+Dans l'imaginaire collectif, il est tout à fait logique de penser que si
+l'on ajoute de l'eau lors de la création du béton, celui-ci sera moins
+résistant que si l'on ne le fait pas. Cependant, il est indispensable
+d'incorporer une certaine quantité d'eau. L'objectif est donc de trouver
+un juste milieu dans cette quantité. Examinons d'abord la distribution
+de la résistance des bétons par rapport à leur résistance à la
+compression :
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-17-1} \end{center}
+
+Comme dans la partie précédente, le graphique est relativement
+désordonné, mais on peut tout de même y relever une légère dépendance
+négative, comme mentionné dans l'introduction de l'étude de cette
+dépendance. Pour être sûr de nos analyses, il serait nécessaire
+d'effectuer un test de corrélation de Spearman.
+
+Le résultat de ce test indique qu'il existe bien une corrélation avec un
+coefficient de corrélation de -0.31, ce qui montre un lien négatif non
+négligeable entre ces deux variables.
+
+En conclusion, moins il y a d'eau dans la création du béton, plus
+celui-ci sera résistant. Cependant, les points situés à l'extrémité
+gauche du graphique suggèrent qu'un minimum d'eau est tout de même
+nécessaire pour que le béton atteigne une résistance suffisante.
+
+\subsection{Superplasticité et
+Résistance}\label{superplasticituxe9-et-ruxe9sistance}
+
+Le superplastifiant, utilisé dans les mélanges de béton, joue un rôle
+essentiel en améliorant la fluidité du béton sans ajout d'eau
+supplémentaire. Ce composant chimique permet d'augmenter la densité du
+béton, contribuant ainsi à une meilleure résistance à la compression.
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-19-1} \end{center}
+
+Visuellement, le graphique ne permet pas de tirer de conclusions claires
+sur la relation entre la quantité de superplastifiant et la résistance à
+la compression du béton. Bien que la tendance semble indiquer une
+augmentation initiale de la résistance avec l'ajout de superplastifiant,
+la distribution des points reste dispersée. De plus, la présence de
+nombreux points proches du début de la courbe rend difficile
+l'identification d'une tendance nette.
+
+Le test de Kendall révèle une corrélation positive modérée (tau = 0.249)
+entre la quantité de superplastifiant et la résistance à la compression
+du béton. Cette corrélation est significative, comme en témoigne la
+p-value extrêmement faible, bien inférieure à 0.05. Cela suggère que, de
+manière générale, une augmentation de la quantité de superplastifiant
+dans le mélange de béton pourrait être associée à une amélioration de sa
+résistance à la compression.
+
+\subsection{Granulats grossiers et résistance à la
+compression}\label{granulats-grossiers-et-ruxe9sistance-uxe0-la-compression}
+
+Les granulats grossiers, qui comprennent des particules de grande taille
+comme des graviers ou des pierres concassées, contribuent à la
+résistance à la compression du béton en réduisant les vides dans le
+mélange, augmentant ainsi sa compacité.
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-21-1} \end{center}
+
+Le graphique représente la relation entre les granulats grossiers et la
+résistance à la compression du béton. La répartition des données semble
+dispersée. On peut néanmoins observer un lien quadratique entre ces deux
+variables, mais il est difficile d'en tirer une conclusion plus
+approfondie.
+
+Le test de corrélation de Kendall a donné un coefficient tau de -0.124.
+Bien que la p-value soit très faible (3.318e-09), ce faible tau indique
+une relation négative mais modérée. Cela signifie qu'il existe bien une
+certaine corrélation entre ces deux variables.
+
+\subsection{Une relation floue entre les granulats fins et résistance à
+la
+compression.}\label{une-relation-floue-entre-les-granulats-fins-et-ruxe9sistance-uxe0-la-compression.}
+
+La présence de granulats fins améliore la compacité du mélange, ce qui
+peut influencer ses propriétés, notamment la résistance à la
+compression. Ils remplissent les espaces entre les granulats plus
+grossiers.
+
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-23-1} \end{center}
+
+Le graphique des granulats fins ne permet pas de tirer de conclusions
+claires concernant la relation entre cette variable et la résistance à
+la compression, aucune tendance évidente n'y apparaît.
+
+Les résultats du test de corrélation de Kendall indiquent une relation
+significative entre la quantité de granulats fins et la résistance du
+béton. Le coefficient \(\tau\) étant négatif, cela signifie que lorsque
+la proportion de granulats fins diminue, la résistance à la compression
+tend à augmenter. Cette observation suggère qu'un excès de granulats
+fins pourrait réduire la compacité du mélange.
+
+\section{Ingénierie des Données}\label{inguxe9nierie-des-donnuxe9es}
+
+La base de données contient \textbf{1030 observations et 9 variables
+numériques} initialement. Dans cette partie, nous préparons les données
+pour garantir leur qualité et leur pertinence. Cette étape comprend deux
+étapes principales :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Détection et traitement des valeurs aberrantes} à l'aide de
+  boxplots.\\
+\item
+  \textbf{Analyse des corrélations} pour éviter la redondance des
+  variables.
+\end{itemize}
+
+\subsection{Détection des valeurs
+aberrantes}\label{duxe9tection-des-valeurs-aberrantes}
+
+Les valeurs aberrantes peuvent fausser l'analyse et influencer la
+modélisation. Les \textbf{boxplots} (voir
+\hyperref[duxe9tection-des-valeurs-aberrantes-boxplots]{Analyse
+univariée}) permettent d'identifier des observations extrêmes.
+
+Certaines variables comme \textbf{Cement, Fly Ash} et \textbf{Coarse
+Aggregate} ont une distribution homogène et sont conservées sans
+modification.
+
+La variable \textbf{Water} présente quelques valeurs extrêmes. Plutôt
+que de les exclure, nous analysons leur impact.
+
+La variable \textbf{Superplasticizer} contient des valeurs très
+éloignées du reste des observations. Pour éviter toute influence
+excessive, ces valeurs extrêmes sont exclues en utilisant la règle des
+1.5*IQR :
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{cor.test}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{fine\_aggr, bdd}\SpecialCharTok{$}\NormalTok{y\_concrete\_compresive, }\AttributeTok{method =} \StringTok{"kendall"}\NormalTok{)}
+\CommentTok{\# Calcul des seuils avec la règle des 1.5*IQR pour Superplasticizer}
+\NormalTok{Q1\_sp }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{super\_plast, }\FloatTok{0.25}\NormalTok{)}
+\NormalTok{Q3\_sp }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(bdd}\SpecialCharTok{$}\NormalTok{super\_plast, }\FloatTok{0.75}\NormalTok{)}
+\NormalTok{IQR\_sp }\OtherTok{\textless{}{-}}\NormalTok{ Q3\_sp }\SpecialCharTok{{-}}\NormalTok{ Q1\_sp}
+
+\NormalTok{seuil\_sup\_sp }\OtherTok{\textless{}{-}}\NormalTok{ Q3\_sp }\SpecialCharTok{+} \FloatTok{1.5} \SpecialCharTok{*}\NormalTok{ IQR\_sp}
+
+\CommentTok{\# Filtrer les valeurs aberrantes pour Superplasticizer}
+\NormalTok{bdd\_ing }\OtherTok{\textless{}{-}}\NormalTok{ bdd }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(super\_plast }\SpecialCharTok{\textless{}=}\NormalTok{ seuil\_sup\_sp)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## 
-##  Kendall's rank correlation tau
-## 
-## data:  bdd$fine_aggr and bdd$y_concrete_compresive
-## z = -5.8569, p-value = 4.717e-09
-## alternative hypothesis: true tau is not equal to 0
-## sample estimates:
-##        tau 
-## -0.1222597
-\end{verbatim}
+Concernant \textbf{Blast Furnace Slag}, quelques valeurs sont élevées
+mais restent plausibles. Elles sont conservées sans modification.
 
--\textgreater{} lein significatif,tau négatif donc moins il y a de
-granulat fin, plus la resistance est grande
+La variable \textbf{Age} présente des valeurs extrêmes qu'il faut
+filtrer. En utilisant la règle des 1.5*IQR, nous identifions les
+observations anormalement élevées et les supprimons pour assurer une
+meilleure cohérence des données :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcul des seuils avec la règle des 1.5*IQR pour Age}
+\NormalTok{Q1\_age }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(bdd\_ing}\SpecialCharTok{$}\NormalTok{age, }\FloatTok{0.25}\NormalTok{)}
+\NormalTok{Q3\_age }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(bdd\_ing}\SpecialCharTok{$}\NormalTok{age, }\FloatTok{0.75}\NormalTok{)}
+\NormalTok{IQR\_age }\OtherTok{\textless{}{-}}\NormalTok{ Q3\_age }\SpecialCharTok{{-}}\NormalTok{ Q1\_age}
+
+\NormalTok{seuil\_sup\_age }\OtherTok{\textless{}{-}}\NormalTok{ Q3\_age }\SpecialCharTok{+} \FloatTok{1.5} \SpecialCharTok{*}\NormalTok{ IQR\_age}
+
+\CommentTok{\# Filtrer les valeurs aberrantes pour Age}
+\NormalTok{bdd\_ing }\OtherTok{\textless{}{-}}\NormalTok{ bdd\_ing }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(age }\SpecialCharTok{\textless{}=}\NormalTok{ seuil\_sup\_age)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Analyse des corrélations}\label{analyse-des-corruxe9lations}
+
+L'objectif est d'identifier les variables fortement corrélées entre
+elles pour éviter la \textbf{multicolinéarité} dans le modèle.
+
+La \textbf{matrice de corrélation} (voir
+\hyperref[matrice-de-correlation]{Analyse bivariée}) permet d'observer
+les liens entre les différentes variables.
+
+La variable cible \textbf{y\_concrete\_compresive} présente des
+corrélations notables avec certaines variables explicatives : -
+\textbf{cement (0.50)} : Forte corrélation positive, suggérant une
+relation directe entre la quantité de ciment et la résistance à la
+compression.\\
+- \textbf{cater (-0.29)} : Corrélation négative, ce qui est cohérent
+avec l'hypothèse qu'un excès d'eau diminue la résistance du béton.\\
+- \textbf{super\_plast (0.37)} : Corrélation indiquant que cet additif
+pourrait améliorer la résistance du béton.\\
+- \textbf{age (0.33)} : Relation positive, confirmant que la résistance
+augmente avec le temps.
+
+Certaines variables explicatives montrent également des
+\textbf{corrélations importantes entre elles}, ce qui peut poser
+problème : - \textbf{water et super\_plast (-0.65)} : Corrélation
+négative forte, ce qui est logique car le superplastifiant permet de
+réduire la quantité d'eau nécessaire.\\
+- \textbf{blast\_furnace et fly\_ash (-0.32)} : Corrélation négative
+modérée, indiquant que ces composants sont parfois utilisés en
+substitution l'un de l'autre.
+
+Nous devons \textbf{évaluer l'impact de ces relations dans le modèle}.
+Si deux variables sont trop fortement corrélées, l'une d'elles pourrait
+être supprimée pour éviter des problèmes de multicolinéarité.
+
+Ces observations pourront nous aider lors de la sélection des variables
+dans la prochaine étape.
+
+\subsection{Synthèse de l'Ingénierie des
+Données}\label{synthuxe8se-de-linguxe9nierie-des-donnuxe9es}
+
+Après le traitement des valeurs aberrantes et l'analyse des
+corrélations, la base de données passe de \textbf{1030 à 961
+observations}.
+
+Les valeurs extrêmes des variables \textbf{Age} et
+\textbf{Superplasticizer} ont été supprimées en appliquant la règle des
+1.5*IQR, garantissant une meilleure cohérence des données.
+
+L'analyse des corrélations a révélé des relations notables entre
+plusieurs variables, notamment une forte corrélation entre \textbf{Water
+et Superplasticizer (-0.65)} et un lien important entre \textbf{Cement
+et la résistance à la compression (0.50)}.
 
 \section{Analyse Multivariée}\label{analyse-multivariuxe9e}
 
@@ -557,10 +752,10 @@ utilisant une analyse en composantes principales (ACP). La variable à
 expliquer (``y\_concrete\_compresive'') est également considérée comme
 active, aux côtés des huit autres variables explicatives.
 
-\subsection{Analyse en Composantes
-Principales}\label{analyse-en-composantes-principales}
+\subsection{Histogramme des valeurs
+propres}\label{histogramme-des-valeurs-propres}
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-17-1} \end{center}
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-27-1} \end{center}
 
 Le graphique illustre l'histogramme des valeurs propres issu de l'ACP,
 permettant d'identifier le nombre d'axes principaux à retenir.
@@ -584,7 +779,7 @@ les \textbf{trois premiers axes} pour l'analyse.
 \subsection{Analyse sur les 2 Premiers
 Axes}\label{analyse-sur-les-2-premiers-axes}
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-18-1} \end{center}
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-28-1} \end{center}
 
 Le cercle de corrélation met en évidence les relations entre les
 variables étudiées, projetées sur les deux premiers axes principaux de
@@ -655,33 +850,6 @@ Le deuxième axe distingue \textbf{les formulations riches en ciment
   à une résistance plus faible.
 \end{itemize}
 
-\subsection{Implications pour la Modélisation de la Résistance du
-Béton}\label{implications-pour-la-moduxe9lisation-de-la-ruxe9sistance-du-buxe9ton}
-
-\begin{itemize}
-\tightlist
-\item
-  L'opposition entre \texttt{water} et \texttt{super\_plast} sur Dim 1
-  indique qu'un \textbf{terme d'interaction} entre ces deux variables
-  pourrait être testé dans le modèle linéaire.
-\item
-  \texttt{fine\_aggr} étant bien projeté sur Dim 1, son interaction avec
-  \texttt{super\_plast} pourrait être pertinente pour examiner leur
-  effet combiné sur la compacité et la résistance.
-\item
-  \texttt{age} étant bien représenté sur Dim 1, une interaction avec
-  \texttt{water} pourrait être étudiée pour voir comment l'évolution du
-  béton avec le temps est influencée par l'eau.
-\item
-  \texttt{y\_concrete\_compresive} étant principalement projeté sur Dim
-  2, un modèle linéaire devrait inclure \textbf{\texttt{cement}} comme
-  facteur explicatif principal.
-\item
-  L'opposition entre \texttt{coarse} et \texttt{cement} sur Dim 2
-  suggère qu'un effet combiné de ces deux variables pourrait influencer
-  la résistance mécanique.
-\end{itemize}
-
 \subsection{Interprétation du Troisième
 Axe}\label{interpruxe9tation-du-troisiuxe8me-axe}
 
@@ -716,8 +884,6 @@ Partie D)}\label{dim2-3-35-de-la-variance-totale-voir-annexe-partie-d}
   modèle.
 \end{itemize}
 
-\subsection{Conclusion}\label{conclusion}
-
 Cette ACP met en évidence trois dimensions principales dans la
 composition du béton :
 
@@ -735,25 +901,383 @@ composition du béton :
   sur la résistance à la compression du béton.
 \end{enumerate}
 
-\section{Regression .}\label{regression-.}
+\subsection{Implications pour la Modélisation de la Résistance du
+Béton}\label{implications-pour-la-moduxe9lisation-de-la-ruxe9sistance-du-buxe9ton}
 
-(lm(formula = , data = ).. + REGARDER Intercept + faire graphique +
-regarder coeffs + retirer des variable a cause de l'analyse bivairée
+\begin{itemize}
+\tightlist
+\item
+  L'opposition entre \texttt{water} et \texttt{super\_plast} sur Dim 1
+  indique qu'un \textbf{terme d'interaction} entre ces deux variables
+  pourrait être testé dans le modèle linéaire.
+\item
+  \texttt{fine\_aggr} étant bien projeté sur Dim 1, son interaction avec
+  \texttt{super\_plast} pourrait être pertinente pour examiner leur
+  effet combiné sur la compacité et la résistance.
+\item
+  \texttt{age} étant bien représenté sur Dim 1, une interaction avec
+  \texttt{water} pourrait être étudiée pour voir comment l'évolution du
+  béton avec le temps est influencée par l'eau.
+\item
+  \texttt{y\_concrete\_compresive} étant principalement projeté sur Dim
+  2, un modèle linéaire devrait inclure \textbf{\texttt{cement}} comme
+  facteur explicatif principal.
+\item
+  L'opposition entre \texttt{coarse} et \texttt{cement} sur Dim 2
+  suggère qu'un effet combiné de ces deux variables pourrait influencer
+  la résistance mécanique.
+\end{itemize}
 
-\section{Conclusion}\label{conclusion-1}
+\section{Modélisation Linéaire}\label{moduxe9lisation-linuxe9aire}
+
+\begin{longtable}[]{@{}lrrrl@{}}
+\caption{Tableau des résultats de la régression linéaire}\tabularnewline
+\toprule\noalign{}
+Coefficient & Estimate & Std\_Error & t\_value & Pr \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Coefficient & Estimate & Std\_Error & t\_value & Pr \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & -23.163756 & 26.588421 & -0.871 & 0.383851 \\
+cement & 0.119785 & 0.008489 & 14.110 & \textless{} 2e-16 \\
+blast\_furnace & 0.103847 & 0.010136 & 10.245 & \textless{} 2e-16 \\
+fly\_ash & 0.087943 & 0.012585 & 6.988 & 5.03e-12 \\
+water & -0.150298 & 0.040179 & -3.741 & 0.000194 \\
+super\_plast & 0.290687 & 0.093460 & 3.110 & 0.001921 \\
+coarse & 0.018030 & 0.009394 & 1.919 & 0.055227 \\
+fine\_aggr & 0.020154 & 0.010703 & 1.883 & 0.059968 \\
+age & 0.114226 & 0.005427 & 21.046 & \textless{} 2e-16 \\
+\end{longtable}
+
+\textbf{Interprétation des p-values}
+
+Les résultats de la régression montrent que :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Intercept} : La p-value est de \textbf{0.38}, ce qui est
+  \textbf{supérieur à 0.05}. Nous retenons donc l'\textbf{hypothèse H0},
+  selon laquelle cette valeur n'est \textbf{pas significative}.
+\item
+  \textbf{Variables significatives (p \textless{} 0.05)} :
+  \texttt{cement}, \texttt{blast\_furnace}, \texttt{fly\_ash},
+  \texttt{water}, \texttt{super\_plast} et \texttt{age}. Nous acceptons
+  l'\textbf{hypothèse H1}, qui indique que ces variables ont un
+  \textbf{effet significatif} sur la résistance du béton.
+\item
+  \textbf{Variables non significatives au seuil de 5 \%} :
+  \texttt{coarse} et \texttt{fine\_aggr}. Toutefois, elles deviennent
+  \textbf{significatives pour un seuil de 10 \%}.
+\end{itemize}
+
+Ces résultats suggèrent que certaines variables ont un impact plus
+marqué sur la \textbf{résistance à la compression du béton}, tandis que
+d'autres jouent un rôle moins déterminant.
+
+Au regard de ces variables significatives, nous avons constaté des
+effets diverses sur la variable réponse. Pour la variable
+\textbf{Cement}(ciment), on remarque un effet positif sur la variable
+réponse qui n'est rien d'autre que la résistance à la compression. La
+valeur de cette relation est de l'ordre de 0.119785, cela signifie que
+si le ciment augmente d'une unité alors la résistence à la compression
+augmente moins proportionnellement que l'augmentation du ciment (0.12
+unité). Ensuite, pour la variable blast\_furnace (laitier de haut
+fourneau), la relation est positive. Cela signifie qu'une hausse de la
+variable en question d'une unité entraine une augmentation de 0.12 unité
+de la variable cible. Puis, on s'interesse à la variable fly\_ash
+(cendres volantes) qui est positivement corrélée avec la variable
+endogène (0.087943). Cela porrait être traduit comme étant une
+augmentation moins proportionnelle de la résistence comparé aux cendres
+volantes. De plus, nous remarquons une relation negative entre la
+variable water et la resistance à la compression. cette relation est de
+l'ordre de -0.15 c'est-à-dire que l'augmentation de l'eau d'une unite
+entraine une baisse de la resistance de 0.15. ce qui rejoint notre
+conclusion de l'analyse multivariee. Par ailleurs, la relation de notre
+variable cible avec la variable super\_plast est de 0.29, qui est la
+relation la plus importante dans notre modele. cette relation est
+positive, ce qui signifie que Additif chimique est tres important pour
+augmenter la resistance de notre beton. cela confirme nos propos suite a
+l'analyse multivariee. Enfin, on s'apercoit que la variable age est
+positivement correlee avec la variable reponse, Ce qui confirme les
+resultats des revues qui stipulent qu'avec la resistance augmente avec
+le temps.
+
+\textbf{Test de Durbin-Watson}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Durbin-Watson Test Results}\tabularnewline
+\toprule\noalign{}
+Description & Valeur \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Description & Valeur \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+DW & 1.2815 \\
+p-value & \textless{} 2.2e-16 \\
+Alternative hypothesis & true autocorrelation is not 0 \\
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Durbin-Watson statistic (DW)} : \textbf{1.2815}\\
+\item
+  \textbf{p-value} : \textbf{\textless{} 2.2e-16}\\
+\item
+  \textbf{Hypothèse alternative} : L'autocorrélation des erreurs est
+  \textbf{différente de 0}.
+\end{itemize}
+
+La p-value étant inférieure à 0.05, nous rejetons l'\textbf{hypothèse
+H0} et acceptons l'\textbf{hypothèse H1},\\
+ce qui signifie que \textbf{les erreurs sont fortement corrélées}.
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+On remarque que plusieurs barres sortent de l'intervalle de confiance,
+ce qui vient soutenir la conclusion\\
+du test de Durbin-Watson selon laquelle les erreurs sont
+\textbf{autocorrélées}.
+
+\textbf{Test de Breusch-Pagan}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Breusch-Pagan Test Results}\tabularnewline
+\toprule\noalign{}
+Description & Valeur \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Description & Valeur \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Breusch-Pagan statistic (BP) & 140.25 \\
+Degrés de liberté (df) & 8 \\
+p-value & \textless{} 2.2e-16 \\
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Breusch-Pagan statistic (BP)} : \textbf{140.25}\\
+\item
+  \textbf{Degrés de liberté (df)} : \textbf{8}\\
+\item
+  \textbf{p-value} : \textbf{\textless{} 2.2e-16}
+\end{itemize}
+
+D'après les résultats du \textbf{test de Breusch-Pagan}, nous acceptons
+l'\textbf{hypothèse H1},\\
+ce qui signifie que \textbf{l'erreur est hétéroscédastique}. Cela
+indique qu'il existe une \textbf{dépendance}\\
+entre la variance des erreurs et les \textbf{variables explicatives}.
+
+\textbf{Test de Normalité de Shapiro-Wilk}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Shapiro-Wilk Normality Test Results}\tabularnewline
+\toprule\noalign{}
+Description & Valeur \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Description & Valeur \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Shapiro-Wilk statistic (W) & 0.99532 \\
+p-value & 0.002986 \\
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Shapiro-Wilk statistic (W)} : \textbf{0.99532}\\
+\item
+  \textbf{p-value} : \textbf{0.002986}
+\end{itemize}
+
+D'après les résultats du \textbf{test de Shapiro-Wilk}, la p-value est
+\textbf{inférieure au seuil de 5 \%}.\\
+Nous rejetons donc l'\textbf{hypothèse nulle (H0)} de normalité des
+erreurs.\\
+Par conséquent, \textbf{les erreurs ne suivent pas une distribution
+normale}.
+
+\begin{longtable}[]{@{}rrrrrr@{}}
+\caption{A tibble: 6 x 6}\tabularnewline
+\toprule\noalign{}
+.fitted & .resid & .hat & .sigma & .cooksd & .std.resid \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+.fitted & .resid & .hat & .sigma & .cooksd & .std.resid \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+53.5 & 26.50 & 0.01370 & 10.4 & 0.010200 & 2.570 \\
+53.7 & 8.14 & 0.01290 & 10.4 & 0.000902 & 0.788 \\
+56.8 & -16.50 & 0.01700 & 10.4 & 0.004950 & -1.600 \\
+67.7 & -26.60 & 0.02870 & 10.4 & 0.022100 & -2.600 \\
+60.9 & -16.60 & 0.03060 & 10.4 & 0.009230 & -1.620 \\
+26.9 & 20.20 & 0.00694 & 10.4 & 0.002940 & 1.950 \\
+\end{longtable}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-35-1.pdf}
+
+D'après ce plot, il \textbf{n'existe aucune linéarité} entre la variable
+réponse et les variables explicatives.\\
+La \textbf{courbe rouge n'est pas horizontale}, ce qui indique que la
+relation \textbf{n'est pas linéaire}.
+
+Les observations \textbf{382, 384 et 115} sont les \textbf{bétons
+présentant les plus grandes valeurs en termes de résidus}.
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-36-1.pdf}
+
+Dans notre cas, la \textbf{courbe rouge n'est pas horizontale} et ne
+sépare pas les points de manière homogène\\
+de part et d'autre. Cela indique que \textbf{les erreurs ne sont pas
+homogènes}, ce qui confirme la conclusion\\
+du \textbf{test de Breusch-Pagan}.
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-37-1.pdf}
+
+Ce plot de l'\textbf{hypothèse de normalité} montre que plusieurs points
+\textbf{ne suivent pas la ligne},\\
+bien qu'ils en soient proches.
+
+Cela confirme les résultats du \textbf{test de normalité de
+Shapiro-Wilk},\\
+indiquant que les erreurs \textbf{ne suivent pas une distribution
+normale}.
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-38-1.pdf}
+
+Tous les points situés \textbf{à droite de la droite verticale bleue}
+sont des \textbf{points leviers extrêmes},\\
+c'est-à-dire des \textbf{valeurs extrêmes des variables explicatives}.
+
+De plus, tous les points \textbf{en dehors de l'intervalle formé par les
+pointillés jaunes} sont des \textbf{outliers},\\
+c'est-à-dire des \textbf{valeurs extrêmes de la variable cible}.
+
+Dans notre cas, nous avons \textbf{deux outliers} et \textbf{plusieurs
+points leviers extrêmes}.
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-39-1.pdf}
+
+Suite à l'observation des résultats donnés par le graphique, on remarque
+que \textbf{plusieurs points dépassent la ligne}\\
+formée par les \textbf{pointillés rouges}, qui représente le seuil à
+partir duquel un point est \textbf{considéré comme influent}.
+
+Les \textbf{bétons 57, 225 et 611} sont les \textbf{plus influents}. \#
+Conclusion
 
 \section{Annexe}\label{annexe}
 
 \subsection{Analyse univariée}\label{analyse-univariuxe9e}
 
-Boite à moustache pour la variable
-\texttt{Concrete\ compressive\ strength}.
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Cement}}{Histogramme pour la variable Cement}}\label{histogramme-pour-la-variable-cement}
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-19-1} \end{center}
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-40-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Blast\ Furnace\ Slag}}{Histogramme pour la variable Blast Furnace Slag}}\label{histogramme-pour-la-variable-blast-furnace-slag}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-41-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Fly\ Ash}}{Histogramme pour la variable Fly Ash}}\label{histogramme-pour-la-variable-fly-ash}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-42-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Water}}{Histogramme pour la variable Water}}\label{histogramme-pour-la-variable-water}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-43-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Superplasticizer}}{Histogramme pour la variable Superplasticizer}}\label{histogramme-pour-la-variable-superplasticizer}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-44-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Coarse\ Aggregate}}{Histogramme pour la variable Coarse Aggregate}}\label{histogramme-pour-la-variable-coarse-aggregate}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-45-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Fine\ Aggregate}}{Histogramme pour la variable Fine Aggregate}}\label{histogramme-pour-la-variable-fine-aggregate}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-46-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Age}}{Histogramme pour la variable Age}}\label{histogramme-pour-la-variable-age}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-47-1.pdf}
+
+\subsubsection{\texorpdfstring{Histogramme pour la variable
+\texttt{Concrete\ Compressive\ Strength}}{Histogramme pour la variable Concrete Compressive Strength}}\label{histogramme-pour-la-variable-concrete-compressive-strength}
+
+\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-48-1.pdf}
+
+\subsubsection{Détection des valeurs aberrantes
+(Boxplots)}\label{duxe9tection-des-valeurs-aberrantes-boxplots}
+
+\includegraphics{rmd_final_files/figure-latex/boxplots_outliers-1.pdf}
 
 \subsection{Analyse bivariee}\label{analyse-bivariee}
 
-Matrice de correlation
+\subsubsection{Matrice de correlation}\label{matrice-de-correlation}
+
+\begin{verbatim}
+##                            cement blast_furnace      fly_ash       water
+## cement                 1.00000000   -0.27519344 -0.397475440 -0.08154361
+## blast_furnace         -0.27519344    1.00000000 -0.323569468  0.10728594
+## fly_ash               -0.39747544   -0.32356947  1.000000000 -0.25704400
+## water                 -0.08154361    0.10728594 -0.257043997  1.00000000
+## super_plast            0.09277137    0.04337574  0.377339559 -0.65746444
+## coarse                -0.10935604   -0.28399823 -0.009976788 -0.18231167
+## fine_aggr             -0.22272017   -0.28159326  0.079076351 -0.45063498
+## age                    0.08194726   -0.04424580 -0.154370165  0.27760443
+## y_concrete_compresive  0.49783272    0.13482445 -0.105753348 -0.28961348
+##                       super_plast       coarse   fine_aggr          age
+## cement                 0.09277137 -0.109356039 -0.22272017  0.081947264
+## blast_furnace          0.04337574 -0.283998230 -0.28159326 -0.044245801
+## fly_ash                0.37733956 -0.009976788  0.07907635 -0.154370165
+## water                 -0.65746444 -0.182311668 -0.45063498  0.277604429
+## super_plast            1.00000000 -0.266302755  0.22250149 -0.192716518
+## coarse                -0.26630276  1.000000000 -0.17850575 -0.003015507
+## fine_aggr              0.22250149 -0.178505755  1.00000000 -0.156094049
+## age                   -0.19271652 -0.003015507 -0.15609405  1.000000000
+## y_concrete_compresive  0.36610230 -0.164927821 -0.16724896  0.328876976
+##                       y_concrete_compresive
+## cement                            0.4978327
+## blast_furnace                     0.1348244
+## fly_ash                          -0.1057533
+## water                            -0.2896135
+## super_plast                       0.3661023
+## coarse                           -0.1649278
+## fine_aggr                        -0.1672490
+## age                               0.3288770
+## y_concrete_compresive             1.0000000
+\end{verbatim}
 
 \begin{center}\includegraphics{rmd_final_files/figure-latex/corr_y-1} \end{center}
 
@@ -917,7 +1441,7 @@ sur}{Tableau des cos\^{}2 des variables sur}}\label{tableau-des-cos2-des-variabl
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-25-1} \end{center}
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-54-1} \end{center}
 
 \subsubsection{Partie E}\label{partie-e}
 
@@ -937,6 +1461,6 @@ sur}{Tableau des cos\^{}2 des variables sur}}\label{tableau-des-cos2-des-variabl
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-26-1} \end{center}
+\begin{center}\includegraphics{rmd_final_files/figure-latex/unnamed-chunk-55-1} \end{center}
 
 \end{document}
