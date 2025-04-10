@@ -40,6 +40,10 @@ plot(modele.RLM, 1)
 # graphiquement :
 plot(modele.RLM, 3)
 
+
+plot(modele.RLM, 5)
+
+
 #4
 # Tester la non-corrélation (d'ordre 1) des erreurs : test de Durbin-Watson
 dwtest(modele.RLM, alternative = c("two.sided")) 
@@ -65,7 +69,7 @@ hist(residus, freq = FALSE, ylim = c(0,0.48),
 curve(dnorm(x, mean = mean(residus), sd = sd(residus)), 
       col = 2, lty = 2, lwd = 2, add = TRUE)
 
-#7
+ #7
 # Test de Shapiro-Wilk pour tester l'hypothèse de normalité du terme d'erreur
 shapiro.test(residuals(modele.RLM))
 shapiro.test(modele.RLM$residuals)
